@@ -1,0 +1,47 @@
+environment:
+  COMPOSE_EXT: development
+  RAILS_ENV: development
+  RAILS_32: "0"
+  RUBY_VERSION: "1.9.3"
+  JOBS: "3"
+  CACHE: ""
+  PROFILE: ""
+  PROJECT: docker
+  DEPLOY: development
+  BUNDLE_PATH: /bundle
+
+compose:
+  files:
+    - docker/docker-compose.yml
+    - docker/docker-compose.$COMPOSE_EXT.yml
+  project_name: pulscen$RAILS_ENV
+
+interaction:
+  exec:
+    service: app
+
+  bundle:
+    service: app
+    command: bundle
+
+  rails:
+    service: app
+    commands:
+      server:
+        alias: s
+        service: web
+
+      console:
+        alias: c
+        start: bundle exec rails c
+
+  psql:
+    service: pg
+    command: psql -h localhost -U postgres pulscen
+
+provision:
+  - docker volume create --name bundle_data
+  - dip exec ./script/config_env
+  - dip compose up -d pg redis
+  - dip bundle install
+  - dip bundle exec rake db:migrate --trace > /dev/null

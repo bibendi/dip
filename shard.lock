@@ -1,0 +1,18 @@
+version: 1.0
+shards:
+  cli:
+    github: mosop/cli
+    version: 0.2.3
+
+  optarg:
+    github: mosop/optarg
+    version: 0.3.1
+
+  stdio:
+    github: mosop/stdio
+    version: 0.1.3
+
+  string_inflection:
+    github: mosop/string_inflection
+    version: 0.1.5
+
