@@ -7,6 +7,13 @@ module Dip::Cli::Commands
       help
     end
 
+    @config : Dip::Config::Compose | Nil
+
+    def initialize(*args)
+      super
+      @config = ::Dip.config.compose
+    end
+
     def run
       compose_args = find_files + find_project_name + args.values
       compose_args += run_env_args if args.cmd == "run"
@@ -19,12 +26,15 @@ module Dip::Cli::Commands
 
     private def find_files
       result = %w()
-      files = config.files
 
-      if files.is_a?(Array)
-        files.each do |file_name|
-          file_name = ::Dip.env.replace(file_name)
-          result << "--file #{file_name}"
+      @config.try do |config|
+        files = config.files
+
+        if files.is_a?(Array)
+          files.each do |file_name|
+            file_name = ::Dip.env.replace(file_name)
+            result << "--file #{file_name}"
+          end
         end
       end
 
@@ -33,11 +43,14 @@ module Dip::Cli::Commands
 
     private def find_project_name
       result = %w()
-      project_name = config.project_name
 
-      if project_name.is_a?(String)
-        project_name = ::Dip.env.replace(project_name)
-        result << "--project-name #{project_name}"
+      @config.try do |config|
+        project_name = config.project_name
+
+        if project_name.is_a?(String)
+          project_name = ::Dip.env.replace(project_name)
+          result << "--project-name #{project_name}"
+        end
       end
 
       result
@@ -49,11 +62,6 @@ module Dip::Cli::Commands
 
     private def run_env_args
       ::Dip.env.vars.map { |key, value| "-e #{key}=#{value}" }
-    end
-
-    @config : Dip::Config::Compose | Nil
-    private def config
-      @config ||= ::Dip.config.compose
     end
   end
 end

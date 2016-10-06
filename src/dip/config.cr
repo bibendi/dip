@@ -21,7 +21,8 @@ module Dip
         default: Hash(String, String).new
       },
       compose: {
-        type: ::Dip::Config::Compose
+        type: ::Dip::Config::Compose,
+        nilable: true
       },
       interaction: {
         type: Hash(String, YAML::Any),
