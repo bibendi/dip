@@ -29,7 +29,7 @@ module Dip
       },
       provision: {
         type: Array(String),
-        default: %w()
+        nilable: true
       }
     )
   end
