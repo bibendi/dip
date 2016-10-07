@@ -10,7 +10,7 @@ module Dip::Cli::Commands
       commands = ::Dip.config.provision
       if commands.is_a?(Array)
         commands.each do |command|
-          exec!(command)
+          exec! ::Dip.env.replace(command)
         end
       end
     end
