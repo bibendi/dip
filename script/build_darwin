@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -ex
+
+crystal build --release src/dip.cr
+mv dip dip-Darwin-x86_64

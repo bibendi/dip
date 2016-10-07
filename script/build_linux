@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -ex
+
+docker run \
+  --rm \
+  -v $PWD:/app \
+  -w /app \
+  crystallang/crystal \
+  crystal build --release src/dip.cr \
+  && mv dip dip-Linux-x86_64

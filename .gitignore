@@ -3,4 +3,6 @@
 /.crystal/
 /.shards/
 /dip
+/dip-Darwin-x86_64
+/dip-Linux-x86_64
 /dip.yml
