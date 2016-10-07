@@ -20,12 +20,80 @@ dip --help
 dip SUBCOMMAND --help
 ```
 
+### dip.yml
+
+```yml
+environment:
+  COMPOSE_EXT: development
+  RAILS_ENV: development
+  BUNDLE_PATH: /bundle
+
+compose:
+  files:
+    - docker/docker-compose.yml
+    - docker/docker-compose.$COMPOSE_EXT.yml
+  project_name: bear$RAILS_ENV
+
+interaction:
+  sh:
+    service: app
+
+  bundle:
+    service: app
+    command: bundle
+
+  rake:
+    service: app
+    command: bundle exec rake
+
+  rails:
+    service: app
+    subcommands:
+      s:
+        service: web
+
+      c:
+        command: bundle exec rails c
+
+  psql:
+    service: pg
+    command: psql -h localhost -U postgres bear
+
+provision:
+  - docker volume create --name bundle_data
+  - dip sh ./script/config_env
+  - dip compose up -d pg redis
+  - dip bundle install
+  - dip rake db:migrate --trace > /dev/null
+```
+
+### dip run
+
+Run commands defined in `interaction` section of dip.yml
+
+```sh
+dip run rails c
+dip run rake db:migrate
+```
+
+`run` argument can be ommited
+
+```sh
+dip rake db:migrate
+```
+
+### dip provision
+
+Run commands each by each from `provision` section of dip.yml
+
 ### dip compose
 
 Run docker-compose commands that is configured according with application dip.yml
 
 ```sh
 dip compose COMMAND [OPTIONS]
+
+dip compose up -d redis
 ```
 
 ### dip ssh

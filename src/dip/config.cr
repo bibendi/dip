@@ -15,6 +15,35 @@ module Dip
       )
     end
 
+    class Subcommand
+      YAML.mapping(
+        service: {
+          type: String,
+          nilable: true
+        },
+        command: {
+          type: String,
+          nilable: true
+        }
+      )
+    end
+
+    class Command
+      YAML.mapping(
+        service: {
+          type: String,
+        },
+        command: {
+          type: String,
+          nilable: true
+        },
+        subcommands: {
+          type: Hash(String, ::Dip::Config::Subcommand),
+          nilable: true
+        }
+      )
+    end
+
     YAML.mapping(
       environment: {
         type: Hash(String, String),
@@ -25,7 +54,7 @@ module Dip
         nilable: true
       },
       interaction: {
-        type: Hash(String, YAML::Any),
+        type: Hash(String, ::Dip::Config::Command),
         nilable: true
       },
       provision: {

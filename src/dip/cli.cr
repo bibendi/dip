@@ -1,6 +1,7 @@
 module Dip
   class Cli < ::Cli::Supercommand
     command "compose"
+    command "run"
     command "ssh"
     command "dns"
     command "provision"
