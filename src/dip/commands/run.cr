@@ -31,7 +31,7 @@ module Dip::Cli::Commands
 
       cmd_options = unparsed_args || %w()
 
-      exec! "dkit compose run --rm #{service_arg} #{cmd_arg} #{cmd_options.join " "}".strip
+      exec! "dip compose run --rm #{service_arg} #{cmd_arg} #{cmd_options.join " "}".strip
     end
   end
 end
