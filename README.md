@@ -9,7 +9,7 @@ DIP also contains commands for running support containers such as ssh agent and 
 ## Installation
 
 ```sh
-curl -L https://github.com/bibendi/dip/releases/download/0.1.0/dip-`uname -s`-`uname -m` > /usr/local/bin/dip
+curl -L https://github.com/bibendi/dip/releases/download/0.3.0/dip-`uname -s`-`uname -m` > /usr/local/bin/dip
 chmod +x /usr/local/bin/dip
 ```
 
