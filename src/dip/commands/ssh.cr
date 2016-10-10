@@ -2,15 +2,16 @@ require "../command"
 
 module Dip::Cli::Commands
   class Ssh < ::Cli::Supercommand
-    command "add"
+    command "add", aliased: "up"
     command "down"
+    command "status"
 
     class Options
       help
     end
 
     module Commands
-      class Add < ::Dip::Command
+      class Up < ::Dip::Command
         class Options
           string %w(-k --key), var: "PATH", default: "$HOME/.ssh/id_rsa"
           string %w(-v --volume), var: "PATH", default: "$HOME"
@@ -41,6 +42,12 @@ module Dip::Cli::Commands
           exec!("docker stop ssh-agent")
           exec!("docker rm -v ssh-agent")
           exec!("docker volume rm ssh_data")
+        end
+      end
+
+      class Status < ::Dip::Command
+        def run
+          exec!("docker inspect --format '{{.State.Status}}' ssh-agent 2 > /dev/null")
         end
       end
     end
