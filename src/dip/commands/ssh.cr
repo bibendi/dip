@@ -10,6 +10,10 @@ module Dip::Cli::Commands
       help
     end
 
+    class Help
+      caption "Run ssh agent"
+    end
+
     module Commands
       class Up < ::Dip::Command
         class Options

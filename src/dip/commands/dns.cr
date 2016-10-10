@@ -9,6 +9,10 @@ module Dip::Cli::Commands
       help
     end
 
+    class Help
+      caption "Run dns server"
+    end
+
     module Commands
       class Up < ::Dip::Command
         class Options

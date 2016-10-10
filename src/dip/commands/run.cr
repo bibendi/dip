@@ -8,6 +8,10 @@ module Dip::Cli::Commands
       help
     end
 
+    class Help
+      caption "Run configured command in a service"
+    end
+
     @config : Hash(String, ::Dip::Config::Command) | Nil
 
     def initialize(*args)

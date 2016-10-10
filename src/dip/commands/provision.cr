@@ -6,6 +6,10 @@ module Dip::Cli::Commands
       help
     end
 
+    class Help
+      caption "Execute commands within provision section"
+    end
+
     def run
       commands = ::Dip.config.provision
       if commands.is_a?(Array)

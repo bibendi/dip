@@ -7,6 +7,10 @@ module Dip::Cli::Commands
       help
     end
 
+    class Help
+      caption "Run docker-compose commands"
+    end
+
     @config : Dip::Config::Compose | Nil
 
     def initialize(*args)

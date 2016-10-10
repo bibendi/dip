@@ -6,6 +6,10 @@ module Dip::Cli::Commands
       help
     end
 
+    class Help
+      caption "Show the DIP version information"
+    end
+
     def run
       puts ::Dip::VERSION
     end
