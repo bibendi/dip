@@ -1,15 +1,13 @@
 module Dip
   class Environment
-    def initialize(environment : Hash(String, String))
+    getter vars
+
+    def initialize(default_vars : Hash(String, String))
       @vars = Hash(String, String).new
 
-      environment.each do |key, value|
-        @vars[key] = ENV.fetch(key, value)
+      default_vars.each do |key, value|
+        @vars[key] = ENV.fetch(key) { replace(value) }
       end
-    end
-
-    def vars
-      @vars
     end
 
     def replace(value : String)
