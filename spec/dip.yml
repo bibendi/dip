@@ -1,0 +1,29 @@
+version: '1'
+
+environment:
+  RUBY: 2.3.1
+  RAILS_ENV: "development"
+
+
+compose:
+  files:
+    - docker/docker-compose.yml
+    - docker/docker-compose.development.yml
+  project_name: test-project${RAILS_ENV}
+
+
+interaction:
+  sh:
+    service: app
+
+  irb:
+    service: app
+    command: irb
+
+  bundle:
+    service: app
+    command: bundle
+
+  rake:
+    service: app
+    command: bundle exec rake
