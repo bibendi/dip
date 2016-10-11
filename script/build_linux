@@ -8,4 +8,4 @@ docker run \
   -w /app \
   crystallang/crystal \
   crystal build --release src/dip.cr \
-  && mv dip dip-Linux-x86_64
+  && mv -f dip dip-Linux-x86_64
