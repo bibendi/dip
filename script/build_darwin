@@ -2,5 +2,4 @@
 
 set -ex
 
-crystal build --release src/dip.cr
-mv -f dip dip-Darwin-x86_64
+crystal build --release src/app.cr -o dip-Darwin-x86_64

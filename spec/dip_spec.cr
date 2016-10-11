@@ -1,9 +1,31 @@
 require "./spec_helper"
 
 describe Dip do
-  # TODO: Write tests
+  describe "#condig_path" do
+    assert { Dip.config_path == "./dip.yml" }
 
-  it "works" do
-    false.should eq(true)
+    it "returns custom config path" do
+      ENV["DIP_FILE"] = "./custom_dip.yml"
+
+      Dip.config_path.should eq "./custom_dip.yml"
+
+      ENV.delete("DIP_FILE")
+    end
+  end
+
+  describe "#config" do
+    it "raises error" do
+      ENV["DIP_FILE"] = "./spec/not-exists.yml"
+
+      expect_raises do
+        Dip.config
+      end
+    end
+
+    it "returns config" do
+      ENV["DIP_FILE"] = "./spec/dip.yml"
+
+      Dip.config.should be_a(Dip::Config)
+    end
   end
 end
