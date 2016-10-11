@@ -30,15 +30,12 @@ module Dip::Cli::Commands
 
     private def find_files
       result = %w()
+      return result unless (config = @config)
 
-      @config.try do |config|
-        files = config.files
-
-        if files.is_a?(Array)
-          files.each do |file_name|
-            file_name = ::Dip.env.replace(file_name)
-            result << "--file #{file_name}"
-          end
+      if (files = config.files).is_a?(Array)
+        files.each do |file_name|
+          file_name = ::Dip.env.replace(file_name)
+          result << "--file #{file_name}"
         end
       end
 
@@ -47,14 +44,11 @@ module Dip::Cli::Commands
 
     private def find_project_name
       result = %w()
+      return result unless (config = @config)
 
-      @config.try do |config|
-        project_name = config.project_name
-
-        if project_name.is_a?(String)
-          project_name = ::Dip.env.replace(project_name)
-          result << "--project-name #{project_name}"
-        end
+      if (project_name = config.project_name).is_a?(String)
+        project_name = ::Dip.env.replace(project_name)
+        result << "--project-name #{project_name}"
       end
 
       result
