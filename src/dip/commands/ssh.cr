@@ -25,7 +25,7 @@ module Dip::Cli::Commands
 
         def run
           exec!("docker volume create --name ssh_data")
-          exec!("docker run --detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent")
+          exec!("docker run --detach --rm --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent")
 
           key = options.key.sub("$HOME", ENV["HOME"])
           exec!("docker run #{docker_args} whilp/ssh-agent ssh-add #{key}")
