@@ -24,8 +24,11 @@ module Dip::Cli::Commands
 
       command = config[args.cmd]
 
+      ::Dip.env.merge!(command.environment)
+
       if subcommands = command.subcommands
         subcommand = subcommands[args.subcmd]
+        ::Dip.env.merge!(subcommand.environment)
         service_arg = subcommand.service || command.service
         cmd_arg = subcommand.command
       else
@@ -33,9 +36,9 @@ module Dip::Cli::Commands
         cmd_arg = "#{command.command} #{args.subcmd}".strip
       end
 
-      cmd_options = unparsed_args || %w()
+      cmd_options = (unparsed_args || %w()).join(" ")
 
-      exec! "dip compose run --rm #{service_arg} #{cmd_arg} #{cmd_options.join " "}".strip
+      exec!("dip compose run --rm #{service_arg} #{cmd_arg} #{cmd_options}".strip)
     end
   end
 end

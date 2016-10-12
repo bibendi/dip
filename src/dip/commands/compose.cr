@@ -25,7 +25,7 @@ module Dip::Cli::Commands
 
       env = ::Dip.env.vars.map { |key, value| "#{key}=#{value}" }.join(" ")
 
-      exec!("env #{common_env_args.join(" ")} docker-compose", compose_args)
+      exec!("docker-compose", compose_args)
     end
 
     private def find_files

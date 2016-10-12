@@ -43,6 +43,12 @@ interaction:
     service: app
     command: bundle exec rake
 
+  rspec:
+    service: app
+    environment:
+      RAILS_ENV: test
+    command: bundle exec rspec
+
   rails:
     service: app
     subcommands:
@@ -53,8 +59,8 @@ interaction:
         command: bundle exec rails c
 
   psql:
-    service: pg
-    command: psql -h localhost -U postgres bear
+    service: app
+    command: psql -h pg -U postgres bear
 
 provision:
   - docker volume create --name bundle_data

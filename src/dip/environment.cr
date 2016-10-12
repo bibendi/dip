@@ -10,6 +10,12 @@ module Dip
       end
     end
 
+    def merge!(new_vars : Hash(String, String))
+      new_vars.each do |key, value|
+        @vars[key] = replace(value)
+      end
+    end
+
     def replace(value : String)
       result = value.dup
 

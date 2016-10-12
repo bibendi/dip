@@ -21,6 +21,10 @@ module Dip
           type: String,
           nilable: true
         },
+        environment: {
+          type: Hash(String, String),
+          default: Hash(String, String).new
+        },
         command: {
           type: String,
           nilable: true
@@ -32,6 +36,10 @@ module Dip
       YAML.mapping(
         service: {
           type: String,
+        },
+        environment: {
+          type: Hash(String, String),
+          default: Hash(String, String).new
         },
         command: {
           type: String,
