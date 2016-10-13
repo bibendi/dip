@@ -22,7 +22,7 @@ module Dip::Cli::Commands
         end
 
         def run
-          exec!("docker run #{docker_args} aacebedo/dnsdock:latest-amd64")
+          exec_cmd!("docker run #{docker_args} aacebedo/dnsdock:latest-amd64")
         end
 
         private def docker_args
@@ -38,8 +38,8 @@ module Dip::Cli::Commands
 
       class Down < ::Dip::Command
         def run
-          exec!("docker stop dnsdock")
-          exec!("docker rm -v dnsdock")
+          exec_cmd("docker stop dnsdock")
+          exec_cmd("docker rm -v dnsdock")
         end
       end
     end

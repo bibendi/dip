@@ -2,6 +2,7 @@ require "../command"
 
 module Dip::Cli::Commands
   class Ssh < ::Cli::Supercommand
+    command "up"
     command "add", aliased: "up"
     command "down"
     command "status"
@@ -24,11 +25,11 @@ module Dip::Cli::Commands
         end
 
         def run
-          exec!("docker volume create --name ssh_data")
-          exec!("docker run --detach --rm --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent")
+          exec_cmd!("docker volume create --name ssh_data")
+          exec_cmd!("docker run --detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent")
 
           key = options.key.sub("$HOME", ENV["HOME"])
-          exec!("docker run #{docker_args} whilp/ssh-agent ssh-add #{key}")
+          exec_cmd!("docker run #{docker_args} whilp/ssh-agent ssh-add #{key}")
         end
 
         private def docker_args
@@ -43,15 +44,15 @@ module Dip::Cli::Commands
 
       class Down < ::Dip::Command
         def run
-          exec!("docker stop ssh-agent")
-          exec!("docker rm -v ssh-agent")
-          exec!("docker volume rm ssh_data")
+          exec_cmd("docker stop ssh-agent")
+          exec_cmd("docker rm -v ssh-agent")
+          exec_cmd("docker volume rm ssh_data")
         end
       end
 
       class Status < ::Dip::Command
         def run
-          exec!("docker inspect --format '{{.State.Status}}' ssh-agent 2 > /dev/null")
+          exec_cmd!("docker inspect ssh-agent 2 > /dev/null")
         end
       end
     end

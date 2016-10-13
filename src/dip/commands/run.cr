@@ -38,7 +38,7 @@ module Dip::Cli::Commands
 
       cmd_options = (unparsed_args || %w()).join(" ")
 
-      exec!("dip compose run --rm #{service_arg} #{cmd_arg} #{cmd_options}".strip)
+      exec_cmd!("dip compose run --rm #{service_arg} #{cmd_arg} #{cmd_options}".strip)
     end
   end
 end

@@ -1,15 +1,17 @@
 module Dip
   class Command < ::Cli::Command
-    def exec!(command : String, argv = nil)
-      command = "#{command} #{argv.join(' ')}" if argv.is_a?(Array)
+    def exec_cmd!(command : String, argv = nil)
+      status = exec_cmd(command, argv)
+      error!(code: status.exit_code) unless status.success?
+    end
 
+    def exec_cmd(command : String, argv = nil)
+      command = "#{command} #{argv.join(' ')}" if argv.is_a?(Array)
       command = ::Dip.env.replace(command)
 
       puts command.inspect if debug?
 
-      status = ::Process.run(command, env: Dip.env.vars, shell: true, input: true, output: true, error: true)
-
-      error!(code: status.exit_code) unless status.success?
+      ::Process.run(command, env: Dip.env.vars, shell: true, input: true, output: true, error: true)
     end
 
     def debug?
