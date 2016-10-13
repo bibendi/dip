@@ -52,7 +52,7 @@ module Dip::Cli::Commands
 
       class Status < ::Dip::Command
         def run
-          exec_cmd!("docker inspect ssh-agent 2 > /dev/null")
+          exec_cmd!("docker inspect --format '{{.State.Status}}' ssh-agent")
         end
       end
     end
