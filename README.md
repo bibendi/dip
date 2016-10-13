@@ -2,9 +2,9 @@
 
 Docker Interaction Process
 
-CLI utility for straightforward provisioning and interacting with application configured by docker-compose.
+CLI utility for straightforward provisioning and interacting with an application configured by docker-compose.
 
-DIP also contains commands for running support containers such as ssh agent and dns server.
+DIP also contains commands for running support containers such as ssh-agent and DNS server.
 
 ## Installation
 
@@ -93,7 +93,7 @@ Run commands each by each from `provision` section of dip.yml
 
 ### dip compose
 
-Run docker-compose commands that is configured according with application dip.yml
+Run docker-compose commands that are configured according with application dip.yml
 
 ```sh
 dip compose COMMAND [OPTIONS]
@@ -103,7 +103,7 @@ dip compose up -d redis
 
 ### dip ssh
 
-Runs ssh agent container base on https://github.com/whilp/ssh-agent with your ~/.ssh/id_rsa.
+Runs ssh-agent container base on https://github.com/whilp/ssh-agent with your ~/.ssh/id_rsa.
 It creates a named volume `ssh_data` with ssh socket.
 An applications docker-compose.yml should define environment variable `SSH_AUTH_SOCK=/ssh/auth/sock` and connect to external volume `ssh_data`.
 
@@ -173,7 +173,7 @@ sudo killall -HUP mDNSResponder
 
 By default, Docker creates a virtual interface named `docker0` on the host machine that forwards packets between any other network interface.
 
-However, on OSX, this means you are not able to access the Docker network directly. To be able to do so, you need add a route and allow traffic from any host on the interface that connects to the VM.
+However, on OSX, this means you are not able to access the Docker network directly. To be able to do so, you need to add a route and allow traffic from any host on the interface that connects to the VM.
 
 Run the following commands on your OSX machine:
 
