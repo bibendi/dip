@@ -20,6 +20,8 @@ dip SUBCOMMAND --help
 ### dip.yml
 
 ```yml
+version: '1'
+
 environment:
   COMPOSE_EXT: development
   RAILS_ENV: development
