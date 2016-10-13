@@ -1,7 +1,7 @@
-require "../command"
+require "../config_command"
 
 module Dip::Cli::Commands
-  class Compose < ::Dip::Command
+  class Compose < ::Dip::ConfigCommand
     class Options
       arg "cmd", stop: true
       help

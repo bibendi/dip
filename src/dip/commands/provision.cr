@@ -1,7 +1,7 @@
-require "../command"
+require "../config_command"
 
 module Dip::Cli::Commands
-  class Provision < ::Dip::Command
+  class Provision < ::Dip::ConfigCommand
     class Options
       help
     end

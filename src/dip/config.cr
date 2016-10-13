@@ -53,6 +53,9 @@ module Dip
     end
 
     YAML.mapping(
+      version: {
+        type: String
+      },
       environment: {
         type: Hash(String, String),
         default: Hash(String, String).new
