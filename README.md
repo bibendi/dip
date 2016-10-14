@@ -216,8 +216,8 @@ TODO
 ### Mac OS X
 
 ```
-sudo brew install docker
-sudo brew switch docker 1.12.1
+brew install docker
+brew switch docker 1.12.1
 ```
 
 #### dlite
