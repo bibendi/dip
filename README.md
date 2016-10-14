@@ -8,7 +8,22 @@ DIP also contains commands for running support containers such as ssh-agent and 
 
 ## Installation
 
+### Source and binaries
+
 https://github.com/bibendi/dip/releases
+
+### Packages
+
+#### Mac OS X
+
+```
+brew tap bibendi/dip
+brew install dip
+```
+
+#### Ubuntu
+
+TODO
 
 ## Usage
 
