@@ -28,4 +28,12 @@ describe Dip do
       Dip.config.should be_a(Dip::Config)
     end
   end
+
+  describe "#env" do
+    it "reads vars from dip.yml" do
+      ENV["DIP_FILE"] = "./spec/dip.yml"
+
+      Dip.env.vars.should eq({"RUBY" => "2.3.1", "RAILS_ENV" => "development"})
+    end
+  end
 end
