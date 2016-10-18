@@ -31,9 +31,11 @@ describe Dip do
 
   describe "#env" do
     it "reads vars from dip.yml" do
+      # Remove env vars because var from ENV can broke tests,
+      # for example in travis RAILS_ENV = test by default
+      ENV.delete("RUBY")
+      ENV.delete("RAILS_ENV")
       ENV["DIP_FILE"] = "./spec/dip.yml"
-
-      pp ENV
 
       Dip.env.vars.should eq({"RUBY" => "2.3.1", "RAILS_ENV" => "development"})
     end
