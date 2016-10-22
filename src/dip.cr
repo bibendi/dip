@@ -14,6 +14,6 @@ module Dip
   end
 
   def self.env
-    @@env ||= Environment.new(config.environment)
+    @@env ||= Environment.new(File.exists?(config_path) ? config.environment : Hash(String, String).new)
   end
 end
