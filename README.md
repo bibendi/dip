@@ -154,9 +154,11 @@ dip dns up
 
 #### Ubuntu
 
-##### 1. Set up docker's engine DNS
+##### Set up docker's engine DNS
 Specify dns server and network bridge ip setttings for docker engine, as described [here](https://github.com/aacebedo/dnsdock#setup).
+
 After that you will be sure that dns server of docker's engine is running on 172.17.0.1
+
 ```sh
 sudo vim /lib/systemd/system/docker.service
 ```
@@ -166,14 +168,15 @@ sudo vim /lib/systemd/system/docker.service
 ExecStart=/usr/bin/dockerd -H fd:// --bip=172.17.0.1/24 --dns=172.17.0.1
 ```
 
+After that restart docker engine:
+
 ```sh
-# after that restart docker engine
 sudo service docker restart
 ```
 
-##### 1. Make Ubuntu to resolve name with docker's DNS
+##### Make Ubuntu to resolve name with docker's DNS
 ```sh
-sudo echo "nameserver 172.17.0.1" >> /etc/resolvconf/resolv.conf.d/head
+echo "nameserver 172.17.0.1" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
 ```
 
 Check out your docker's dns names are resolved properly:
