@@ -205,7 +205,7 @@ First, let's start by configuring the default Docker service DNS server to IP wh
 ```sh
 ssh docker@local.docker
 
-vi /etc/default/docker
+sudo vi /etc/default/docker
 # Add the DNS server static IP via `--bip` and `--dns`
 # Change DOCKER_ARGS to:
 DOCKER_ARGS="-H unix:///var/run/docker.sock -H tcp://0.0.0.0:2375 -s btrfs --bip=172.17.0.1/24 --dns=172.17.0.1"
