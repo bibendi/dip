@@ -251,18 +251,18 @@ ping dnsdock.docker
 
 ## Installation
 
-### Ubuntu
+### Ubuntu:
 
 TODO
 
-### Mac OS X
+### Mac OS X:
 
 ```
 brew install docker
 brew switch docker 1.12.1
 ```
 
-#### dlite
+#### dlite:
 
 Download https://github.com/nlf/dlite/releases/download/1.1.5/dlite
 
@@ -270,14 +270,14 @@ Download https://github.com/nlf/dlite/releases/download/1.1.5/dlite
 sudo dlite install -c 2 -m 4 -d 20 -S $HOME
 ```
 
-##### Simple
+##### Simple:
 
 - `dlite stop`
 - download `bzImage` and `rootfs.cpio.xz` https://github.com/bibendi/dhyve-os/releases/tag/2.3.1
 - move in `~/.dlite/`
 - `dlite start`
 
-##### or Advanced (for other docker version)
+##### or Advanced (for other docker version):
 
 ```sh
 git clone https://github.com/nlf/dhyve-os.git
