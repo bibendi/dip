@@ -2,51 +2,59 @@
 
 This document provide information about how to install and configure [docker-machine-driver-xhyve](https://github.com/zchee/docker-machine-driver-xhyve) for use with dip.
 
-1. Install VM
+## Install VM
 
- ```
- $ brew install docker-machine-driver-xhyve
+```sh
+  brew install docker-machine-driver-xhyve
 
- # docker-machine-driver-xhyve need root owner and uid
- $ sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
- $ sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
- ```
+   # docker-machine-driver-xhyve need root owner and uid
+  sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+  sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+```
 
-2. Create & start machine
+## Create & start machine
 
- ```
- $ docker-machine create --driver xhyve --xhyve-cpu-count=2 --xhyve-memory-size=2048 --xhyve-disk-size=20000 --xhyve-experimental-nfs-share dip-docker
- ```
+```sh
+  docker-machine create --driver xhyve --xhyve-cpu-count=2 --xhyve-memory-size=3000 --xhyve-disk-size=20000 --xhyve-experimental-nfs-share --engine-opt dns=172.17.0.1 work
 
-3. Configure you environment
+  echo "$(docker-machine ip work) local.docker" | sudo tee -a /etc/hosts
+```
 
- ```
- $ eval "$(docker-machine env dip-docker)"
- ```
- You can also add this to your `.bash_profile`
+## Configure you environment
 
-4. Configure routing
+```sh
+  eval "$(docker-machine env work)"
+```
 
- ```
- $ sudo route -n add 172.16.0.0/12 ${docker-machine ip dip-docker}
- $ ifconfig | grep -B 3 192.168.64 | head -n 1
- bridge100: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
- $ ifconfig bridge100 | grep member: | cut -f 2 -d: | cut -c 2-4
- en7
- $ sudo ifconfig bridge100 -hostfilter en7
- ```
+You can also add this to your `.bash_profile`
 
-5. Configure docker daemon
+## Create resolver
 
- ```
- $ docker-machine ssh dip-docker
- $  sudo vi /var/lib/boot2docker/profile
+Configure OSX so that all .docker requests are forwarded to Docker's DNS server. Since routing has already been taken care of, just create a custom resolver under /etc/resolver/docker with the following content:
 
- # add "--dns 172.17.0.1" and "--bip 172.17.0.1" to EXTRA_ARGS
+```sh
+  sudo touch /etc/resolver/docker
+  echo "nameserver 172.17.0.1" | sudo tee -a /etc/resolver/docker
+```
 
- $ sudo /etc/init.d/docker restart
- ```
+Then restart OSX's own DNS server:
 
-6. start `dip dns up` and put dns ip - `172.17.0.1` in `System Settings -> Network -> Advanced`
+```sh
+  sudo killall -HUP mDNSResponder
+```
 
-7. Have fun! `dnsdock` and other stuff should work by now.
+## Configure routing (after each reboot)
+
+```sh
+  sudo route -n add 172.17.0.0/8 local.docker
+  DOCKER_INTERFACE=$(route get local.docker | grep interface: | cut -f 2 -d: | tr -d ' ')
+  DOCKER_INTERFACE_MEMBERSHIP=$(ifconfig ${DOCKER_INTERFACE} | grep member: | cut -f 2 -d: | cut -c 2-4)
+  sudo ifconfig "${DOCKER_INTERFACE}" -hostfilter "${DOCKER_INTERFACE_MEMBERSHIP}"
+```
+
+## Check
+
+```sh
+  dip dns up
+  ping dnsdock.docker
+```
