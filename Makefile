@@ -10,4 +10,5 @@ build/linux:
 	@script/build_linux
 
 clean:
-	@rm dip-*
+	@rm -f dip-* shard.lock
+	@rm -rf .shards libs
