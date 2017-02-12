@@ -8,5 +8,6 @@ matrix:
 
 
 script:
-  - ls -la
+  - ls -la lib
+  - cat shard.lock
   - crystal spec/dip/environment_spec.cr
