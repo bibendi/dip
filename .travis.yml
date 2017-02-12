@@ -6,5 +6,7 @@ matrix:
   allow_failures:
     - crystal: nightly
 
+
 script:
+  - ls -la
   - crystal spec/dip/environment_spec.cr
