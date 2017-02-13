@@ -1,8 +1,8 @@
 require "cli"
-require "./dip/version"
-require "./dip/cli"
-require "./dip/config"
-require "./dip/environment"
+require "./dip/version.cr"
+require "./dip/cli.cr"
+require "./dip/config.cr"
+require "./dip/environment.cr"
 
 module Dip
   def self.config

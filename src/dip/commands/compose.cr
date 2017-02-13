@@ -19,7 +19,8 @@ module Dip::Cli::Commands
     end
 
     def run
-      compose_args = find_files + find_project_name + args.values
+      compose_args = find_files + find_project_name
+      compose_args << args.cmd
       compose_args += run_env_args if args.cmd == "run"
       compose_args += unparsed_args
 
