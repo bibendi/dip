@@ -1,4 +1,4 @@
-require "./dip"
+require "./dip.cr"
 
 argv = ARGV.dup
 
@@ -6,4 +6,5 @@ if argv.any? && !%w(compose run ssh dns provision version --help).includes?(argv
   argv = %w(run) + argv
 end
 
-exit Dip::Cli.run(argv).as(Int32)
+exit_status = Dip::Cli.run(argv)
+exit exit_status.exit_code if exit_status

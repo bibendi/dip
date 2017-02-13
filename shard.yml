@@ -1,5 +1,5 @@
 name: dip
-version: 0.1.0
+version: 0.8.1
 
 authors:
   - Michail Merkushin <merkushin.m.s@gmail.com>
@@ -9,3 +9,4 @@ license: MIT
 dependencies:
   cli:
     github: mosop/cli
+    version: ~> 0.6.5
