@@ -2,9 +2,9 @@ require "../config_command"
 
 module Dip::Cli::Commands
   class Provision < ::Dip::ConfigCommand
-    class Options
-      help
-    end
+    #class Options
+      #help
+    #end
 
     class Help
       caption "Execute commands within provision section"

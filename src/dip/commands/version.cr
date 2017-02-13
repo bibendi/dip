@@ -2,9 +2,9 @@ require "../command"
 
 module Dip::Cli::Commands
   class Version < ::Dip::Command
-    class Options
-      help
-    end
+    #class Options
+      #help
+    #end
 
     class Help
       caption "Show the DIP version information"

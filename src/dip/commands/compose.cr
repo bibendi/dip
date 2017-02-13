@@ -4,7 +4,7 @@ module Dip::Cli::Commands
   class Compose < ::Dip::ConfigCommand
     class Options
       arg "cmd", stop: true
-      help
+      #help
     end
 
     class Help

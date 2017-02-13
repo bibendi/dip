@@ -6,8 +6,6 @@ authors:
 
 license: MIT
 
-crystal: 0.19.4
-
 dependencies:
   cli:
     github: mosop/cli

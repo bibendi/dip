@@ -5,7 +5,7 @@ module Dip::Cli::Commands
     class Options
       arg "cmd"
       arg "subcmd", stop: true, default: ""
-      help
+      #help
     end
 
     class Help

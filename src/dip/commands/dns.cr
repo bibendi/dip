@@ -5,9 +5,9 @@ module Dip::Cli::Commands
     command "up"
     command "down"
 
-    class Options
-      help
-    end
+    #class Options
+      #help
+    #end
 
     class Help
       caption "Run dns server"
@@ -18,7 +18,7 @@ module Dip::Cli::Commands
         class Options
           string %w(-s --socket), var: "PATH", default: "/var/run/docker.sock"
           string %w(--ip), var: "IP", default: "172.17.0.1"
-          help
+          #help
         end
 
         def run

@@ -1,13 +1,8 @@
 language: crystal
 crystal:
-  - 0.19.4
   - latest
+  - nightly
 
 matrix:
   allow_failures:
     - crystal: nightly
-
-script:
-  - ls -la lib
-  - cat shard.lock
-  - crystal spec/dip/environment_spec.cr
