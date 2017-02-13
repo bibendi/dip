@@ -7,9 +7,9 @@ module Dip::Cli::Commands
     command "down"
     command "status"
 
-    class Options
-      help
-    end
+    #class Options
+      #help
+    #end
 
     class Help
       caption "Run ssh agent"
@@ -21,7 +21,7 @@ module Dip::Cli::Commands
           string %w(-k --key), var: "PATH", default: "$HOME/.ssh/id_rsa"
           string %w(-v --volume), var: "PATH", default: "$HOME"
           bool %w(-t -interactive), not: %w(-T -Interactive), desc: "Interactive tty", default: true
-          help
+          #help
         end
 
         def run

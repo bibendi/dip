@@ -9,9 +9,9 @@ module Dip
     command "provision"
     command "version"
 
-    class Options
-      help
-    end
+    #class Options
+      #help
+    #end
 
     class Help
       header <<-EOS
