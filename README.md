@@ -25,6 +25,21 @@ brew install dip
 
 TODO
 
+### Completion
+
+#### Bash
+
+##### Mac OS X
+
+```sh
+  dip completion bash > /usr/local/etc/bash_completion.d/dip
+  source /usr/local/etc/bash_completion
+```
+
+#### Zsh
+
+TODO
+
 ## Usage
 
 ```sh

@@ -3,7 +3,8 @@ require "../config_command"
 module Dip::Cli::Commands
   class Compose < ::Dip::ConfigCommand
     class Options
-      arg "cmd", stop: true
+      arg "cmd", stop: true,
+                 complete: %w(build down exec kill logs pause ps restart rm run scale start stop top unpause up)
       help
     end
 
