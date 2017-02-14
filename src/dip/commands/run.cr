@@ -3,7 +3,7 @@ require "../config_command"
 module Dip::Cli::Commands
   class Run < ::Dip::ConfigCommand
     class Options
-      arg "cmd"
+      arg "cmd", complete: "ruby -ryaml -e 'puts (YAML.load(IO.read(\"dip.yml\"))[\"interaction\"] || {}).keys'"
       arg "subcmd", stop: true, default: ""
       help
     end

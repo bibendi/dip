@@ -7,6 +7,7 @@ module Dip
     command "ssh"
     command "dns"
     command "provision"
+    command "completion"
     command "version"
 
     class Options
