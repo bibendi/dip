@@ -27,3 +27,7 @@ interaction:
   rake:
     service: app
     command: bundle exec rake
+
+provision:
+  - bundle install
+  - bundle exec rake db:migrate
