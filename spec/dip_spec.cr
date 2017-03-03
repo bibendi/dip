@@ -2,7 +2,9 @@ require "./spec_helper"
 
 describe Dip do
   describe "#condig_path" do
-    assert { Dip.config_path == "./dip.yml" }
+    it "returns default config path" do
+      Dip.config_path == "./dip.yml"
+    end
 
     it "returns custom config path" do
       with_dip_file("./custom_dip.yml") do

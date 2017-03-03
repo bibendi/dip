@@ -10,3 +10,4 @@ dependencies:
   cli:
     github: mosop/cli
     version: ~> 0.6.5
+    commit: 8953f73ac7b34e17593e4f940584416cc477f115
