@@ -16,4 +16,17 @@ module Dip
   def self.env
     @@env ||= Environment.new(File.exists?(config_path) ? config.environment : Hash(String, String).new)
   end
+
+  def self.test?
+    ENV["DIP_ENV"] == "test"
+  end
+
+  def self.debug?
+    ENV["DIP_ENV"] == "debug"
+  end
+
+  def self.reset!
+    @@config = nil
+    @@env = nil
+  end
 end

@@ -7,8 +7,8 @@ environment:
 
 compose:
   files:
-    - docker/docker-compose.yml
-    - docker/docker-compose.development.yml
+    - spec/app/docker-compose.yml
+    - spec/app/docker-compose.development.yml
   project_name: test-project${RAILS_ENV}
 
 
@@ -27,6 +27,19 @@ interaction:
   rake:
     service: app
     command: bundle exec rake
+
+  rails:
+    service: app
+    subcommands:
+      c:
+        command: bundle exec rails c
+
+  rspec:
+    service: app
+    environment:
+      RAILS_ENV: test
+    command: bundle exec rspec
+
 
 provision:
   - bundle install

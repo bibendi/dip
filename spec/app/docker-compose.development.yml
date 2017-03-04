@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  app:
+    ports:
+      - '3000:3000'
+    volumes:
+      - ..:/app
+      - ../../gems:/localgems
+      - bundler-data:/bundle
+
+volumes:
+  bundler-data:
+    external:
+      name: bundler_data

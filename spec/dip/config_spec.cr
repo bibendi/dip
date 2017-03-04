@@ -1,7 +1,7 @@
 require "../spec_helper"
 
 describe Dip::Config do
-  config = Dip::Config.from_yaml(File.read("./spec/dip.yml"))
+  config = Dip::Config.from_yaml(File.read("./spec/app/dip.yml"))
 
   describe "version" do
     it "returns version number" do
@@ -11,9 +11,6 @@ describe Dip::Config do
 
   describe "environment" do
     it "returns env variables from dip.yml" do
-      ENV.delete("RUBY")
-      ENV.delete("RAILS_ENV")
-
       config.environment["RUBY"].should eq("2.3.1")
       config.environment["RAILS_ENV"].should eq("development")
     end
