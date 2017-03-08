@@ -15,6 +15,8 @@ describe Dip do
 
   describe "#config" do
     it "raises error" do
+      Dip.reset!
+
       with_dip_file("./spec/not-exists.yml") do
         expect_raises do
           Dip.config
@@ -31,11 +33,6 @@ describe Dip do
 
   describe "#env" do
     it "reads vars from dip.yml" do
-      # Remove env vars because var from ENV can broke tests,
-      # for example in travis RAILS_ENV = test by default
-      ENV.delete("RUBY")
-      ENV.delete("RAILS_ENV")
-
       with_dip_file do
         Dip.env.vars.should eq({"RUBY" => "2.3.1", "RAILS_ENV" => "development"})
       end
