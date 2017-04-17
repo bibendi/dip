@@ -18,11 +18,11 @@ module Dip
   end
 
   def self.test?
-    ENV["DIP_ENV"] == "test"
+    ENV.fetch("DIP_ENV", nil) == "test"
   end
 
   def self.debug?
-    ENV["DIP_ENV"] == "debug"
+    ENV.fetch("DIP_ENV", nil) == "debug"
   end
 
   def self.reset!
