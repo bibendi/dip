@@ -38,7 +38,14 @@ module Dip::Cli::Commands
 
       cmd_options = (unparsed_args || %w()).join(" ")
 
-      exec_cmd!("#{Process.executable_path} compose run --rm #{service_arg} #{cmd_arg} #{cmd_options}".strip)
+      run_opts = ["rm"]
+      if opts = command.compose_run_options
+        run_opts.concat(opts)
+      end
+
+      run_opts = run_opts.map { |o| "--#{o}" }.join(" ")
+
+      exec_cmd!("#{Process.executable_path} compose run #{run_opts} #{service_arg} #{cmd_arg} #{cmd_options}".strip)
     end
   end
 end

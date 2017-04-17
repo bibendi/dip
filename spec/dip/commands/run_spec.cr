@@ -22,5 +22,11 @@ describe Dip::Cli::Commands::Run do
         cmd.out.gets_to_end.should contain("compose run --rm app bundle exec rspec spec/test_spec.rb")
       end
     end
+
+    it "runs command with compose options" do
+      Dip::Cli::Commands::Run.run(%w(irb)) do |cmd|
+        cmd.out.gets_to_end.should contain("compose run --rm --no-deps --workdir='/app'")
+      end
+    end
   end
 end

@@ -19,6 +19,9 @@ interaction:
   irb:
     service: app
     command: irb
+    compose_run_options:
+      - no-deps
+      - workdir='/app'
 
   bundle:
     service: app

@@ -48,6 +48,10 @@ module Dip
         subcommands: {
           type: Hash(String, ::Dip::Config::Subcommand),
           nilable: true
+        },
+        compose_run_options: {
+          type: Array(String),
+          nilable: true
         }
       )
     end
