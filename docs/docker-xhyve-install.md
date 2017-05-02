@@ -46,7 +46,7 @@ Then restart OSX's own DNS server:
 ## Configure routing (after each reboot)
 
 ```sh
-  sudo route -n add 172.17.0.0/8 local.docker
+  sudo route -n add 172.17.0.0/12 local.docker
   DOCKER_INTERFACE=$(route get local.docker | grep interface: | cut -f 2 -d: | tr -d ' ')
   DOCKER_INTERFACE_MEMBERSHIP=$(ifconfig ${DOCKER_INTERFACE} | grep member: | cut -f 2 -d: | cut -c 2-4)
   sudo ifconfig "${DOCKER_INTERFACE}" -hostfilter "${DOCKER_INTERFACE_MEMBERSHIP}"
