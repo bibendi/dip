@@ -58,3 +58,9 @@ Then restart OSX's own DNS server:
   dip dns up
   ping dnsdock.docker
 ```
+
+
+# Install dip
+
+1. `brew tap bibendi/dip`
+2. `brew install dip`
