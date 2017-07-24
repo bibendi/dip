@@ -80,3 +80,8 @@ Check:
 ```sh
   ping dnsdock.docker
 ```
+
+# Install dip
+
+1. `brew tap bibendi/dip`
+2. `brew install dip`

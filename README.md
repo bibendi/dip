@@ -12,18 +12,12 @@ DIP also contains commands for running support containers such as ssh-agent and 
 
 https://github.com/bibendi/dip/releases
 
-### Packages
 
-#### Mac OS X
+## Docker installation
 
-```
-brew tap bibendi/dip
-brew install dip
-```
-
-#### Ubuntu
-
-TODO
+- [Ubuntu](docs/docker-ubuntu-install.md)
+- [MacOS docker-machine xhyve](docs/docker-mac-os-xhyve-install.md)
+- [MacOS dlite](docs/docker-mac-os-dlite-install.md)
 
 ### Completion
 
@@ -164,9 +158,3 @@ Runs DNS server container based on https://github.com/aacebedo/dnsdock
 ```sh
 dip dns up
 ```
-
-## Docker installation
-
-- [Ubuntu](docs/docker-ubuntu-install.md)
-- [MacOS docker-machine xhyve](docs/docker-xhyve-install.md)
-- [MacOS dlite](docs/docker-dlite-install.md)

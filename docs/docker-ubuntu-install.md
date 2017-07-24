@@ -22,6 +22,12 @@ After that restart docker engine:
 
 ## Make Ubuntu to resolve name with docker's DNS
 
+Disable dnsmasq if you have it:
+```
+sudo service dnsmasq stop
+```
+
+Put docker IP to resolv.conf:
 ```sh
   echo "nameserver 172.17.0.1" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
 ```
@@ -43,4 +49,9 @@ Name:	dnsdock.docker
 Address: 172.17.0.2
 ```
 
-That's it. It works!
+
+# Install dip
+
+go to [releases](https://github.com/bibendi/dip/releases) - and follow instructions for latest release.
+
+That's it. Enjoy!
