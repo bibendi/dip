@@ -2,7 +2,7 @@ require "./dip.cr"
 
 argv = ARGV.dup
 
-if argv.any? && !%w(completion compose run ssh dns provision version --help).includes?(argv[0])
+if argv.any? && !%w(completion compose run ssh dns nginx provision version --help).includes?(argv[0])
   argv = %w(run) + argv
 end
 

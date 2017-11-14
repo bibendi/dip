@@ -6,6 +6,7 @@ module Dip
     command "run"
     command "ssh"
     command "dns"
+    command "nginx"
     command "provision"
     command "completion"
     command "version"
