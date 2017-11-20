@@ -7,10 +7,10 @@ describe Dip::Cli::Commands::Nginx do
         Dip::Cli::Commands::Nginx.run(%w(up)) do |cmd|
           output = cmd.out.gets_to_end
 
-          output.should contain("docker network inspect nginx > /dev/null 2>&1 || docker network rm nginx")
+          output.should contain("docker network inspect nginx > /dev/null 2>&1 || docker network create nginx")
           output.should contain("docker run \
                                    --detach \
-                                   --volume /var/run/docker.sock:/var/run/docker.sock:ro \
+                                   --volume /var/run/docker.sock:/tmp/docker.sock:ro \
                                    --restart always \
                                    --publish 0.0.0.0:80:80 \
                                    --net nginx \
@@ -24,7 +24,6 @@ describe Dip::Cli::Commands::Nginx do
         Dip::Cli::Commands::Dns.run(%w(down)) do |cmd|
           output = cmd.out.gets_to_end
 
-          output.should contain("docker network inspect nginx > /dev/null 2>&1 || docker network rm nginx")
           output.should contain("docker stop dnsdock")
           output.should contain("docker rm -v dnsdock")
         end

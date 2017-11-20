@@ -50,7 +50,6 @@ module Dip::Cli::Commands
         end
 
         def run
-          exec_cmd("docker network inspect #{options.net} > /dev/null 2>&1 || docker network rm #{options.net}")
           exec_cmd("docker stop #{options.name}")
           exec_cmd("docker rm -v #{options.name}")
         end

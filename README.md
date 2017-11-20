@@ -16,6 +16,7 @@ https://github.com/bibendi/dip/releases
 ## Docker installation
 
 - [Ubuntu](docs/docker-ubuntu-install.md)
+- [MacOS Docker for Mac](docs/docker-for-mac-install.md)
 - [MacOS docker-machine xhyve](docs/docker-mac-os-xhyve-install.md)
 - [MacOS dlite](docs/docker-mac-os-dlite-install.md)
 
