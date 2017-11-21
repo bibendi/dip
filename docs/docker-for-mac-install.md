@@ -4,7 +4,7 @@ Download and install latest [Docker for Mac](https://www.docker.com/docker-mac).
 
 # d4m-nfs
 
-For the best i/o performance git clone latest [IFSight/d4m-nfs](https://www.docker.com/docker-mac).
+For the best i/o performance git clone latest [IFSight/d4m-nfs](https://github.com/IFSight/d4m-nfs).
 
 - Remove all shared paths from Docker for Mac Preferences except `/tmp`.
 - Run `echo '/Users:/Users:0:0' > ./etc/d4m-nfs-mounts.txt`
