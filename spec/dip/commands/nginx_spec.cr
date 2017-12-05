@@ -7,13 +7,13 @@ describe Dip::Cli::Commands::Nginx do
         Dip::Cli::Commands::Nginx.run(%w(up)) do |cmd|
           output = cmd.out.gets_to_end
 
-          output.should contain("docker network inspect nginx > /dev/null 2>&1 || docker network create nginx")
+          output.should contain("docker network inspect frontend > /dev/null 2>&1 || docker network create frontend")
           output.should contain("docker run \
                                    --detach \
                                    --volume /var/run/docker.sock:/tmp/docker.sock:ro \
                                    --restart always \
                                    --publish 0.0.0.0:80:80 \
-                                   --net nginx \
+                                   --net frontend \
                                    --name=nginx jwilder/nginx-proxy:latest")
         end
       end
