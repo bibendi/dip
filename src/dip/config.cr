@@ -28,6 +28,10 @@ module Dip
         command: {
           type: String,
           nilable: true
+        },
+        compose_method: {
+          type: String,
+          default: "run"
         }
       )
     end
@@ -52,6 +56,10 @@ module Dip
         compose_run_options: {
           type: Array(String),
           nilable: true
+        },
+        compose_method: {
+          type: String,
+          default: "run"
         }
       )
     end
