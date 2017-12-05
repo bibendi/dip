@@ -34,7 +34,6 @@ module Dip::Cli::Commands
 
         private def docker_args
           result = %w()
-          result << "--rm"
           volume = options.volume.sub("$HOME", ENV["HOME"])
           result << "--volume ssh_data:/ssh -v #{volume}:#{volume}"
           result << "--interactive --tty" if options.interactive?
