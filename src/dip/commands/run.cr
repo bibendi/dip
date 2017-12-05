@@ -3,8 +3,7 @@ require "../config_command"
 module Dip::Cli::Commands
   class Run < ::Dip::ConfigCommand
     class Options
-      arg "cmd", complete: "ruby -ryaml -e 'puts (YAML.load(IO.read(\"dip.yml\"))[\"interaction\"] || {}).keys'"
-      arg "subcmd", stop: true, default: ""
+      arg "cmd", stop: true, complete: "ruby -ryaml -e 'puts (YAML.load(IO.read(\"dip.yml\"))[\"interaction\"] || {}).keys'"
       help
     end
 
@@ -23,29 +22,37 @@ module Dip::Cli::Commands
       return unless (config = @config)
 
       command = config[args.cmd]
-
       ::Dip.env.merge!(command.environment)
 
-      if subcommands = command.subcommands
-        subcommand = subcommands[args.subcmd]
+      run_opts = %w()
+      cmd_options = unparsed_args || %w()
+      first_arg = cmd_options.first unless cmd_options.empty?
+      subcommands = command.subcommands
+
+      service_arg = command.service
+      compose_method = command.compose_method
+
+      if first_arg && subcommands && subcommands[first_arg]?
+        subcommand = subcommands[first_arg]
+        cmd_options.shift
         ::Dip.env.merge!(subcommand.environment)
-        service_arg = subcommand.service || command.service
+        service_arg = subcommand.service if subcommand.service
+        compose_method = subcommand.compose_method if subcommand.compose_method
         cmd_arg = subcommand.command
       else
-        service_arg = command.service
-        cmd_arg = "#{command.command} #{args.subcmd}".strip
+        cmd_arg = command.command
       end
 
-      cmd_options = (unparsed_args || %w()).join(" ")
+      run_opts << "rm" if compose_method == "run"
 
-      run_opts = ["rm"]
       if opts = command.compose_run_options
         run_opts.concat(opts)
       end
 
       run_opts = run_opts.map { |o| "--#{o}" }.join(" ")
+      cmd_options = cmd_options.join(" ").strip
 
-      exec_cmd!("#{Process.executable_path} compose run #{run_opts} #{service_arg} #{cmd_arg} #{cmd_options}".strip)
+      exec_cmd!("#{Process.executable_path} compose #{compose_method} #{run_opts} #{service_arg} #{cmd_arg} #{cmd_options}".strip)
     end
   end
 end

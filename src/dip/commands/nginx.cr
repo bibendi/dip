@@ -17,7 +17,7 @@ module Dip::Cli::Commands
       class Up < ::Dip::Command
         class Options
           string %w(-s --socket), var: "PATH", default: "/var/run/docker.sock"
-          string %w(--net), var: "NET", default: "nginx"
+          string %w(--net), var: "NET", default: "frontend"
           string %w(--ip), var: "IP", default: "0.0.0.0"
           string %w(-p --port), var: "PORT", default: "80"
           string %w(--name), var: "NAME", default: "nginx"
@@ -44,7 +44,6 @@ module Dip::Cli::Commands
 
       class Down < ::Dip::Command
         class Options
-          string %w(--net), var: "NET", default: "nginx"
           string %w(--name), var: "NAME", default: "nginx"
           help
         end
