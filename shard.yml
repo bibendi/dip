@@ -1,5 +1,7 @@
 name: dip
-version: 0.10.0
+version: 1.1.0
+
+crystal: 0.23.1
 
 authors:
   - Michail Merkushin <merkushin.m.s@gmail.com>
@@ -8,6 +10,6 @@ license: MIT
 
 dependencies:
   cli:
-    github: mosop/cli
-    version: ~> 0.6.5
-    commit: 8953f73ac7b34e17593e4f940584416cc477f115
+    github: amberframework/cli
+    version: ~> 0.7.0
+    commit: 2e6cfa453306a6841aa645f73666c2054f5eba74

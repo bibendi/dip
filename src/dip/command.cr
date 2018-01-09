@@ -14,7 +14,7 @@ module Dip
       if Dip.test?
         puts command
       else
-        ::Process.run(command, env: Dip.env.vars, shell: true, input: true, output: true, error: true)
+        ::Process.run(command, env: Dip.env.vars, shell: true, input: STDIN, output: STDOUT, error: STDERR)
       end
     end
   end

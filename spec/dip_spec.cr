@@ -18,7 +18,7 @@ describe Dip do
       Dip.reset!
 
       with_dip_file("./spec/not-exists.yml") do
-        expect_raises do
+        expect_raises(Errno, "opening file './spec/not-exists.yml' with mode 'r': No such file or directory") do
           Dip.config
         end
       end
