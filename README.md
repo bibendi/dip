@@ -16,9 +16,7 @@ https://github.com/bibendi/dip/releases
 ## Docker installation
 
 - [Ubuntu](docs/docker-ubuntu-install.md)
-- [MacOS Docker for Mac](docs/docker-for-mac-install.md)
-- [MacOS docker-machine xhyve](docs/docker-mac-os-xhyve-install.md)
-- [MacOS dlite](docs/docker-mac-os-dlite-install.md)
+- [Mac OS](docs/docker-for-mac-install.md)
 
 ### Completion
 
@@ -38,14 +36,14 @@ TODO
 ## Usage
 
 ```sh
-dip --help
-dip SUBCOMMAND --help
+  dip --help
+  dip SUBCOMMAND --help
 ```
 
 ### dip.yml
 
 ```yml
-version: '1'
+version: '2'
 
 environment:
   COMPOSE_EXT: development
@@ -60,39 +58,40 @@ compose:
 
 interaction:
   sh:
-    service: app
+    service: foo-app
+    compose_run_options: [no-deps]
 
   bundle:
-    service: app
+    service: foo-app
     command: bundle
 
   rake:
-    service: app
+    service: foo-app
     command: bundle exec rake
 
   rspec:
-    service: app
+    service: foo-app
     environment:
       RAILS_ENV: test
     command: bundle exec rspec
 
   rails:
-    service: app
+    service: foo-app
+    command: bundle exec rails
     subcommands:
       s:
-        service: web
-
-      c:
-        command: bundle exec rails c
+        service: foo-web
+        compose_method: up
 
   psql:
-    service: app
+    service: foo-app
     command: psql -h pg -U postgres bear
 
 provision:
   - docker volume create --name bundle_data
   - dip sh ./script/config_env
-  - dip compose up -d pg redis
+  - dip compose up -d foo-pg foo-redis
+  - until dip sh nc -z foo-pg 5432; do echo "Waiting for foo-pg..."; sleep 5; done
   - dip bundle install
   - dip rake db:migrate --trace > /dev/null
 ```
@@ -102,14 +101,14 @@ provision:
 Run commands defined in `interaction` section of dip.yml
 
 ```sh
-dip run rails c
-dip run rake db:migrate
+  dip run rails c
+  dip run rake db:migrate
 ```
 
 `run` argument can be ommited
 
 ```sh
-dip rake db:migrate
+  dip rake db:migrate
 ```
 
 ### dip provision
@@ -121,9 +120,9 @@ Run commands each by each from `provision` section of dip.yml
 Run docker-compose commands that are configured according with application dip.yml
 
 ```sh
-dip compose COMMAND [OPTIONS]
+  dip compose COMMAND [OPTIONS]
 
-dip compose up -d redis
+  dip compose up -d redis
 ```
 
 ### dip ssh
@@ -133,7 +132,7 @@ It creates a named volume `ssh_data` with ssh socket.
 An applications docker-compose.yml should define environment variable `SSH_AUTH_SOCK=/ssh/auth/sock` and connect to external volume `ssh_data`.
 
 ```sh
-dip ssh add
+  dip ssh add
 ```
 
 docker-compose.yml
@@ -152,10 +151,56 @@ volumes:
       name: ssh_data
 ```
 
-### dip dns
+### dip nginx
 
-Runs DNS server container based on https://github.com/aacebedo/dnsdock
+Runs Nginx server container based on [abakpress/nginx-proxy](https://github.com/abak-press/nginx-proxy) image. An application's docker-compose.yml should define environment variable `VIRTUAL_HOST` and `VIRTUAL_PATH` and connect to external network `frontend`.
+
+foo-project/docker-compose.yml
+
+```yml
+version: '2'
+
+services:
+  foo-web:
+    image: company/foo_image
+    environment:
+      - VIRTUAL_HOST=*.bar-app.docker
+      - VIRTUAL_PATH=/
+    networks:
+      - default
+      - frontend
+
+networks:
+  frontend:
+    external:
+      name: frontend
+```
+
+baz-project/docker-compose.yml
+
+```yml
+version: '2'
+
+services:
+  baz-web:
+    image: company/baz_image
+    environment:
+      - VIRTUAL_HOST=*.bar-app.docker
+      - VIRTUAL_PATH=/api/v1/baz_service,/api/v2/baz_service
+    networks:
+      - default
+      - frontend
+
+networks:
+  frontend:
+    external:
+      name: frontend
+```
 
 ```sh
-dip dns up
+  dip nginx up
+  cd foo-project && dip compose up
+  cd baz-project && dip compose up
+  curl www.bar-app.docker/api/v1/quz
+  curl www.bar-app.docker/api/v1/baz_service/qzz
 ```

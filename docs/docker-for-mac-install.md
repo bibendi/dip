@@ -1,6 +1,8 @@
 # Docker for Mac
 
-Download and install latest [Docker for Mac](https://www.docker.com/docker-mac).
+Download and install [Docker for Mac](https://www.docker.com/docker-mac).
+
+**WARNING**: Latest Docker for Mac 17.12.0-ce-mac46 seems to [break d4m-nfs](https://github.com/IFSight/d4m-nfs/issues/55).
 
 # d4m-nfs
 
@@ -9,6 +11,13 @@ For the best i/o performance git clone latest [IFSight/d4m-nfs](https://github.c
 - Remove all shared paths from Docker for Mac Preferences except `/tmp`.
 - Run `echo '/Users:/Users:0:0' > ./etc/d4m-nfs-mounts.txt`
 - Run `./d4m-nfs.sh` after each reboot.
+
+# Create resolver
+
+```sh
+  sudo touch /etc/resolver/docker
+  echo "nameserver 127.0.0.1" | sudo tee -a /etc/resolver/docker
+```
 
 # Dnsmasq
 
@@ -21,41 +30,3 @@ For the best i/o performance git clone latest [IFSight/d4m-nfs](https://github.c
 # dip
 
 Install latest [dip](https://github.com/bibendi/dip/releases).
-
-# Example appication
-
-docker-compose.yml
-
-```yml
-version: '2'
-
-services:
-  app1:
-    image: nginx
-    environment:
-      - VIRTUAL_HOST=*.app1.docker
-    networks:
-      - default
-      - nginx
-
-  app2:
-    image: nginx
-    environment:
-      - VIRTUAL_HOST=*.app2.docker
-    networks:
-      - default
-      - nginx
-
-networks:
-  nginx:
-    external:
-      name: nginx
-```
-
-```sh
-  dip nginx up
-
-  docker-compose up
-  curl www.app1.docker
-  curl www.app2.docker
-```
