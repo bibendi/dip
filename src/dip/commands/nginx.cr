@@ -21,7 +21,7 @@ module Dip::Cli::Commands
           string %w(--ip), var: "IP", default: "0.0.0.0"
           string %w(-p --port), var: "PORT", default: "80"
           string %w(--name), var: "NAME", default: "nginx"
-          string %w(--image), var: "IMAGE", default: "jwilder/nginx-proxy:latest"
+          string %w(--image), var: "IMAGE", default: "abakpress/nginx-proxy:latest"
           help
         end
 

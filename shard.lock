@@ -5,8 +5,8 @@ shards:
     version: 0.6.3
 
   cli:
-    github: mosop/cli
-    commit: 43c22a73eebc6a5381e007c8de453140be37bb70
+    github: amberframework/cli
+    commit: 2e6cfa453306a6841aa645f73666c2054f5eba74
 
   optarg:
     github: mosop/optarg
@@ -15,3 +15,4 @@ shards:
   string_inflection:
     github: mosop/string_inflection
     version: 0.2.1
+

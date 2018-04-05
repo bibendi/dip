@@ -14,7 +14,7 @@ describe Dip::Cli::Commands::Nginx do
                                    --restart always \
                                    --publish 0.0.0.0:80:80 \
                                    --net frontend \
-                                   --name=nginx jwilder/nginx-proxy:latest")
+                                   --name=nginx abakpress/nginx-proxy:latest")
         end
       end
     end
