@@ -12,9 +12,11 @@ describe Dip::Cli::Commands::Nginx do
                                    --detach \
                                    --volume /var/run/docker.sock:/tmp/docker.sock:ro \
                                    --restart always \
-                                   --publish 0.0.0.0:80:80 \
+                                   --publish 80:80 \
                                    --net frontend \
-                                   --name=nginx abakpress/nginx-proxy:latest")
+                                   --name=nginx \
+                                   --label com.dnsdock.alias=docker \
+                                   abakpress/nginx-proxy:latest")
         end
       end
     end

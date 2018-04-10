@@ -169,6 +169,7 @@ services:
     networks:
       - default
       - frontend
+    dns: $DIP_DNS
 
 networks:
   frontend:
@@ -190,6 +191,7 @@ services:
     networks:
       - default
       - frontend
+    dns: $DIP_DNS
 
 networks:
   frontend:
@@ -203,4 +205,15 @@ networks:
   cd baz-project && dip compose up
   curl www.bar-app.docker/api/v1/quz
   curl www.bar-app.docker/api/v1/baz_service/qzz
+```
+
+### dip dns
+
+Runs DNS server container based on https://github.com/aacebedo/dnsdock It used for container to container requests through nginx. An application's docker-compose.yml should define `dns` configuration with environment variable `$DIP_DNS` and connect to external network `frontend`. `$DIP_DNS` will be automatically assigned by dip.
+
+```sh
+  dip dns up
+
+  cd foo-project
+  dip compose exec foo-web curl http://www.bar-app.docker/api/v1/baz_service
 ```
