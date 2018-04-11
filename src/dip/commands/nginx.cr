@@ -18,10 +18,10 @@ module Dip::Cli::Commands
         class Options
           string %w(-s --socket), var: "PATH", default: "/var/run/docker.sock"
           string %w(--net), var: "NET", default: "frontend"
-          string %w(--ip), var: "IP", default: "0.0.0.0"
-          string %w(-p --port), var: "PORT", default: "80"
+          string %w(--publish), var: "PUBLISH", default: "80:80"
           string %w(--name), var: "NAME", default: "nginx"
           string %w(--image), var: "IMAGE", default: "abakpress/nginx-proxy:latest"
+          string %w(--domain), var: "DOMAIN", default: "docker"
           help
         end
 
@@ -35,9 +35,10 @@ module Dip::Cli::Commands
           result << "--detach"
           result << "--volume #{options.socket}:/tmp/docker.sock:ro"
           result << "--restart always"
-          result << "--publish #{options.ip}:#{options.port}:80"
+          result << "--publish #{options.publish}"
           result << "--net #{options.net}"
           result << "--name=#{options.name}"
+          result << "--label com.dnsdock.alias=#{options.domain}"
           result.join(' ')
         end
       end
