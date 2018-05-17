@@ -10,7 +10,7 @@ https://docs.docker.com/compose/install/
 
 ```sh
   sudo apt-get install dnsmasq
-  echo "address=/docker/127.0.0.1" | sudo tee -a etc/dnsmasq.conf
+  echo "address=/docker/127.0.0.1" | sudo tee -a /etc/dnsmasq.conf
   sudo service dnsmasq restart
 ```
 
