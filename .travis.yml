@@ -1,5 +1,20 @@
 language: crystal
 
 os:
-  - linux
-  - osx
+- linux
+- osx
+
+before_deploy:
+  - ./script/build
+
+deploy:
+  provider: releases
+  api_key:
+    secure: fVGOyZVqQVEYapUdX13y2rL8flih+BZOT9NrJ+YAMSMirnl2FOOVzzVAGRKBd8Wq9dcJnzz7mgqle47Pzdrk92ocqv5e5I5BMU3TPcoLBZ4Fu8kFiSAv9C4QiDvOdNw942D4no93pQ2YQyLdlKhi08D7zb59lVbsN3wvJMRCrkmdmUXTyhbo9Gm6ipG5Vr3CU4jEF/G4zhJrCk2v6NYInUgyuL4nBcGUusOotfMxcX4FBZb7iWoRBbt7TZeJJjsoQwExbb9aMQSZQuc9FUpiPE/WGaWsMMgBGhYo2gWySXDwYJhRqWKICb4FPWp8tYnBMQU3jv+KRodBrLps4b4GVk8ShL2igub/lm/lJ8fpLGNj2Pkr6SiO4Qh9z7ECxgGmDk8EysSh3iNfHA+M5yf1loVh1Hgpet+fJIUeovPKjaTNvSzXXDSEoDqWv32pmIXYJay8Lj2S/JkbuLrxqLaNx4dH3aHx8oHEeQwW87x6dyu6ud4IXXedGm4/+Bvz2hbP8RoE32iW7X0qc++ssWCGIL/vnuKcIN396oDz4SIhovc2TVXEhLOEeQmMZCTxlsMnwR+R0n5BRn6Y17C87KYOw2n5AJnEPGLUoR00ZvHy2QGuSRxpawB6FBTPQkYjYZDElU5RWuvaoruK/yubvlbOwqq0xtwFwbFTy6z++ta/C5Q=
+  file:
+    - dip-Linux-x86_64
+    - dip-Darwin-x86_64
+  overwrite: true
+  on:
+    repo: bibendi/dip
+    tags: true
