@@ -1,8 +1,11 @@
 language: crystal
 
-os:
-- linux
-- osx
+matrix:
+  fast_finish: true
+  include:
+    - env: LIBRARY_PATH=/opt/crystal/embedded/lib
+      os: linux
+    - os: osx
 
 before_deploy:
   - ./script/build
