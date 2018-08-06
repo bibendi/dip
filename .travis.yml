@@ -3,12 +3,15 @@ language: crystal
 matrix:
   fast_finish: true
   include:
-    - env: LIBRARY_PATH=/opt/crystal/embedded/lib
+    - env: BUILD_METHOD=docker
       os: linux
     - os: osx
 
+services:
+  - docker
+
 before_deploy:
-  - ./script/build
+  - ./script/build${BUILD_METHOD}
 
 deploy:
   provider: releases
