@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -ex
+
+crystal build --release src/app.cr -o dip-$(uname -s)-$(uname -m)
