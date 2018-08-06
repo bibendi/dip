@@ -3,7 +3,7 @@ language: crystal
 matrix:
   fast_finish: true
   include:
-    - env: BUILD_METHOD=docker
+    - env: BUILD_METHOD=_docker
       os: linux
     - os: osx
 
