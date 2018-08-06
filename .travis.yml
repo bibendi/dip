@@ -10,6 +10,9 @@ matrix:
 services:
   - docker
 
+before_script:
+  - unset RAILS_ENV
+
 before_deploy:
   - ./script/build${BUILD_METHOD}
 
