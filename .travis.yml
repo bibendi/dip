@@ -15,6 +15,7 @@ deploy:
     - dip-Linux-x86_64
     - dip-Darwin-x86_64
   overwrite: true
+  skip_cleanup: true
   on:
     repo: bibendi/dip
     tags: true

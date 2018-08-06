@@ -1,5 +1,0 @@
-#!/bin/bash
-
-set -ex
-
-sudo cp dip-Darwin-x86_64 /usr/local/bin/dip

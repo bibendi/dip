@@ -1,5 +1,0 @@
-#!/bin/bash
-
-set -ex
-
-crystal build --release src/app.cr -o dip-Darwin-x86_64
