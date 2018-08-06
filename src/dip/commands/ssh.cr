@@ -5,6 +5,7 @@ module Dip::Cli::Commands
     command "up"
     command "add", aliased: "up"
     command "down"
+    command "restart"
     command "status"
 
     class Options
@@ -47,6 +48,13 @@ module Dip::Cli::Commands
           exec_cmd("docker stop ssh-agent")
           exec_cmd("docker rm -v ssh-agent")
           exec_cmd("docker volume rm ssh_data")
+        end
+      end
+
+      class Restart < Up
+        def run
+          exec_cmd!("#{Process.executable_path} ssh down")
+          super
         end
       end
 
