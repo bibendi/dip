@@ -25,8 +25,8 @@ https://github.com/bibendi/dip/releases
 ##### Mac OS X
 
 ```sh
-  dip completion bash > /usr/local/etc/bash_completion.d/dip
-  source /usr/local/etc/bash_completion
+dip completion bash > /usr/local/etc/bash_completion.d/dip
+source /usr/local/etc/bash_completion
 ```
 
 #### Zsh
