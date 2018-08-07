@@ -1,0 +1,30 @@
+version: '2'
+
+compose:
+  files:
+    - docker-compose.yml
+  project_name: dip
+
+interaction:
+  bash:
+    service: app
+
+  shards:
+    service: app
+    command: shards
+
+  build:
+    service: app
+    command: crystal build --release src/app.cr -o dip-Linux-x86_64
+
+  spec:
+    service: app
+    command: crystal spec
+
+  clean:
+    service: app
+    command: rm -rf .shards
+
+provision:
+  - dip clean
+  - dip shards install

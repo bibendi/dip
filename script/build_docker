@@ -2,9 +2,6 @@
 
 set -ex
 
-docker run \
-  --rm \
-  -v $PWD:/app \
-  -w /app \
-  crystallang/crystal:0.22.0 \
-  crystal build --release src/app.cr -o dip-Linux-x86_64
+rm -rf .shards
+docker-compose run --rm app shards install
+docker-compose run --rm app ./script/build

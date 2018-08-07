@@ -10,6 +10,6 @@ license: MIT
 
 dependencies:
   cli:
-    github: amberframework/cli
+    github: mosop/cli
     version: ~> 0.7.0
-    commit: 2e6cfa453306a6841aa645f73666c2054f5eba74
+    commit: f3f706844a7bd467ab52772f4c3fdc07c055d7ec
