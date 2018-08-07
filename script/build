@@ -2,4 +2,11 @@
 
 set -ex
 
-crystal build --release --static src/app.cr -o dip-$(uname -s)-$(uname -m)
+if [ "$(uname -s)" == "Linux" ]
+then
+  build_options="--static"
+else
+  build_options=""
+fi
+
+crystal build --release $build_options src/app.cr -o dip-$(uname -s)-$(uname -m)
