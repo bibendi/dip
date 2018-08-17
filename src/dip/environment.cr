@@ -2,11 +2,11 @@ module Dip
   class Environment
     getter vars
 
-    def initialize(default_vars : Hash(String, String))
+    def initialize(default_vars : Hash(String, String | Bool | Int64 | Float64 | String | Time))
       @vars = Hash(String, String).new
 
       default_vars.each do |key, value|
-        @vars[key] = ENV.fetch(key) { replace(value) }
+        @vars[key] = ENV.fetch(key) { replace(value.to_s) }
       end
 
       unless Dip.test?
@@ -14,9 +14,9 @@ module Dip
       end
     end
 
-    def merge!(new_vars : Hash(String, String))
+    def merge!(new_vars : Hash(String, String | Bool | Int64 | Float64 | String | Time))
       new_vars.each do |key, value|
-        @vars[key] = replace(value)
+        @vars[key] = replace(value.to_s)
       end
     end
 
