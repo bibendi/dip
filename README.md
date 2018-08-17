@@ -29,6 +29,13 @@ dip completion bash > /usr/local/etc/bash_completion.d/dip
 source /usr/local/etc/bash_completion
 ```
 
+##### Ubuntu
+
+```sh
+sudo bash -c 'dip completion bash > /etc/bash_completion.d/dip'
+source /etc/bash_completion
+```
+
 #### Zsh
 
 TODO
