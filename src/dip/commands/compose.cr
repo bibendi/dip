@@ -37,7 +37,7 @@ module Dip::Cli::Commands
       if (files = config.files).is_a?(Array)
         files.each do |file_name|
           file_name = ::Dip.env.replace(file_name)
-          result << "--file #{file_name}"
+          result << "--file #{file_name}" if File.exists?(file_name)
         end
       end
 
