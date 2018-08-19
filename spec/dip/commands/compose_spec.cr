@@ -16,8 +16,6 @@ describe Dip::Cli::Commands::Compose do
                                                            --file spec/app/docker-compose.development.yml \
                                                            --project-name test-projectdevelopment \
                                                            run \
-                                                           -e RUBY=2.3.1 \
-                                                           -e RAILS_ENV=development \
                                                            bundle")
       end
     end

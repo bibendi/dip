@@ -22,10 +22,7 @@ module Dip::Cli::Commands
     def run
       compose_args = find_files + find_project_name
       compose_args << args.cmd
-      compose_args += run_env_args if args.cmd == "run"
       compose_args += unparsed_args
-
-      env = ::Dip.env.vars.map { |key, value| "#{key}=#{value}" }.join(" ")
 
       exec_cmd!("docker-compose", compose_args)
     end
@@ -54,14 +51,6 @@ module Dip::Cli::Commands
       end
 
       result
-    end
-
-    private def common_env_args
-      ::Dip.env.vars.map { |key, value| "#{key}=#{value}" }
-    end
-
-    private def run_env_args
-      ::Dip.env.vars.map { |key, value| "-e #{key}=#{value}" }
     end
   end
 end
