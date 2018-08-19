@@ -9,7 +9,7 @@ module Dip
       command = "#{command} #{argv.join(' ')}" if argv.is_a?(Array)
       command = ::Dip.env.replace(command)
 
-      puts command.inspect if Dip.debug?
+      puts [command, ::Dip.env.vars].inspect if Dip.debug?
 
       if Dip.test?
         puts command
