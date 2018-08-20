@@ -34,7 +34,7 @@ describe Dip do
   describe "#env" do
     it "reads vars from dip.yml" do
       with_dip_file do
-        Dip.env.vars.should eq({"RUBY" => "2.3.1", "RAILS_ENV" => "development"})
+        Dip.env.vars.should eq({"RUBY" => "2.3", "RAILS_ENV" => "development"})
       end
     end
   end
