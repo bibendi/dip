@@ -11,7 +11,7 @@ describe Dip::Config do
 
   describe "environment" do
     it "returns env variables from dip.yml" do
-      config.environment["RUBY"].should eq("2.3.1")
+      config.environment["RUBY"].should eq(2.3)
       config.environment["RAILS_ENV"].should eq("development")
     end
   end

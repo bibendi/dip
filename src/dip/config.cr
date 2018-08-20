@@ -69,8 +69,8 @@ module Dip
         type: String
       },
       environment: {
-        type: Hash(String, String),
-        default: Hash(String, String).new
+        type: Hash(String, String | Bool | Int64 | Float64 | String | Time),
+        default: Hash(String, String | Bool | Int64 | Float64 | String | Time).new
       },
       compose: {
         type: ::Dip::Config::Compose,

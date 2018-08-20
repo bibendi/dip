@@ -1,7 +1,7 @@
 version: '1'
 
 environment:
-  RUBY: 2.3.1
+  RUBY: 2.3
   RAILS_ENV: "development"
 
 
