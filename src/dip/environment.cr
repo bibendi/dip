@@ -1,29 +1,28 @@
 module Dip
   class Environment
-    getter vars
+    property vars = Hash(String, String).new
+    property hard_vars = Hash(String, String).new
 
     def initialize(default_vars : Hash(String, String | Bool | Int64 | Float64 | String | Time))
-      @vars = Hash(String, String).new
-
       default_vars.each do |key, value|
-        @vars[key] = ENV.fetch(key) { replace(value.to_s) }
+        vars[key] = ENV.fetch(key) { replace(value.to_s) }
       end
 
       unless Dip.test?
-        @vars["DIP_DNS"] = ENV.fetch("DIP_DNS") { find_dns }
+        vars["DIP_DNS"] = ENV.fetch("DIP_DNS") { find_dns }
       end
     end
 
     def merge!(new_vars : Hash(String, String | Bool | Int64 | Float64 | String | Time))
       new_vars.each do |key, value|
-        @vars[key] = replace(value.to_s)
+        vars[key] = replace(value.to_s)
       end
     end
 
     def replace(value : String)
       result = value.dup
 
-      @vars.each do |key, value|
+      vars.each do |key, value|
         result = result.gsub("$#{key}", value)
         result = result.gsub("${#{key}}", value)
       end

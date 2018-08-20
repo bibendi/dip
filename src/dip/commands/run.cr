@@ -49,7 +49,7 @@ module Dip::Cli::Commands
         run_opts.concat(opts)
       end
 
-      run_opts = run_opts.map { |o| "--#{o}" }.join(" ")
+      run_opts = (run_opts.map { |o| "--#{o}" } + Dip.env.hard_vars.map { |k, v| "-e #{k}=#{v}" }).join(" ")
       cmd_options = cmd_options.join(" ").strip
 
       exec_cmd!("#{Process.executable_path} compose #{compose_method} #{run_opts} #{service_arg} #{cmd_arg} #{cmd_options}".strip)
