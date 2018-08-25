@@ -1,5 +1,0 @@
-#!/bin/bash
-
-set -ex
-
-sudo cp dip-$(uname -s)-$(uname -m) /usr/local/bin/dip

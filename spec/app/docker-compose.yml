@@ -1,7 +1,0 @@
-version: '2'
-
-services:
-  app:
-    image: 'test'
-    build: '.'
-    command: bash
