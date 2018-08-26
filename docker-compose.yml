@@ -2,8 +2,14 @@ version: '3'
 
 services:
   app:
-    image: crystallang/crystal:${CRYSTAL_VERSION:-0.25.1}
-    command: bash
+    image: ruby:2.5.1
+    environment:
+      - GEM_HOME=/bundle
+      - BUNDLE_PATH=/bundle
     working_dir: /app
     volumes:
       - .:/app
+      - bundle:/bundle
+
+volumes:
+  bundle:

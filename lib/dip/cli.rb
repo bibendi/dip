@@ -17,5 +17,17 @@ module Dip
       puts "v#{Dip::VERSION}"
     end
     map %w(--version -v) => :version
+
+    desc 'compose CMD [OPTIONS]', 'Run docker-compose commands'
+    method_option :help, aliases: '-h', type: :boolean,
+                         desc: 'Display usage information'
+    def compose(cmd, *argv)
+      if options[:help]
+        invoke :help, ['compose']
+      else
+        require_relative 'commands/compose'
+        Dip::Commands::Compose.new(cmd, argv).execute
+      end
+    end
   end
 end

@@ -3,6 +3,7 @@
 
 lib_path = File.expand_path('../lib', __dir__)
 $:.unshift(lib_path) if !$:.include?(lib_path)
+require 'dip'
 require 'dip/cli'
 
 Signal.trap('INT') do

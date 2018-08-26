@@ -8,23 +8,24 @@ compose:
 interaction:
   bash:
     service: app
+    command: bash
 
-  shards:
+  bundle:
     service: app
-    command: shards
+    command: bundle
 
-  build:
+  rspec:
     service: app
-    command: crystal build --release src/app.cr -o dip-Linux-x86_64
+    command: bundle exec rspec
 
-  spec:
+  rubocop:
     service: app
-    command: crystal spec
+    command: bundle exec rubocop
 
   clean:
     service: app
-    command: rm -rf .shards
+    command: rm -rf Gemfile.lock
 
 provision:
   - dip clean
-  - dip shards install
+  - dip bundle install
