@@ -18,6 +18,14 @@ module Dip
       @env ||= Dip::Environment.new(config.environment)
     end
 
+    def test?
+      ENV["DIP_ENV"] == "test"
+    end
+
+    def debug?
+      ENV["DIP_ENV"] == "debug"
+    end
+
     def reset!
       @config = nil
       @env = nil

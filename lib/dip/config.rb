@@ -11,6 +11,10 @@ module Dip
       load_or_default(config_path)
     end
 
+    def merge(config)
+      @config.merge!(config)
+    end
+
     def environment
       @config.fetch(:environment, {})
     end
@@ -30,7 +34,7 @@ module Dip
     private
 
     def load_or_default(config_path)
-      @config ||= if File.exist?(config_path)
+      @config ||= if File.exist?(config_path) && !Dip.test?
                     YAML.safe_load(
                       ERB.new(File.read(config_path)).result,
                       [], [], true,

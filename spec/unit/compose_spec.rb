@@ -1,30 +1,73 @@
 require 'dip/commands/compose'
 
-RSpec.describe Dip::Commands::Compose do
-  it "executes `compose` command successfully" do
-    command = Dip::Commands::Compose.new("cmd", %w(-arg1 --arg2 val))
+describe Dip::Commands::Compose do
+  let(:cmd) { "run" }
+  let(:argv) { [] }
+  let(:command) { described_class.new(cmd, argv) }
 
-    expect(command).to receive(:command).with("docker-compose", "cmd", "-arg1", "--arg2", "val", anything)
-    command.execute
+  subject { command.execute }
+
+  context "when execute compose only with cmd" do
+    before { subject }
+
+    it { expected_exec("docker-compose", "run") }
   end
 
-  it "finds project name" do
-    dip_config(compose: {project_name: "test-app"})
-    command = Dip::Commands::Compose.new("cmd")
+  context "when execute compose with argv" do
+    let(:argv) { %w(--rm bash) }
 
-    expect(command).to receive(:command).with("docker-compose", "--project-name", "test-app", "cmd", anything)
-    command.execute
+    before { subject }
+
+    it { expected_exec("docker-compose", "run", "--rm", "bash") }
   end
 
-  it "finds files", fakefs: true do
-    dip_config(compose: {files: %w(docker-compose.yml docker-compose.test.yml docker-compose.fake.yml)})
-    File.write("docker-compose.yml", '--')
-    File.write("docker-compose.test.yml", '--')
-    command = Dip::Commands::Compose.new("cmd")
+  context "when project name is provided", config: true do
+    let(:config) { {compose: {project_name: "rocket"}} }
 
-    expect(command).
-      to receive(:command).
-      with("docker-compose", "--file", "docker-compose.yml", "--file", "docker-compose.test.yml", "cmd", anything)
-    command.execute
+    before { subject }
+
+    it { expected_exec("docker-compose", "--project-name", "rocket", "run") }
+
+    context "and project name contains env var", env: true do
+      let(:config) { {compose: {project_name: "rocket-$RAILS_ENV"}} }
+      let(:env) { {"RAILS_ENV" => "test"} }
+
+      it { expected_exec("docker-compose", "--project-name", "rocket-test", "run") }
+    end
+  end
+
+  context "when multiple docker-compose files", config: true do
+    let(:config) { {compose: {files: %w(file2.yml file3.yml).unshift(file_1)}} }
+
+    context "and some files are not exist" do
+      let(:config) { {compose: {files: %w(file1.yml file2.yml file3.yml)}} }
+
+      before do
+        allow(File).to receive(:exist?).with("file1.yml").and_return(true)
+        allow(File).to receive(:exist?).with("file2.yml").and_return(false)
+        allow(File).to receive(:exist?).with("file3.yml").and_return(true)
+
+        subject
+      end
+
+      it "runs a command only with existen files" do
+        expected_exec("docker-compose", "--file", "file1.yml", "--file", "file3.yml", "run")
+      end
+    end
+
+    context "and a file name contains env var", env: true do
+      let(:config) { {compose: {files: %w(file1-${DIP_OS}.yml)}} }
+      let(:env) { {"DIP_OS" => "darwin"} }
+
+      before do
+        allow(File).to receive(:exist?).with("file1-darwin.yml").and_return(true)
+
+        subject
+      end
+
+      it "finds and replaces env var" do
+        expected_exec("docker-compose", "--file", "file1-darwin.yml", "run")
+      end
+    end
   end
 end

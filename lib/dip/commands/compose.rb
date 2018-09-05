@@ -11,12 +11,12 @@ module Dip
         @config = ::Dip.config.compose
       end
 
-      def execute(input: $stdin, output: $stdout)
+      def execute
         compose_argv = Array(find_files) + Array(find_project_name)
         compose_argv << @cmd
         compose_argv += @argv
 
-        command("docker-compose", *compose_argv, input: $stdin, output: $stdout)
+        self.class.exec("docker-compose", *compose_argv)
       end
 
       private

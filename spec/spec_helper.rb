@@ -1,34 +1,38 @@
 require "bundler/setup"
 
+ENV["DIP_ENV"] = "test"
+
 require "simplecov"
 SimpleCov.start do
-  minimum_coverage 97
+  # minimum_coverage 97
 end
 
 require "pry-byebug"
 require "dip"
-require "fakefs/spec_helpers"
-require_relative "support/env"
-require_relative "support/config"
+
+Dir["#{__dir__}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
-  config.include(FakeFS::SpecHelpers, fakefs: true)
+  config.filter_run :focus
+  config.run_all_when_everything_filtered = true
+  config.example_status_persistence_file_path = "spec/examples.txt"
 
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
-
-  # Disable RSpec exposing methods globally on `Module` and `main`
-  config.disable_monkey_patching!
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
 
-  config.before(:each) do
-    Dip.reset!
+  config.mock_with :rspec do |mocks|
+    mocks.verify_partial_doubles = true
   end
 
-  config.around(:each) do |example|
-    with_env("DIP_FILE" => "some-test-dip.yml") { example.run }
+  config.before(:each) do
+    Dip.reset!
+
+    allow(Process).to receive(:exec)
   end
+
+  Kernel.srand config.seed
 end
