@@ -28,10 +28,12 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  config.define_derived_metadata(file_path: %r{/spec/lib/commands}) do |metadata|
+    metadata[:runner] = true
+  end
+
   config.before(:each) do
     Dip.reset!
-
-    allow(Process).to receive(:exec)
   end
 
   Kernel.srand config.seed

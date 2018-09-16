@@ -16,7 +16,7 @@ module Dip
         compose_argv << @cmd
         compose_argv += @argv
 
-        self.class.exec("docker-compose", *compose_argv)
+        self.class.run("docker-compose", *compose_argv)
       end
 
       private

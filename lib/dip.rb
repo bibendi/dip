@@ -5,6 +5,8 @@ require "dip/config"
 require "dip/environment"
 
 module Dip
+  Error = Class.new(StandardError)
+
   class << self
     def config_path
       ENV["DIP_FILE"] || "./dip.yml"

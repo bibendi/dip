@@ -4,13 +4,10 @@ require 'thor'
 
 module Dip
   class CLI < Thor
-    # Error raised by this runner
-    Error = Class.new(StandardError)
-
     class << self
       def retrieve_command_name(args)
         meth = args.first.to_sym unless args.empty?
-        args.unshift("run") if ::Dip.config.interaction.key?(meth.to_sym)
+        args.unshift("run") if ::Dip.config.interaction.key?(meth.to_sym) if meth
 
         super(args)
       end
@@ -41,7 +38,7 @@ module Dip
       end
     end
 
-    desc 'run CMD [OPTIONS]', 'Run configured command in a service'
+    desc 'CMD or dip run CMD [OPTIONS]', 'Run configured command in a docker-compose service'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
     method_option :x_dip_run_vars, type: :hash,
@@ -55,6 +52,18 @@ module Dip
           new(cmd, subcmd, argv,
               run_vars: options[:x_dip_run_vars]).
           execute
+      end
+    end
+
+    desc "provision", "Execute commands within provision section"
+    method_option :help, aliases: '-h', type: :boolean,
+                         desc: 'Display usage information'
+    def provision
+      if options[:help]
+        invoke :help, ['provision']
+      else
+        require_relative 'commands/provision'
+        Dip::Commands::Provision.new.execute
       end
     end
   end

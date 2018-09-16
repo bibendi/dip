@@ -2,13 +2,29 @@
 
 module Dip
   class Command
-    def self.exec(cmd, *argv)
-      cmd = ::Dip.env.replace(cmd)
-      argv = argv.map { |arg| ::Dip.env.replace(arg) }
+    class ExecRunner
+      def self.call(cmd, *argv, env: {})
+        ::Process.exec(env, cmd, *argv)
+      end
+    end
 
-      puts [Dip.env.vars, cmd, argv].inspect if Dip.debug?
+    class SubshellRunner
+      def self.call(cmd, *argv, env: {})
+        ::Kernel.system(env, cmd, *argv)
+      end
+    end
 
-      ::Process.exec(Dip.env.vars, cmd, *argv)
+    class << self
+      def run(cmd, *argv, subshell: false)
+        cmd = Dip.env.interpolate(cmd)
+        argv = argv.map { |arg| Dip.env.interpolate(arg) }
+
+        puts [Dip.env.vars, cmd, argv].inspect if Dip.debug?
+
+        runner = subshell ? SubshellRunner : ExecRunner
+        return if runner.call(Dip.env.vars, cmd, *argv)
+        raise Dip::Error, "Command '#{cmd}' executed with error."
+      end
     end
   end
 end

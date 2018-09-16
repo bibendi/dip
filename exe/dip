@@ -30,7 +30,7 @@ begin
   end
 
   Dip::CLI.start
-rescue Dip::CLI::Error => err
+rescue Dip::Error => err
   puts "ERROR: #{err.message}"
   exit 1
 end
