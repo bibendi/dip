@@ -66,5 +66,11 @@ module Dip
         Dip::Commands::Provision.new.execute
       end
     end
+
+    desc "ssh", "Ssh-agent container commands"
+    def ssh(*args)
+      require_relative 'cli/ssh'
+      Dip::CLI::SSH.start(args)
+    end
   end
 end

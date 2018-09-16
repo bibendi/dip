@@ -7,7 +7,7 @@ module Dip
     class Provision < Dip::Command
       def execute
         Dip.config.provision.each do |command|
-          self.class.run(command, subshell: true)
+          subshell(command)
         end
       end
     end
