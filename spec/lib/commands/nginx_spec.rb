@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
 require "shellwords"
-require "dip/cli/dns"
-require "dip/commands/dns"
+require "dip/cli/nginx"
+require "dip/commands/nginx"
 
-describe Dip::Commands::DNS do
-  let(:cli) { Dip::CLI::DNS }
+describe Dip::Commands::Nginx do
+  let(:cli) { Dip::CLI::Nginx }
 
-  describe Dip::Commands::DNS::Up do
+  describe Dip::Commands::Nginx::Up do
     context "when without arguments" do
       before { cli.start "up".shellsplit }
       it { expected_subshell("docker", ["network", "create", "frontend"]) }
       it do
         expected_subshell(
           "docker",
-          ["run", "--detach", "--volume", "/var/run/docker.sock:/var/run/docker.sock:ro", "--restart", "always",
-           "--publish", "53/udp", "--net", "frontend", "--name", "dnsdock", "aacebedo/dnsdock:latest-amd64",
-           "--domain=docker"]
+          ["run", "--detach", "--volume", "/var/run/docker.sock:/tmp/docker.sock:ro", "--restart", "always",
+           "--publish", "80:80", "--net", "frontend", "--name", "nginx", "--label", "com.dnsdock.alias=docker",
+           "bibendi/nginx-proxy:latest"]
         )
       end
     end
@@ -28,7 +28,7 @@ describe Dip::Commands::DNS do
 
     context "when option `socket` is present" do
       before { cli.start "up --socket foo".shellsplit }
-      it { expected_subshell("docker", array_including("--volume", "foo:/var/run/docker.sock:ro")) }
+      it { expected_subshell("docker", array_including("--volume", "foo:/tmp/docker.sock:ro")) }
     end
 
     context "when option `net` is present" do
@@ -49,38 +49,21 @@ describe Dip::Commands::DNS do
 
     context "when option `domain` is present" do
       before { cli.start "up --domain foo".shellsplit }
-      it { expected_subshell("docker", array_including("--domain=foo")) }
+      it { expected_subshell("docker", array_including("com.dnsdock.alias=foo")) }
     end
   end
 
-  describe Dip::Commands::DNS::Down do
+  describe Dip::Commands::Nginx::Down do
     context "when without arguments" do
       before { cli.start "down".shellsplit }
-      it { expected_subshell("docker", ["stop", "dnsdock"]) }
-      it { expected_subshell("docker", ["rm", "-v", "dnsdock"]) }
+      it { expected_subshell("docker", ["stop", "nginx"]) }
+      it { expected_subshell("docker", ["rm", "-v", "nginx"]) }
     end
 
     context "when option `name` is present" do
       before { cli.start "down --name foo".shellsplit }
       it { expected_subshell("docker", ["stop", "foo"]) }
       it { expected_subshell("docker", ["rm", "-v", "foo"]) }
-    end
-  end
-
-  describe Dip::Commands::DNS::IP do
-    context "when without arguments" do
-      before { cli.start "ip".shellsplit }
-      it { expected_subshell("docker", array_including("inspect", "--format", /Networks.frontend.IPAddress/, "dnsdock")) }
-    end
-
-    context "when option `name` is present" do
-      before { cli.start "ip --name foo".shellsplit }
-      it { expected_subshell("docker", array_including("foo")) }
-    end
-
-    context "when option `net` is present" do
-      before { cli.start "ip --net foo".shellsplit }
-      it { expected_subshell("docker", array_including(/Networks.foo.IPAddress/)) }
     end
   end
 end

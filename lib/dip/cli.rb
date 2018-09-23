@@ -78,5 +78,11 @@ module Dip
       require_relative 'cli/dns'
       Dip::CLI::DNS.start(args)
     end
+
+    desc "nginx", "Nginx reverse proxy server"
+    def nginx(*args)
+      require_relative 'cli/nginx'
+      Dip::CLI::Nginx.start(args)
+    end
   end
 end

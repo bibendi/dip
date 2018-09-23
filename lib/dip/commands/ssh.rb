@@ -14,7 +14,7 @@ module Dip
         end
 
         def execute
-          subshell("docker", "volume create --name ssh_data".shellsplit)
+          subshell("docker", "volume create --name ssh_data".shellsplit, out: File::NULL, err: File::NULL)
 
           subshell("docker", "run --detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent".shellsplit)
 
@@ -36,9 +36,9 @@ module Dip
 
       class Down < Dip::Command
         def execute
-          subshell("docker", "stop ssh-agent".shellsplit, panic: false)
-          subshell("docker", "rm -v ssh-agent".shellsplit, panic: false)
-          subshell("docker", "volume rm ssh_data".shellsplit, panic: false)
+          subshell("docker", "stop ssh-agent".shellsplit, panic: false, out: File::NULL, err: File::NULL)
+          subshell("docker", "rm -v ssh-agent".shellsplit, panic: false, out: File::NULL, err: File::NULL)
+          subshell("docker", "volume rm ssh_data".shellsplit, panic: false, out: File::NULL, err: File::NULL)
         end
       end
 
