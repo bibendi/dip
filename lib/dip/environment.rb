@@ -3,6 +3,7 @@
 module Dip
   class Environment
     VAR_REGEX = /\$[\{]?(?<var_name>[a-zA-Z_][a-zA-Z0-9_]*)[\}]?/
+    SPECIAL_VARS = {"DIP_OS" => :find_dip_os}.freeze
 
     attr_reader :vars
 
@@ -10,8 +11,6 @@ module Dip
       @vars = {}
 
       merge(default_vars)
-
-      fill_special_vars
     end
 
     def merge(new_vars)
@@ -24,10 +23,19 @@ module Dip
       vars.fetch(name) { ENV[name] }
     end
 
+    def []=(key, value)
+      @vars[key] = value
+    end
+
     def interpolate(value)
       value.gsub(VAR_REGEX) do
         var_name = Regexp.last_match[:var_name]
-        self[var_name]
+
+        if SPECIAL_VARS.key?(var_name)
+          self[var_name] || send(SPECIAL_VARS[var_name])
+        else
+          self[var_name]
+        end
       end
     end
 
@@ -35,37 +43,8 @@ module Dip
 
     private
 
-    # :nocov:
-    # TODO: [Refactor] Move to the more suitable place.
-    def fill_special_vars
-      if @vars.key?("DIP_DNS") && (dip_dns = @vars["DIP_DNS"]).empty?
-        @vars["DIP_DNS"] = find_dns # no
-      end
-
-      if @vars.key?("DIP_OS") && (dip_os = @vars["DIP_OS"]).empty?
-        @vars["DIP_OS"] = find_os_name
-      end
+    def find_dip_os
+      @dip_os ||= Gem::Platform.local.os
     end
-
-    def find_os_name
-      Gem::Platform.local.os
-    end
-
-    def find_dns
-      dns_net = self["FRONTEND_NETWORK"] || "frontend"
-      dns_name = self["DNSDOCK_CONTAINER"] || "dnsdock"
-
-      cmd = "docker inspect" \
-            " --format '{{ .NetworkSettings.Networks.#{dns_net}.IPAddress }}'" \
-            " #{dns_name} 2>/dev/null"
-      ip = `#{cmd}`.strip
-
-      if ip.empty?
-        "8.8.8.8"
-      else
-        ip
-      end
-    end
-    # :nocov:
   end
 end

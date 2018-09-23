@@ -9,12 +9,12 @@ shared_context "dip command", runner: true do
 end
 
 
-def expected_exec(cmd, argv, env: {})
+def expected_exec(cmd, argv, env: kind_of(Hash))
   argv = Array(argv) if argv.is_a?(String)
   expect(exec_runner).to have_received(:call).with(cmd, argv, env: env)
 end
 
-def expected_subshell(cmd, argv, env: {})
+def expected_subshell(cmd, argv, env: kind_of(Hash))
   argv = Array(argv) if argv.is_a?(String)
   expect(subshell_runner).to have_received(:call).with(cmd, argv, env: env)
 end

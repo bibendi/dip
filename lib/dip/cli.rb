@@ -67,10 +67,16 @@ module Dip
       end
     end
 
-    desc "ssh", "Ssh-agent container commands"
+    desc "ssh", "ssh-agent container commands"
     def ssh(*args)
       require_relative 'cli/ssh'
       Dip::CLI::SSH.start(args)
+    end
+
+    desc "dns", "DNS server for automatic docker container discovery"
+    def dns(*args)
+      require_relative 'cli/dns'
+      Dip::CLI::DNS.start(args)
     end
   end
 end

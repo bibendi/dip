@@ -49,7 +49,7 @@ describe Dip::Commands::Run, config: true do
   context "when config with environment vars" do
     let(:commands) { {rspec: {service: "app", command: "rspec", environment: {"RAILS_ENV" => "test"}}} }
     before { cli.start "run rspec".shellsplit }
-    it { expected_exec("docker-compose", ["run", "--rm", "app", "rspec"], env: {"RAILS_ENV" => "test"}) }
+    it { expected_exec("docker-compose", ["run", "--rm", "app", "rspec"], env: hash_including("RAILS_ENV" => "test")) }
   end
 
   context "when config with subcommands" do
@@ -86,7 +86,7 @@ describe Dip::Commands::Run, config: true do
     context "when config with environment vars" do
       let(:subcommands) do
         {"refresh-test-db": {command: "rake db:drop db:tests:prepare db:migrate",
-                              environment: {"RAILS_ENV" => "test"}}}
+                             environment: {"RAILS_ENV" => "test"}}}
       end
 
       before { cli.start "run rails refresh-test-db".shellsplit }
@@ -94,7 +94,7 @@ describe Dip::Commands::Run, config: true do
       it do
         expected_exec("docker-compose", ["run", "--rm", "app",
                                           "rake", "db:drop", "db:tests:prepare", "db:migrate"],
-                                        env: {"RAILS_ENV" => "test"})
+                                        env: hash_including("RAILS_ENV" => "test"))
       end
     end
   end
