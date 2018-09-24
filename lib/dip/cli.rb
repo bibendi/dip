@@ -22,7 +22,7 @@ module Dip
     desc 'version', 'dip version'
     def version
       require_relative 'version'
-      puts "v#{Dip::VERSION}"
+      puts "#{Dip::VERSION}"
     end
     map %w(--version -v) => :version
 
