@@ -15,7 +15,8 @@ module Dip
 
     def merge(new_vars)
       new_vars.each do |key, value|
-        @vars[key] = ENV.fetch(key) { replace(value.to_s) }
+        key = key.to_s
+        @vars[key] = ENV.fetch(key) { interpolate(value.to_s) }
       end
     end
 
