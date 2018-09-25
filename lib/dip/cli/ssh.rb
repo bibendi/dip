@@ -29,6 +29,8 @@ module Dip
         end
       end
 
+      map add: :up
+
       desc "ssh down", "Stop ssh-agent container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
