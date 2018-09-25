@@ -1,39 +1,206 @@
-# Dip
+# DIP [![Build Status](https://travis-ci.org/bibendi/dip.svg?branch=master)](https://travis-ci.org/bibendi/dip)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/dip`. To experiment with that code, run `bin/console` for an interactive prompt.
+Docker Interaction Process
 
-TODO: Delete this and the text above, and describe your gem
+CLI utility for straightforward provisioning and interacting with an application configured by docker-compose.
+
+DIP also contains commands for running support containers such as ssh-agent and DNS server.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'dip'
+```sh
+gem install dip
 ```
 
-And then execute:
+## Changelog
 
-    $ bundle
+https://github.com/bibendi/dip/releases
 
-Or install it yourself as:
 
-    $ gem install dip
+## Docker installation
+
+- [Ubuntu](docs/docker-ubuntu-install.md)
+- [Mac OS](docs/docker-for-mac-install.md)
 
 ## Usage
 
-TODO: Write usage instructions here
+```sh
+dip --help
+dip SUBCOMMAND --help
+```
 
-## Development
+### dip.yml
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```yml
+version: '2'
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+environment:
+  COMPOSE_EXT: development
+  RAILS_ENV: development
 
-## Contributing
+compose:
+  files:
+    - docker/docker-compose.yml
+    - docker/docker-compose.$COMPOSE_EXT.yml
+    - docker/docker-compose.$DIP_OS.yml
+  project_name: bear-$RAILS_ENV
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/dip. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+interaction:
+  sh:
+    service: foo-app
+    compose_run_options: [no-deps]
 
-## Code of Conduct
+  bundle:
+    service: foo-app
+    command: bundle
 
-Everyone interacting in the Dip project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/dip/blob/master/CODE_OF_CONDUCT.md).
+  rake:
+    service: foo-app
+    command: bundle exec rake
+
+  rspec:
+    service: foo-app
+    environment:
+      RAILS_ENV: test
+    command: bundle exec rspec
+
+  rails:
+    service: foo-app
+    command: bundle exec rails
+    subcommands:
+      s:
+        service: foo-web
+        compose_method: up
+
+  psql:
+    service: foo-app
+    command: psql -h pg -U postgres
+
+provision:
+  - dip compose up -d foo-pg foo-redis
+  - dip bundle install
+  - dip rake db:migrate
+```
+
+### dip run
+
+Run commands defined within `interaction` section of dip.yml
+
+```sh
+dip run rails c
+dip run rake db:migrate
+```
+
+`run` argument can be ommited
+
+```sh
+dip rake db:migrate
+dip VERSION=12352452 rake db:rollback
+```
+
+### dip provision
+
+Run commands each by each from `provision` section of dip.yml
+
+### dip compose
+
+Run docker-compose commands that are configured according with application dip.yml
+
+```sh
+dip compose COMMAND [OPTIONS]
+
+dip compose up -d redis
+```
+
+### dip ssh
+
+Runs ssh-agent container based on https://github.com/whilp/ssh-agent with your ~/.ssh/id_rsa.
+It creates a named volume `ssh_data` with ssh socket.
+An application's docker-compose.yml should contains environment variable `SSH_AUTH_SOCK=/ssh/auth/sock` and connects to external volume `ssh_data`.
+
+```sh
+dip ssh up
+```
+
+docker-compose.yml
+
+```yml
+services:
+  web:
+    environment:
+      - SSH_AUTH_SOCK=/ssh/auth/sock
+    volumes:
+      - ssh-data:/ssh:ro
+
+volumes:
+  ssh-data:
+    external:
+      name: ssh_data
+```
+
+### dip nginx
+
+Runs Nginx server container based on [bibendi/nginx-proxy](https://github.com/bibendi/nginx-proxy) image. An application's docker-compose.yml should contains environment variable `VIRTUAL_HOST` and `VIRTUAL_PATH` and connects to external network `frontend`.
+
+foo-project/docker-compose.yml
+
+```yml
+version: '2'
+
+services:
+  foo-web:
+    image: company/foo_image
+    environment:
+      - VIRTUAL_HOST=*.bar-app.docker
+      - VIRTUAL_PATH=/
+    networks:
+      - default
+      - frontend
+    dns: $DIP_DNS
+
+networks:
+  frontend:
+    external:
+      name: frontend
+```
+
+baz-project/docker-compose.yml
+
+```yml
+version: '2'
+
+services:
+  baz-web:
+    image: company/baz_image
+    environment:
+      - VIRTUAL_HOST=*.bar-app.docker
+      - VIRTUAL_PATH=/api/v1/baz_service,/api/v2/baz_service
+    networks:
+      - default
+      - frontend
+    dns: $DIP_DNS
+
+networks:
+  frontend:
+    external:
+      name: frontend
+```
+
+```sh
+dip nginx up
+cd foo-project && dip compose up
+cd baz-project && dip compose up
+curl www.bar-app.docker/api/v1/quz
+curl www.bar-app.docker/api/v1/baz_service/qzz
+```
+
+### dip dns
+
+Runs DNS server container based on https://github.com/aacebedo/dnsdock It used for container to container requests through nginx. An application's docker-compose.yml should define `dns` configuration with environment variable `$DIP_DNS` and connect to external network `frontend`. `$DIP_DNS` will be automatically assigned by dip.
+
+```sh
+dip dns up
+
+cd foo-project
+dip compose exec foo-web curl http://www.bar-app.docker/api/v1/baz_service
+```
