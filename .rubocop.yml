@@ -1,0 +1,57 @@
+---
+AllCops:
+  Exclude:
+    - tmp/**/*
+    - vendor/**/*
+  TargetRubyVersion: 2.5
+
+Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - simple_contracts.gemspec
+    - Gemfile
+    - spec/**/*
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/ClassLength:
+  Max: 300
+
+Metrics/ParameterLists:
+  CountKeywordArgs: false
+
+Style/FormatString:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Security/MarshalLoad:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Naming/PredicateName:
+  Enabled: false
+
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space

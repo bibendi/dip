@@ -1,7 +1,0 @@
-#!/bin/bash
-
-set -ex
-
-rm -rf .shards
-docker-compose run --rm app shards install
-docker-compose run --rm app ./script/build

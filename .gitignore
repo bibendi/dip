@@ -1,7 +1,13 @@
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
 /doc/
-/lib/
-/.crystal/
-/.shards/
-/dip
-/dip-Darwin-x86_64
-/dip-Linux-x86_64
+/Gemfile.lock
+/pkg/
+/spec/reports/
+/spec/examples.txt
+/tmp/
+
+# rspec failure tracking
+.rspec_status

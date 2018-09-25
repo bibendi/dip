@@ -26,7 +26,3 @@ For the best i/o performance git clone latest [IFSight/d4m-nfs](https://github.c
   echo 'address=/docker/127.0.0.1' >> $(brew --prefix)/etc/dnsmasq.conf
   brew services restart dnsmasq
 ```
-
-# dip
-
-Install latest [dip](https://github.com/bibendi/dip/releases).
