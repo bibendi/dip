@@ -2,7 +2,8 @@
 # frozen_string_literal: true
 
 lib_path = File.expand_path('../lib', __dir__)
-$:.unshift(lib_path) if !$:.include?(lib_path)
+$LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
+
 require 'dip'
 require 'dip/cli'
 require 'pry-byebug' if Dip.debug?
@@ -18,7 +19,7 @@ begin
   ARGV.each do |arg|
     if !run_vars.frozen? && arg.include?("=")
       key, val = arg.split("=", 2)
-      run_vars << "#{"--x-dip-run-vars=" if run_vars.empty?}#{key}:#{val}"
+      run_vars << "#{'--x-dip-run-vars=' if run_vars.empty?}#{key}:#{val}"
     else
       run_vars.freeze
     end

@@ -22,9 +22,10 @@ module Dip
         if options[:help]
           invoke :help, ['up']
         else
-          Dip::Commands::SSH::Up.new(key: options.fetch(:key),
-                 volume: options.fetch(:volume),
-                 interactive: options.nonteractive? ? false : options.interactive?
+          Dip::Commands::SSH::Up.new(
+            key: options.fetch(:key),
+            volume: options.fetch(:volume),
+            interactive: options.nonteractive? ? false : options.interactive?
           ).execute
         end
       end

@@ -92,9 +92,9 @@ describe Dip::Commands::Run, config: true do
       before { cli.start "run rails refresh-test-db".shellsplit }
 
       it do
-        expected_exec("docker-compose", ["run", "--rm", "app",
-                                          "rake", "db:drop", "db:tests:prepare", "db:migrate"],
-                                        env: hash_including("RAILS_ENV" => "test"))
+        expected_exec("docker-compose",
+                      ["run", "--rm", "app", "rake", "db:drop", "db:tests:prepare", "db:migrate"],
+                      env: hash_including("RAILS_ENV" => "test"))
       end
     end
   end

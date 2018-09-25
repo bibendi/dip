@@ -15,6 +15,8 @@ module Dip
         @config = ::Dip.config.interaction
       end
 
+      # TODO: Refactor
+      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def execute
         command = @config.fetch(@cmd)
         command[:subcommands] ||= {}
@@ -22,8 +24,8 @@ module Dip
         if (subcommand = command[:subcommands].fetch(@subcmd, {})).any?
           subcommand[:command] ||= nil
           command.merge!(subcommand)
-        else
-          @argv.unshift(@subcmd.to_s) if @subcmd
+        elsif @subcmd
+          @argv.unshift(@subcmd.to_s)
         end
 
         Dip.env.merge(command[:environment]) if command[:environment]
@@ -40,6 +42,7 @@ module Dip
 
         Dip::Commands::Compose.new(compose_method, compose_argv).execute
       end
+      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
       def prepare_compose_run_options(value)
         return [] unless value

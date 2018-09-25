@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Dip do
   it "has a version number" do
     expect(Dip::VERSION).not_to be nil

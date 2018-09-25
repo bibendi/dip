@@ -1,8 +1,10 @@
+# frozen_string_literal: true
 
-lib = File.expand_path("../lib", __FILE__)
+lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "dip/version"
 
+# rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |spec|
   spec.name          = "dip"
   spec.license       = "MIT"
@@ -11,8 +13,8 @@ Gem::Specification.new do |spec|
   spec.email         = ["merkushin.m.s@gmail.com"]
 
   spec.summary       = "Ruby gem CLI tool for better interacting docker-compose files."
-  spec.description   = %q{DIP - docker-compose interaction process.
-                          CLI tool for better development experience when interacting with docker-compose.}
+  spec.description   = "DIP - Docker Interaction Process." \
+                       "CLI tool for better development experience when interacting with docker and docker-compose."
   spec.homepage      = "https://github.com/bibendi/dip"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -37,7 +39,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry-byebug", "~> 3"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rubocop", "~> 0.58"
+  spec.add_development_dependency "rubocop", "~> 0.59"
   spec.add_development_dependency "simplecov", '~> 0.16'
   spec.add_development_dependency "test-unit", "~> 3"
 end
+# rubocop:enable Metrics/BlockLength

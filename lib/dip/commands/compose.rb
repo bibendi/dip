@@ -30,9 +30,10 @@ module Dip
         return unless (files = @config[:files])
 
         if files.is_a?(Array)
-          result = files.each_with_object([]) do |file_name, memo|
+          files.each_with_object([]) do |file_name, memo|
             file_name = ::Dip.env.interpolate(file_name)
             next unless File.exist?(file_name)
+
             memo << "--file"
             memo << file_name
           end

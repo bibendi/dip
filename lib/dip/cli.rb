@@ -7,7 +7,7 @@ module Dip
     class << self
       def retrieve_command_name(args)
         meth = args.first.to_sym unless args.empty?
-        args.unshift("run") if ::Dip.config.interaction.key?(meth.to_sym) if meth
+        args.unshift("run") if meth && ::Dip.config.interaction.key?(meth.to_sym)
 
         super(args)
       end
@@ -15,6 +15,7 @@ module Dip
       # Hackery. Take the run method away from Thor so that we can redefine it.
       def is_thor_reserved_word?(word, type)
         return false if word == "run"
+
         super
       end
     end
@@ -22,7 +23,7 @@ module Dip
     desc 'version', 'dip version'
     def version
       require_relative 'version'
-      puts "#{Dip::VERSION}"
+      puts Dip::VERSION
     end
     map %w(--version -v) => :version
 
@@ -41,7 +42,8 @@ module Dip
     desc 'CMD or dip run CMD [OPTIONS]', 'Run configured command in a docker-compose service'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
-    method_option :x_dip_run_vars, type: :hash,
+    method_option :x_dip_run_vars,
+                  type: :hash,
                   desc: "Enforce environment variables into container, recommended run like 'dip FOO=bar cmd'"
     def run(cmd, subcmd = nil, *argv)
       if options[:help]

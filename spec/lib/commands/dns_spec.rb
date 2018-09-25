@@ -70,7 +70,9 @@ describe Dip::Commands::DNS do
   describe Dip::Commands::DNS::IP do
     context "when without arguments" do
       before { cli.start "ip".shellsplit }
-      it { expected_subshell("docker", array_including("inspect", "--format", /Networks.frontend.IPAddress/, "dnsdock")) }
+      it do
+        expected_subshell("docker", array_including("inspect", "--format", /Networks.frontend.IPAddress/, "dnsdock"))
+      end
     end
 
     context "when option `name` is present" do

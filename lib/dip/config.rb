@@ -5,8 +5,6 @@ require "erb"
 
 module Dip
   class Config
-    DEFAULT_CONFIG = {}
-
     def initialize(config_path)
       load_or_default(config_path)
     end
@@ -41,7 +39,7 @@ module Dip
                       symbolize_names: true
                     )
                   else
-                    DEFAULT_CONFIG
+                    {}
                   end
     end
   end

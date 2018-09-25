@@ -15,8 +15,11 @@ describe Dip::Commands::SSH do
 
       it { expected_subshell("docker", array_including("volume", "create")) }
       it { expected_subshell("docker", array_including("run", "--name=ssh-agent", "whilp/ssh-agent")) }
-      it { expected_subshell("docker", array_including("run", "--volume", "/user:/user", "--interactive", "--tty",
-                                                       "whilp/ssh-agent", "ssh-add", "/user/.ssh/id_rsa")) }
+      it do
+        expected_subshell("docker",
+                          array_including("run", "--volume", "/user:/user", "--interactive", "--tty",
+                                          "whilp/ssh-agent", "ssh-add", "/user/.ssh/id_rsa"))
+      end
     end
 
     context "when option `key` is present" do

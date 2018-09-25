@@ -52,10 +52,11 @@ module Dip
         end
 
         def execute(**options)
-          subshell("docker", "inspect " \
-                             "--format '{{ .NetworkSettings.Networks.#{@net}.IPAddress }}' " \
-                             "#{@name}".shellsplit,
-                             **options)
+          subshell("docker",
+                   "inspect " \
+                   "--format '{{ .NetworkSettings.Networks.#{@net}.IPAddress }}' " \
+                   "#{@name}".shellsplit,
+                   **options)
         end
       end
     end

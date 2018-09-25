@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_context "dip command", runner: true do
   let(:exec_runner) { spy("exec runner") }
   let(:subshell_runner) { spy("subshell runner") }
@@ -7,7 +9,6 @@ shared_context "dip command", runner: true do
     stub_const("Dip::Command::SubshellRunner", subshell_runner)
   end
 end
-
 
 def expected_exec(cmd, argv, options = kind_of(Hash))
   argv = Array(argv) if argv.is_a?(String)

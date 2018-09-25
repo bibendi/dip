@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_context "replace environment vars", env: true do
   around(:each) do |ex|
     original = {}

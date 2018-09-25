@@ -6,7 +6,6 @@ describe Dip::Environment do
   let(:vars) { {} }
   subject { described_class.new(vars) }
 
-
   context "when vars is empty" do
     it { is_expected.to be_truthy }
   end
