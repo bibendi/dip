@@ -7,7 +7,7 @@ module Dip
   class CLI
     # See more https://github.com/bibendi/nginx-proxy
     class Nginx < Thor
-      desc "nginx up", "Run nginx container"
+      desc "up", "Run nginx container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
       method_option :name, aliases: '-n', type: :string, default: "nginx",
@@ -39,7 +39,7 @@ module Dip
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-      desc "nginx down", "Stop nginx container"
+      desc "down", "Stop nginx container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
       method_option :name, aliases: '-n', type: :string, default: "nginx",
@@ -54,7 +54,7 @@ module Dip
         end
       end
 
-      desc "nginx restart", "Stop and start nginx container"
+      desc "restart", "Stop and start nginx container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
       def restart(*args)

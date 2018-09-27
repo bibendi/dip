@@ -16,13 +16,17 @@ module Dip
     stop_on_unknown_option! :up
 
     def method_missing(cmd, *args)
-      if Dip.config.interaction.key?(cmd)
+      if Dip.config.interaction.key?(cmd.to_sym)
         args.unshift(cmd.to_s)
         args.unshift("run")
         self.class.start(args)
       else
         super
       end
+    end
+
+    def respond_to_missing?(cmd)
+      Dip.config.interaction.key?(cmd.to_sym)
     end
 
     desc 'version', 'dip version'
@@ -79,22 +83,16 @@ module Dip
       end
     end
 
+    require_relative 'cli/ssh'
     desc "ssh", "ssh-agent container commands"
-    def ssh(*args)
-      require_relative 'cli/ssh'
-      Dip::CLI::SSH.start(args)
-    end
+    subcommand :ssh, Dip::CLI::SSH
 
+    require_relative 'cli/dns'
     desc "dns", "DNS server for automatic docker container discovery"
-    def dns(*args)
-      require_relative 'cli/dns'
-      Dip::CLI::DNS.start(args)
-    end
+    subcommand :dns, Dip::CLI::DNS
 
+    require_relative 'cli/nginx'
     desc "nginx", "Nginx reverse proxy server"
-    def nginx(*args)
-      require_relative 'cli/nginx'
-      Dip::CLI::Nginx.start(args)
-    end
+    subcommand :nginx, Dip::CLI::Nginx
   end
 end

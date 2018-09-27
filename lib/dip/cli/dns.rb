@@ -7,7 +7,7 @@ module Dip
   class CLI
     # See more https://github.com/aacebedo/dnsdock
     class DNS < Thor
-      desc "dns up", "Run dnsdock container"
+      desc "up", "Run dnsdock container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
       method_option :name, aliases: '-n', type: :string, default: "dnsdock",
@@ -39,7 +39,7 @@ module Dip
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-      desc "dns down", "Stop dnsdock container"
+      desc "down", "Stop dnsdock container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
       method_option :name, aliases: '-n', type: :string, default: "dnsdock",
@@ -54,7 +54,7 @@ module Dip
         end
       end
 
-      desc "dns restart", "Stop and start dnsdock container"
+      desc "restart", "Stop and start dnsdock container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
       def restart(*args)
@@ -67,7 +67,7 @@ module Dip
         end
       end
 
-      desc "dns ip", "Get ip address of dnsdock container"
+      desc "ip", "Get ip address of dnsdock container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
       method_option :name, aliases: '-n', type: :string, default: "dnsdock",
