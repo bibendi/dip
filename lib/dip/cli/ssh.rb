@@ -6,7 +6,7 @@ require_relative "../commands/ssh"
 module Dip
   class CLI
     class SSH < Thor
-      desc "ssh up", "Run ssh-agent container"
+      desc "up", "Run ssh-agent container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
       method_option :key, aliases: '-k', type: :string, default: "$HOME/.ssh/id_rsa",
@@ -32,7 +32,7 @@ module Dip
 
       map add: :up
 
-      desc "ssh down", "Stop ssh-agent container"
+      desc "down", "Stop ssh-agent container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
       def down
@@ -43,7 +43,7 @@ module Dip
         end
       end
 
-      desc "ssh restart", "Stop and start ssh-agent container"
+      desc "restart", "Stop and start ssh-agent container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
       def restart(*args)
@@ -56,7 +56,7 @@ module Dip
         end
       end
 
-      desc "ssh status", "Show status of ssh-agent container"
+      desc "status", "Show status of ssh-agent container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
       def status

@@ -5,19 +5,28 @@ require 'thor'
 module Dip
   class CLI < Thor
     class << self
-      def retrieve_command_name(args)
-        meth = args.first.to_sym unless args.empty?
-        args.unshift("run") if meth && ::Dip.config.interaction.key?(meth.to_sym)
-
-        super(args)
-      end
-
       # Hackery. Take the run method away from Thor so that we can redefine it.
       def is_thor_reserved_word?(word, type)
         return false if word == "run"
 
         super
       end
+    end
+
+    stop_on_unknown_option! :up
+
+    def method_missing(cmd, *args)
+      if Dip.config.interaction.key?(cmd.to_sym)
+        args.unshift(cmd.to_s)
+        args.unshift("run")
+        self.class.start(args)
+      else
+        super
+      end
+    end
+
+    def respond_to_missing?(cmd)
+      Dip.config.interaction.key?(cmd.to_sym)
     end
 
     desc 'version', 'dip version'
@@ -37,6 +46,11 @@ module Dip
         require_relative 'commands/compose'
         Dip::Commands::Compose.new(cmd, argv).execute
       end
+    end
+
+    desc "up [OPTIONS] SERVICE", "Run docker-compose up command"
+    def up(*argv)
+      compose("up", *argv)
     end
 
     desc 'CMD or dip run CMD [OPTIONS]', 'Run configured command in a docker-compose service'
@@ -69,22 +83,16 @@ module Dip
       end
     end
 
+    require_relative 'cli/ssh'
     desc "ssh", "ssh-agent container commands"
-    def ssh(*args)
-      require_relative 'cli/ssh'
-      Dip::CLI::SSH.start(args)
-    end
+    subcommand :ssh, Dip::CLI::SSH
 
+    require_relative 'cli/dns'
     desc "dns", "DNS server for automatic docker container discovery"
-    def dns(*args)
-      require_relative 'cli/dns'
-      Dip::CLI::DNS.start(args)
-    end
+    subcommand :dns, Dip::CLI::DNS
 
+    require_relative 'cli/nginx'
     desc "nginx", "Nginx reverse proxy server"
-    def nginx(*args)
-      require_relative 'cli/nginx'
-      Dip::CLI::Nginx.start(args)
-    end
+    subcommand :nginx, Dip::CLI::Nginx
   end
 end
