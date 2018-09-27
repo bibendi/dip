@@ -5,17 +5,22 @@ require 'thor'
 module Dip
   class CLI < Thor
     class << self
-      def retrieve_command_name(args)
-        meth = args.first.to_sym unless args.empty?
-        args.unshift("run") if meth && ::Dip.config.interaction.key?(meth.to_sym)
-
-        super(args)
-      end
-
       # Hackery. Take the run method away from Thor so that we can redefine it.
       def is_thor_reserved_word?(word, type)
         return false if word == "run"
 
+        super
+      end
+    end
+
+    stop_on_unknown_option! :up
+
+    def method_missing(cmd, *args)
+      if Dip.config.interaction.key?(cmd)
+        args.unshift(cmd.to_s)
+        args.unshift("run")
+        self.class.start(args)
+      else
         super
       end
     end
@@ -37,6 +42,11 @@ module Dip
         require_relative 'commands/compose'
         Dip::Commands::Compose.new(cmd, argv).execute
       end
+    end
+
+    desc "up [OPTIONS] SERVICE", "Run docker-compose up command"
+    def up(*argv)
+      compose("up", *argv)
     end
 
     desc 'CMD or dip run CMD [OPTIONS]', 'Run configured command in a docker-compose service'
