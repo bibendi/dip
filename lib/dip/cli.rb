@@ -53,6 +53,11 @@ module Dip
       compose("up", *argv)
     end
 
+    desc "down [OPTIONS]", "Run docker-compose down command"
+    def down(*argv)
+      compose("down", *argv)
+    end
+
     desc 'CMD or dip run CMD [OPTIONS]', 'Run configured command in a docker-compose service'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
