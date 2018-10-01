@@ -1,0 +1,62 @@
+version: '2'
+
+environment:
+  RAILS_ENV: development
+  DOCKER_TLD: docker
+  APP_HOST: dip-rails.${DOCKER_TLD}
+  WEB_PORT: 3000
+  WEBPACK_PORT: 3035
+  MAIL_WEB_PORT: 1080
+
+compose:
+  files:
+    - docker-compose.yml
+    - docker-compose.dip.yml
+
+interaction:
+  bash:
+    service: backend
+    command: /bin/bash
+    compose_run_options: [no-deps]
+
+  gem:
+    service: backend
+    command: gem
+    compose_run_options: [no-deps]
+
+  bundle:
+    service: backend
+    command: bundle
+    compose_run_options: [no-deps]
+
+  yarn:
+    service: webpack
+    command: yarn
+    compose_run_options: [no-deps]
+
+  rake:
+    service: backend
+    command: bundle exec rake
+
+  rails:
+    service: backend
+    command: bundle exec rails
+    subcommands:
+      s:
+        service: web
+        compose_method: up
+
+  rspec:
+    service: backend
+    environment:
+      RAILS_ENV: test
+    command: bundle exec rspec
+
+  psql:
+    service: backend
+    command: psql -h postgres -U postgres
+
+provision:
+  - dip compose down --volumes
+  - dip compose up -d postgres redis
+  - dip bash -c ./bin/setup

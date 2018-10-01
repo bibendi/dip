@@ -1,6 +1,7 @@
 ---
 AllCops:
   Exclude:
+    - examples/**/*
     - tmp/**/*
     - vendor/**/*
   TargetRubyVersion: 2.5

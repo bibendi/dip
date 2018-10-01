@@ -1,0 +1,11 @@
+---
+:concurrency: <%= ENV['SIDEKIQ_CONCURRENCY'] || ENV['RAILS_MAX_THREADS'] || 10 %>
+
+development:
+  :concurrency: 2
+
+timeout: 25
+
+:queues:
+  - default
+  - mailers
