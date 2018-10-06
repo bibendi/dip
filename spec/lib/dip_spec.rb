@@ -7,7 +7,7 @@ describe Dip do
 
   describe ".config_path" do
     context "when by default" do
-      it { expect(Dip.config_path).to eq "./dip.yml" }
+      it { expect(Dip.config_path).to eq "#{Dir.pwd}/dip.yml" }
     end
 
     context "when path fron env", env: true do

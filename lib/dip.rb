@@ -9,7 +9,7 @@ module Dip
 
   class << self
     def config_path
-      ENV["DIP_FILE"] || "./dip.yml"
+      ENV["DIP_FILE"] || File.join(Dir.pwd, "dip.yml")
     end
 
     def config

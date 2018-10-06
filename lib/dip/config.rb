@@ -26,7 +26,7 @@ module Dip
     end
 
     def provision
-      @config.fetch(:provision, [])
+      @config.fetch(:provision)
     end
 
     private
