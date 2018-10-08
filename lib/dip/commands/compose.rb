@@ -11,7 +11,7 @@ module Dip
       def initialize(cmd, argv = [])
         @cmd = cmd
         @argv = argv
-        @config = ::Dip.config.compose
+        @config = ::Dip.config.compose || {}
       end
 
       def execute

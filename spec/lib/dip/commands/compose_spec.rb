@@ -35,6 +35,7 @@ describe Dip::Commands::Compose do
       let(:config) { {compose: {files: %w(file1.yml file2.yml file3.yml)}} }
 
       before do
+        allow(File).to receive(:exist?).and_call_original
         allow(File).to receive(:exist?).with("file1.yml").and_return(true)
         allow(File).to receive(:exist?).with("file2.yml").and_return(false)
         allow(File).to receive(:exist?).with("file3.yml").and_return(true)
@@ -50,6 +51,7 @@ describe Dip::Commands::Compose do
       let(:env) { {"DIP_OS" => "darwin"} }
 
       before do
+        allow(File).to receive(:exist?).and_call_original
         allow(File).to receive(:exist?).with("file1-darwin.yml").and_return(true)
 
         cli.start "compose run".shellsplit

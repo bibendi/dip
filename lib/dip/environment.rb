@@ -10,7 +10,7 @@ module Dip
     def initialize(default_vars)
       @vars = {}
 
-      merge(default_vars)
+      merge(default_vars || {})
     end
 
     def merge(new_vars)

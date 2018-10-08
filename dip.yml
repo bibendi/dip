@@ -3,7 +3,6 @@ version: '2'
 compose:
   files:
     - docker-compose.yml
-  project_name: dip
 
 interaction:
   bash:

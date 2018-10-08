@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "dip/version"
 require "dip/config"
 require "dip/environment"
 
@@ -8,24 +7,18 @@ module Dip
   Error = Class.new(StandardError)
 
   class << self
-    def config_path
-      ENV["DIP_FILE"] || File.join(Dir.pwd, "dip.yml")
-    end
-
     def config
-      @config ||= Dip::Config.new(config_path)
+      @config ||= Dip::Config.new
     end
 
     def env
-      @env ||= Dip::Environment.new(config.environment)
+      @env ||= Dip::Environment.new(config.exist? ? config.environment : {})
     end
 
-    def test?
-      ENV["DIP_ENV"] == "test"
-    end
-
-    def debug?
-      ENV["DIP_ENV"] == "debug"
+    %w(test debug).each do |key|
+      define_method("#{key}?") do
+        ENV["DIP_ENV"] == key
+      end
     end
 
     def reset!

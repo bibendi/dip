@@ -30,11 +30,18 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
-  config.define_derived_metadata(file_path: %r{/spec/lib/commands}) do |metadata|
+  config.define_derived_metadata(file_path: %r{/spec/lib/dip/commands}) do |metadata|
     metadata[:runner] = true
   end
 
-  config.before(:each) do
+  config.around do |ex|
+    orig = ENV["DIP_FILE"]
+    ENV["DIP_FILE"] = File.join(__dir__, "fixtures", "dip.yml")
+    ex.run
+    ENV["DIP_FILE"] = orig
+  end
+
+  config.before do
     Dip.reset!
   end
 

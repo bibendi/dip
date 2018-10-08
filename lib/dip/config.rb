@@ -5,42 +5,40 @@ require "erb"
 
 module Dip
   class Config
-    def initialize(config_path)
-      load_or_default(config_path)
+    DEFAULT_PATH = "dip.yml"
+
+    def initialize
+      @path = ENV["DIP_FILE"] || File.join(Dir.pwd, DEFAULT_PATH)
     end
 
-    def merge(config)
-      @config.merge!(config)
+    def exist?
+      File.exist?(@path)
     end
 
-    def environment
-      @config.fetch(:environment, {})
+    [:environment, :compose, :interaction, :provision].each do |key|
+      define_method(key) do
+        config[key]
+      end
     end
 
-    def compose
-      @config.fetch(:compose, {})
-    end
-
-    def interaction
-      @config.fetch(:interaction, {})
-    end
-
-    def provision
-      @config.fetch(:provision)
+    def to_h
+      config
     end
 
     private
 
-    def load_or_default(config_path)
-      @config ||= if File.exist?(config_path) && !Dip.test?
-                    YAML.safe_load(
-                      ERB.new(File.read(config_path)).result,
-                      [], [], true,
-                      symbolize_names: true
-                    )
-                  else
-                    {}
-                  end
+    def config
+      @config ||= load
+    end
+
+    def load
+      raise ArgumentError, "Dip config not found at path '#{@path}'" unless exist?
+
+      @config = YAML.safe_load(
+        ERB.new(File.read(@path)).result,
+        [], [], true,
+        symbolize_names: true
+      )
     end
   end
 end

@@ -5,17 +5,6 @@ describe Dip do
     expect(Dip::VERSION).not_to be nil
   end
 
-  describe ".config_path" do
-    context "when by default" do
-      it { expect(Dip.config_path).to eq "#{Dir.pwd}/dip.yml" }
-    end
-
-    context "when path fron env", env: true do
-      let(:env) { {"DIP_FILE" => "exptected/dip.yml"} }
-      it { expect(Dip.config_path).to eq "exptected/dip.yml" }
-    end
-  end
-
   describe ".config" do
     it "initializes the config" do
       expect(Dip.config).to be_is_a Dip::Config
