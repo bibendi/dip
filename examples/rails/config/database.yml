@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  host: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  pool: <%= ENV['DB_POOL_SIZE'] || 5 %>
+  timeout: 5000
+
+development:
+  <<: *default
+  database: app
+
+test:
+  <<: *default
+  database: app_test
+
+production:
+  <<: *default
+  database: app

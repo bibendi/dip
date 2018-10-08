@@ -1,0 +1,17 @@
+/.bundle/
+/.env
+/.env.*
+/.pry_history
+/.vscode
+/config/master.key
+/coverage/
+/log/
+!/log/.keep
+/node_modules/
+/public/assets/
+/public/packs/
+/public/packs-test/
+/storage/
+!/storage/.keep
+/tmp/
+!/tmp/.keep

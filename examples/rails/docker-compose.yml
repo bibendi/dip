@@ -1,0 +1,99 @@
+version: '3.4'
+
+services:
+  app: &app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        PG_VERSION: '9.6'
+        NODE_VERSION: '8.11.1'
+        YARN_VERSION: '1.7.0'
+    image: dip-rails:0.1.0
+    tmpfs:
+      - /tmp
+    environment: &app_env
+      RAILS_ENV: ${RAILS_ENV:-development}
+    networks:
+      default:
+      frontend:
+    volumes:
+      - .:/app:cached
+      - rails_cache:/app/tmp/cache
+      - bundle:/bundle
+      - node_modules:/app/node_modules
+      - assets:/app/public/assets
+      - packs:/app/public/packs
+      - packs_test:/app/public/packs-test
+
+  backend: &backend
+    <<: *app
+    environment: &backend_env
+      <<: *app_env
+      REDIS_URL: redis://redis:6379/
+      SMTP_HOST: mail
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      WEBPACKER_DEV_SERVER_HOST: webpack
+      CAPYBARA_HEADLESS: '1'
+    depends_on:
+      - postgres
+      - redis
+
+  web:
+    <<: *backend
+    command: rails server -b 0.0.0.0
+    ports:
+      - ${WEB_PORT:-3000:3000}
+
+  webpack:
+    <<: *app
+    command: ./bin/webpack-dev-server
+    ports:
+      - ${WEBPACK_PORT:-3035:3035}
+    environment:
+      <<: *app_env
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+
+  worker:
+    <<: *backend
+    command: sidekiq -q mailers -q default
+
+  postgres:
+    image: postgres:9.6
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432
+
+  redis:
+    image: redis:3.2-alpine
+    volumes:
+      - redis:/data
+    ports:
+      - 6379
+
+  mail:
+    image: drujensen/mailcatcher:latest
+    ports:
+      - 1025
+      - ${MAIL_WEB_PORT:-1080:1080}
+    networks:
+      default:
+      frontend:
+
+volumes:
+  postgres:
+  redis:
+  bundle:
+  node_modules:
+  assets:
+  rails_cache:
+  packs:
+  packs_test:
+
+networks:
+  frontend:
+    external:
+      name: frontend
