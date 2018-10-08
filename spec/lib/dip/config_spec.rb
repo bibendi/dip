@@ -15,7 +15,7 @@ describe Dip::Config do
     end
   end
 
-  [:environment, :compose, :interaction, :provision].each do |key|
+  %i[environment compose interaction provision].each do |key|
     describe "##{key}" do
       context "when config file doesn't exist", env: true do
         let(:env) { {"DIP_FILE" => "no.yml"} }

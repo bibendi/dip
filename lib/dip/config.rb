@@ -15,7 +15,7 @@ module Dip
       File.exist?(@path)
     end
 
-    [:environment, :compose, :interaction, :provision].each do |key|
+    %i[environment compose interaction provision].each do |key|
       define_method(key) do
         config[key]
       end
