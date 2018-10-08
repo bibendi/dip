@@ -36,9 +36,31 @@ module Dip
 
       @config = YAML.safe_load(
         ERB.new(File.read(@path)).result,
-        [], [], true,
-        symbolize_names: true
+        [], [], true
       )
+
+      deep_symbolyze_keys!(@config)
+
+      @config
     end
+
+    # rubocop:disable Metrics/MethodLength
+    def deep_symbolyze_keys!(object)
+      case object
+      when Hash
+        object.keys.each do |key|
+          value = object.delete(key)
+          key = key.to_sym if key.is_a?(String)
+          object[key] = deep_symbolyze_keys!(value)
+        end
+
+        object
+      when Array
+        object.map! { |e| deep_symbolyze_keys!(e) }
+      else
+        object
+      end
+    end
+    # rubocop:enable Metrics/MethodLength
   end
 end
