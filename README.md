@@ -26,6 +26,10 @@ https://github.com/bibendi/dip/releases
 - [Ubuntu](docs/docker-ubuntu-install.md)
 - [Mac OS](docs/docker-for-mac-install.md)
 
+## Examples
+
+- [Modern Rails application with webpack](https://github.com/bibendi/dip-example-rails)
+
 ## Usage
 
 ```sh
