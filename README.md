@@ -44,48 +44,47 @@ version: '2'
 
 environment:
   COMPOSE_EXT: development
-  RAILS_ENV: development
 
 compose:
   files:
     - docker/docker-compose.yml
     - docker/docker-compose.$COMPOSE_EXT.yml
     - docker/docker-compose.$DIP_OS.yml
-  project_name: bear-$RAILS_ENV
+  project_name: bear
 
 interaction:
   sh:
-    service: foo-app
+    service: app
     compose_run_options: [no-deps]
 
   bundle:
-    service: foo-app
+    service: app
     command: bundle
 
   rake:
-    service: foo-app
+    service: app
     command: bundle exec rake
 
   rspec:
-    service: foo-app
+    service: app
     environment:
       RAILS_ENV: test
     command: bundle exec rspec
 
   rails:
-    service: foo-app
+    service: app
     command: bundle exec rails
     subcommands:
       s:
-        service: foo-web
+        service: web
         compose_method: up
 
   psql:
-    service: foo-app
+    service: app
     command: psql -h pg -U postgres
 
 provision:
-  - dip compose up -d foo-pg foo-redis
+  - dip compose up -d pg redis
   - dip bundle install
   - dip rake db:migrate
 ```
@@ -119,6 +118,28 @@ dip compose COMMAND [OPTIONS]
 
 dip compose up -d redis
 ```
+
+### Integration with shell
+
+Dip can be injected into your current shell. For now, it supported ZSH only.
+
+Inject Dip rc file (by default it saved to ~/.dip_shell_rc) into ZSH:
+
+```sh
+source $(dip console)
+```
+
+After that you can type commands without `dip` prefix. For example:
+
+```sh
+d> <run-command> *any-args
+d> compose *any-compose-arg
+d> up <service>
+d> down
+d> provision
+```
+
+When you change the current directory, all shell aliases will be automatically removed. But when you will enter back to a directory with a dip.yml file, then shell aliases will be renewed.
 
 ### dip ssh
 

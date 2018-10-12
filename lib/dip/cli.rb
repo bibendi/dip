@@ -99,5 +99,9 @@ module Dip
     require_relative 'cli/nginx'
     desc "nginx", "Nginx reverse proxy server"
     subcommand :nginx, Dip::CLI::Nginx
+
+    require_relative 'cli/console'
+    desc "console", "Integrate Dip commands into shell (only ZSH is supported now)"
+    subcommand :console, Dip::CLI::Console
   end
 end

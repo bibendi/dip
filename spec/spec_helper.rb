@@ -6,7 +6,7 @@ ENV["DIP_ENV"] = "test"
 
 require "simplecov"
 SimpleCov.start do
-  # minimum_coverage 97
+  minimum_coverage 90
 end
 
 require "pry-byebug"
