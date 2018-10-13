@@ -121,25 +121,31 @@ dip compose up -d redis
 
 ### Integration with shell
 
-Dip can be injected into your current shell. For now, it supported ZSH only.
+Dip can be injected into current shell. For now, it supported ZSH only.
 
 Inject Dip rc file (by default it saved to ~/.dip_shell_rc) into ZSH:
 
 ```sh
-source $(dip console)
+dip console | source /dev/stdin
 ```
 
-After that you can type commands without `dip` prefix. For example:
+After that we can type commands without `dip` prefix. For example:
 
 ```sh
-d> <run-command> *any-args
-d> compose *any-compose-arg
-d> up <service>
-d> down
-d> provision
+<run-command> *any-args
+compose *any-compose-arg
+up <service>
+down
+provision
 ```
 
-When you change the current directory, all shell aliases will be automatically removed. But when you will enter back to a directory with a dip.yml file, then shell aliases will be renewed.
+When we change the current directory, all shell aliases will be automatically removed. But when we will enter back to a directory with a dip.yml file, then shell aliases will be renewed.
+
+Also, in shell mode Dip is trying to determine passed manually environment variables. For example:
+
+```sh
+VERSION=20180515103400 rails db:migrate:down
+```
 
 ### dip ssh
 

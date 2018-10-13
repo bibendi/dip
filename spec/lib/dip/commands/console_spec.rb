@@ -11,7 +11,7 @@ describe Dip::Commands::Console do
     context "when execute without start" do
       subject { cli.start "console".shellsplit }
 
-      it { expect { subject }.to output(/.dip_shell_rc$/).to_stdout }
+      it { expect { subject }.to output(/function _dip_source_aliases/).to_stdout }
     end
   end
 
