@@ -11,6 +11,10 @@ module Dip
 
         super
       end
+
+      def start(argv)
+        super Dip::RunVars.call(argv, ENV)
+      end
     end
 
     stop_on_unknown_option! :up
@@ -61,18 +65,12 @@ module Dip
     desc 'CMD or dip run CMD [OPTIONS]', 'Run configured command in a docker-compose service'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
-    method_option :x_dip_run_vars,
-                  type: :hash,
-                  desc: "Enforce environment variables into container, recommended run like 'dip FOO=bar cmd'"
     def run(cmd, subcmd = nil, *argv)
       if options[:help]
         invoke :help, ['run']
       else
         require_relative 'commands/run'
-        Dip::Commands::Run.
-          new(cmd, subcmd, argv,
-              run_vars: options[:x_dip_run_vars]).
-          execute
+        Dip::Commands::Run.new(cmd, subcmd, argv).execute
       end
     end
 

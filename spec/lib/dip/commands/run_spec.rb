@@ -42,8 +42,8 @@ describe Dip::Commands::Run, config: true do
   end
 
   context "when run vars" do
-    before { cli.start "run bash --x-dip-run-vars=FOO:bar".shellsplit }
-    it { expected_exec("docker-compose", ["run", "-e", "FOO=bar", "--rm", "app"]) }
+    before { cli.start "FOO=foo run bash".shellsplit }
+    it { expected_exec("docker-compose", ["run", "-e", "FOO=foo", "--rm", "app"]) }
   end
 
   context "when config with environment vars" do

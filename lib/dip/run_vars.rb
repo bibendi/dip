@@ -2,24 +2,37 @@
 
 module Dip
   class RunVars
-    attr_reader :argv, :env, :early_envs, :env_vars, :result_argv
+    attr_reader :argv, :env
 
-    def self.call(*args)
-      new(*args).call
+    class << self
+      attr_accessor :env
+
+      def call(*args)
+        new(*args).call
+      end
     end
 
     def initialize(argv, env = ENV)
       @argv = argv
       @env = env
-      @env_vars = {}
-      @result_argv = []
+      self.class.env = {}
     end
 
     def call
       extract_new_env_vars
-      extract_passed_env_vars
 
-      result_argv.push(*argv_env_vars) unless env_vars.empty?
+      stop_parse = false
+      result_argv = []
+
+      argv.each do |arg|
+        if !stop_parse && arg.include?("=")
+          key, val = arg.split("=", 2)
+          self.class.env[key] = val
+        else
+          result_argv << arg
+          stop_parse ||= true
+        end
+      end
 
       result_argv
     end
@@ -31,31 +44,10 @@ module Dip
       return if early_envs.empty?
 
       (env.keys - early_envs.split(',')).each do |key|
-        next if key.start_with?("DIP_")
+        next if key.start_with?("DIP_") || key.start_with?("_")
 
-        env_vars[key] = env[key]
+        self.class.env[key] = env[key]
       end
-    end
-
-    def extract_passed_env_vars
-      stop_parse = false
-
-      argv.each do |arg|
-        if !stop_parse && arg.include?("=")
-          key, val = arg.split("=", 2)
-          env_vars[key] = val
-        else
-          result_argv << arg
-          stop_parse ||= true
-        end
-      end
-    end
-
-    def argv_env_vars
-      result = env_vars.map { |key, val| "#{key}:#{val}" }
-      result[0] = "--x-dip-run-vars=#{result[0]}"
-
-      result
     end
   end
 end

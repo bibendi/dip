@@ -7,11 +7,10 @@ require_relative 'compose'
 module Dip
   module Commands
     class Run < Dip::Command
-      def initialize(cmd, subcmd = nil, argv = [], run_vars: nil)
+      def initialize(cmd, subcmd = nil, argv = [])
         @cmd = cmd.to_sym
         @subcmd = subcmd.to_sym if subcmd
         @argv = argv
-        @run_vars = run_vars
         @config = ::Dip.config.interaction
       end
 
@@ -54,9 +53,10 @@ module Dip
       end
 
       def run_vars
-        return [] unless @run_vars
+        run_vars = Dip::RunVars.env
+        return [] unless run_vars
 
-        @run_vars.map { |k, v| ["-e", "#{k}=#{v}"] }.flatten
+        run_vars.map { |k, v| ["-e", "#{k}=#{v}"] }.flatten
       end
     end
   end

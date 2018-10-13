@@ -20,7 +20,7 @@ Signal.trap('INT') do
 end
 
 begin
-  Dip::CLI.start(Dip::RunVars.call(ARGV, ENV))
+  Dip::CLI.start(ARGV)
 rescue Dip::Error => err
   puts "ERROR: #{err.message}"
   exit 1
