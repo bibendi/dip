@@ -7,22 +7,16 @@ module Dip
     module Console
       class Start < Dip::Command
         def execute
-          File.write(rc_file, script_content)
-
-          puts rc_file
+          puts script
         end
 
         private
 
-        def rc_file
-          @rc_file ||= "#{Dir.home}/.dip_shell_rc"
-        end
-
-        def script_content
+        def script
           <<-SH.gsub(/^[ ]{12}/, '')
             if [ "$DIP_SHELL" != "1" ]; then
-              export PS1="${PS1}d> "
-              export DIP_SHELL=1
+              export DIP_SHELL=zsh
+              export DIP_EARLY_ENVS=#{ENV.keys.join(',')}
             fi
 
             function _dip_remove_aliases() {

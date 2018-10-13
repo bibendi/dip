@@ -6,6 +6,7 @@ $LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
 
 require 'dip'
 require 'dip/cli'
+require 'dip/run_vars'
 
 begin
   require 'pry-byebug' if Dip.debug?
@@ -19,23 +20,7 @@ Signal.trap('INT') do
 end
 
 begin
-  run_vars = []
-
-  ARGV.each do |arg|
-    if !run_vars.frozen? && arg.include?("=")
-      key, val = arg.split("=", 2)
-      run_vars << "#{'--x-dip-run-vars=' if run_vars.empty?}#{key}:#{val}"
-    else
-      run_vars.freeze
-    end
-  end
-
-  unless run_vars.empty?
-    ARGV.shift(run_vars.size)
-    ARGV.push(*run_vars)
-  end
-
-  Dip::CLI.start
+  Dip::CLI.start(Dip::RunVars.call(ARGV, ENV))
 rescue Dip::Error => err
   puts "ERROR: #{err.message}"
   exit 1
