@@ -12,42 +12,52 @@ module Dip
       end
     end
 
+    self.env = {}
+
     def initialize(argv, env = ENV)
       @argv = argv
       @env = env
-      self.class.env = {}
+
+      self.class.env.clear
     end
 
     def call
-      extract_new_env_vars
-
-      stop_parse = false
-      result_argv = []
-
-      argv.each do |arg|
-        if !stop_parse && arg.include?("=")
-          key, val = arg.split("=", 2)
-          self.class.env[key] = val
-        else
-          result_argv << arg
-          stop_parse ||= true
-        end
-      end
-
-      result_argv
+      populate_env_vars
+      parse_argv
     end
 
     private
 
-    def extract_new_env_vars
-      early_envs = env['DIP_EARLY_ENVS'].to_s
+    def populate_env_vars
       return if early_envs.empty?
 
-      (env.keys - early_envs.split(',')).each do |key|
-        next if key.start_with?("DIP_") || key.start_with?("_")
+      (env.keys - early_envs).each do |key|
+        next if env_excluded?(key)
 
         self.class.env[key] = env[key]
       end
+    end
+
+    def parse_argv
+      stop_parse = false
+
+      argv.each_with_object([]) do |arg, memo|
+        if !stop_parse && arg.include?("=")
+          key, val = arg.split("=", 2)
+          self.class.env[key] = val
+        else
+          memo << arg
+          stop_parse ||= true
+        end
+      end
+    end
+
+    def early_envs
+      @early_envs ||= env["DIP_EARLY_ENVS"].to_s.split(",")
+    end
+
+    def env_excluded?(key)
+      key.start_with?("DIP_", "_")
     end
   end
 end
