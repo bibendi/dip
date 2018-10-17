@@ -11,7 +11,10 @@ describe Dip::Commands::Console do
     context "when execute without start" do
       subject { cli.start "console".shellsplit }
 
-      it { expect { subject }.to output(/function _dip_source_aliases/).to_stdout }
+      it { expect { subject }.to output(/export DIP_SHELL=1/).to_stdout }
+      it { expect { subject }.to output(/export DIP_EARLY_ENVS/).to_stdout }
+      it { expect { subject }.to output(/function dip_remove_aliases/).to_stdout }
+      it { expect { subject }.to output(/function dip_source_aliases/).to_stdout }
     end
   end
 

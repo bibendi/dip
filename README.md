@@ -123,8 +123,6 @@ dip compose up -d redis
 
 Dip can be injected into current shell. For now, it supported ZSH only.
 
-Inject Dip rc file (by default it saved to ~/.dip_shell_rc) into ZSH:
-
 ```sh
 dip console | source /dev/stdin
 ```

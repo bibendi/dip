@@ -14,24 +14,35 @@ module Dip
 
         def script
           <<-SH.gsub(/^[ ]{12}/, '')
-            if [ "$DIP_SHELL" != "1" ]; then
-              export DIP_SHELL=zsh
-              export DIP_EARLY_ENVS=#{ENV.keys.join(',')}
+            export DIP_SHELL=1
+            export DIP_EARLY_ENVS=#{ENV.keys.join(',')}
+            export DIP_PROMPT_TEXT="ⅆ"
+
+            if [[ "$ZSH_THEME" = "agnoster" ]]; then
+              eval "`declare -f prompt_end | sed '1s/.*/_&/'`"
+
+              function prompt_end() {
+                if [[ -n $DIP_PROMPT_TEXT ]]; then
+                  prompt_segment magenta white "$DIP_PROMPT_TEXT"
+                fi
+
+                _prompt_end
+              }
             fi
 
-            function _dip_remove_aliases() {
+            function dip_remove_aliases() {
               # will be redefined
             }
 
-            function _dip_source_aliases() {
+            function dip_source_aliases() {
               #{Dip.bin_path} console inject | source /dev/stdin
             }
 
-            _dip_source_aliases
+            dip_source_aliases
 
             function chpwd() {
-              _dip_remove_aliases
-              _dip_source_aliases
+              dip_remove_aliases
+              dip_source_aliases
             }
           SH
         end
