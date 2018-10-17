@@ -86,7 +86,7 @@ module Dip
         end
 
         def fill_removing_aliases
-          @out << "function _dip_remove_aliases() { \n" \
+          @out << "function dip_remove_aliases() { \n" \
                   "#{@aliases.map { |a| "  unset -f #{a}" }.join("\n")} " \
                   "\n}"
         end
