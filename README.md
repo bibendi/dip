@@ -30,6 +30,8 @@ https://github.com/bibendi/dip/releases
 
 - [Modern Rails application with webpack](https://github.com/bibendi/dip-example-rails)
 
+[![asciicast](https://asciinema.org/a/210236.svg)](https://asciinema.org/a/210236)
+
 ## Usage
 
 ```sh
