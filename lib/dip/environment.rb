@@ -2,7 +2,7 @@
 
 module Dip
   class Environment
-    VAR_REGEX = /\$[\{]?(?<var_name>[a-zA-Z_][a-zA-Z0-9_]*)[\}]?/
+    VAR_REGEX = /\$[\{]?(?<var_name>[a-zA-Z_][a-zA-Z0-9_]*)[\}]?/.freeze
     SPECIAL_VARS = {"DIP_OS" => :find_dip_os}.freeze
 
     attr_reader :vars
