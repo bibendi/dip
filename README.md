@@ -28,6 +28,7 @@ https://github.com/bibendi/dip/releases
 
 ## Examples
 
+- [Minimal Gist of Rails app](https://gist.github.com/bibendi/a1c48ed087902a1638982fb597bee8ef)
 - [Modern Rails application with webpack](https://github.com/bibendi/dip-example-rails)
 
 [![asciicast](https://asciinema.org/a/210236.svg)](https://asciinema.org/a/210236)
