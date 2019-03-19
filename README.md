@@ -6,7 +6,7 @@
 
 Docker Interaction Process
 
-CLI utility for straightforward provisioning and interacting with an application configured by docker-compose.
+CLI utility for straightforward provisioning and interacting with applications configured by Docker Compose.
 
 DIP also contains commands for running support containers such as ssh-agent and DNS server.
 
@@ -26,8 +26,9 @@ https://github.com/bibendi/dip/releases
 - [Ubuntu](docs/docker-ubuntu-install.md)
 - [Mac OS](docs/docker-for-mac-install.md)
 
-## Examples
+## Presentations and examples
 
+- [Local development with Docker containers](https://slides.com/bibendi/dip)
 - [Minimal Gist of Rails app](https://gist.github.com/bibendi/a1c48ed087902a1638982fb597bee8ef)
 - [Modern Rails application with webpack](https://github.com/bibendi/dip-example-rails)
 
