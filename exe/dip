@@ -21,7 +21,7 @@ end
 
 begin
   Dip::CLI.start(ARGV)
-rescue Dip::Error => err
-  puts "ERROR: #{err.message}"
+rescue Dip::Error => e
+  puts "ERROR: #{e.message}"
   exit 1
 end
