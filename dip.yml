@@ -5,9 +5,15 @@ compose:
     - docker-compose.yml
 
 interaction:
-  bash:
+  app:
     service: app
-    command: bash
+    subcommands:
+      bash:
+        command: /bin/bash
+      console:
+        command: ./bin/console
+      clean:
+        command: rm -rf Gemfile.lock
 
   bundle:
     service: app
@@ -26,5 +32,5 @@ interaction:
     command: rm -rf Gemfile.lock
 
 provision:
-  - dip clean
+  - dip app clean
   - dip bundle install
