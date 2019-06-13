@@ -1,12 +1,21 @@
----
-sudo: false
 language: ruby
-cache: bundler
 rvm:
-  - 2.5.1
+  - 2.6
 
-before_install: gem install bundler
+sudo: require
+
+services:
+  - docker
+
+install:
+  - gem install dip
+  - gem install danger
+
+before_script:
+  - unset BUNDLE_GEMFILE
+  - dip provision
 
 script:
-  - bundle exec rspec
-  - bundle exec rubocop
+  - danger
+  - dip rubocop
+  - dip rspec
