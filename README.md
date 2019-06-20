@@ -6,25 +6,7 @@
 
 Docker Interaction Process
 
-CLI utility for straightforward provisioning and interacting with applications configured by Docker Compose.
-
-DIP also contains commands for running support containers such as ssh-agent and DNS server.
-
-## Installation
-
-```sh
-gem install dip
-```
-
-## Changelog
-
-https://github.com/bibendi/dip/releases
-
-
-## Docker installation
-
-- [Ubuntu](docs/docker-ubuntu-install.md)
-- [Mac OS](docs/docker-for-mac-install.md)
+Command line utility that gives the "native" interaction with applications configured with Docker Compose.
 
 ## Presentations and examples
 
@@ -242,3 +224,18 @@ dip dns up
 cd foo-project
 dip compose exec foo-web curl http://www.bar-app.docker/api/v1/baz_service
 ```
+
+## Installation
+
+```sh
+gem install dip
+```
+
+## Docker installation
+
+- [Ubuntu](docs/docker-ubuntu-install.md)
+- [Mac OS](docs/docker-for-mac-install.md)
+
+## Changelog
+
+https://github.com/bibendi/dip/releases
