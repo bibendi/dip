@@ -80,7 +80,7 @@ compose:
   project_name: bear
 
 interaction:
-  sh:
+  bash:
     service: app
     compose_run_options: [no-deps]
 
@@ -104,16 +104,16 @@ interaction:
     subcommands:
       s:
         service: web
-        compose_method: up
+        compose_run_options: [service-ports]
 
   psql:
     service: app
     command: psql -h pg -U postgres
 
 provision:
+  - dip compose down --volumes
   - dip compose up -d pg redis
-  - dip bundle install
-  - dip rake db:migrate
+  - dip bash -c ./bin/setup
 ```
 
 ### dip run
