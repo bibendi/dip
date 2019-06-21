@@ -11,11 +11,48 @@ Command line utility that gives the "native" interaction with applications confi
 ## Presentations and examples
 
 - [Local development with Docker containers](https://slides.com/bibendi/dip)
-- [Minimal Gist of Rails app](https://gist.github.com/bibendi/a1c48ed087902a1638982fb597bee8ef)
-- [Modern Rails application with webpack](https://github.com/bibendi/dip-example-rails)
-- [Basic Node.js application](https://github.com/bibendi/yt-graphql-react-event-booking-api)
+- [Dockerized Ruby on Rails application](https://github.com/bibendi/dip-example-rails)
+- [Dockerized Node.js application](https://github.com/bibendi/yt-graphql-react-event-booking-api)
+- [Dockerized Ruby gem](https://github.com/bibendi/schked)
 
 [![asciicast](https://asciinema.org/a/210236.svg)](https://asciinema.org/a/210236)
+
+## Integration with shell
+
+Dip can be injected into current shell. For now, it supported ZSH only.
+
+```sh
+dip console | source /dev/stdin
+```
+
+After that we can type commands without `dip` prefix. For example:
+
+```sh
+<run-command> *any-args
+compose *any-compose-arg
+up <service>
+down
+provision
+```
+
+When we change the current directory, all shell aliases will be automatically removed. But when we will enter back to a directory with a dip.yml file, then shell aliases will be renewed.
+
+Also, in shell mode Dip is trying to determine passed manually environment variables. For example:
+
+```sh
+VERSION=20180515103400 rails db:migrate:down
+```
+
+## Installation
+
+```sh
+gem install dip
+```
+
+## Docker installation
+
+- [Ubuntu](docs/docker-ubuntu-install.md)
+- [Mac OS](docs/docker-for-mac-install.md)
 
 ## Usage
 
@@ -104,32 +141,6 @@ Run docker-compose commands that are configured according with application dip.y
 dip compose COMMAND [OPTIONS]
 
 dip compose up -d redis
-```
-
-### Integration with shell
-
-Dip can be injected into current shell. For now, it supported ZSH only.
-
-```sh
-dip console | source /dev/stdin
-```
-
-After that we can type commands without `dip` prefix. For example:
-
-```sh
-<run-command> *any-args
-compose *any-compose-arg
-up <service>
-down
-provision
-```
-
-When we change the current directory, all shell aliases will be automatically removed. But when we will enter back to a directory with a dip.yml file, then shell aliases will be renewed.
-
-Also, in shell mode Dip is trying to determine passed manually environment variables. For example:
-
-```sh
-VERSION=20180515103400 rails db:migrate:down
 ```
 
 ### dip ssh
@@ -224,17 +235,6 @@ dip dns up
 cd foo-project
 dip compose exec foo-web curl http://www.bar-app.docker/api/v1/baz_service
 ```
-
-## Installation
-
-```sh
-gem install dip
-```
-
-## Docker installation
-
-- [Ubuntu](docs/docker-ubuntu-install.md)
-- [Mac OS](docs/docker-for-mac-install.md)
 
 ## Changelog
 
