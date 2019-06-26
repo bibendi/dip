@@ -12,7 +12,7 @@ module Dip
     end
 
     def env
-      @env ||= Dip::Environment.new(config.exist? ? config.environment : {})
+      @env ||= Dip::Environment.new(Dip::Config.exist? ? config.environment : {})
     end
 
     def bin_path

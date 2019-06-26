@@ -66,6 +66,15 @@ dip SUBCOMMAND --help
 
 ### dip.yml
 
+The configuration file `dip.yml` should be placed in a project root directory.
+Also, in some cases, you may want to change the default config path by providing an environment variable `DIP_FILE`.
+If nearby places `dip.override.yml` file it would be merged into the main config.
+
+Below is an example of real config. 
+`dip.yml` reference will be written soon. 
+Also, you can check out examples in the top.       
+
+
 ```yml
 version: '2'
 

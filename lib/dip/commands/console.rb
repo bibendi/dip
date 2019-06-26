@@ -55,7 +55,7 @@ module Dip
         end
 
         def execute
-          if Dip.config.exist?
+          if Dip::Config.exist?
             alias_interaction if Dip.config.interaction
             alias_compose
             add_alias("provision")
