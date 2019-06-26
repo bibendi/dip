@@ -36,7 +36,7 @@ RSpec.configure do |config|
 
   config.around do |ex|
     orig = ENV["DIP_FILE"]
-    ENV["DIP_FILE"] = File.join(__dir__, "fixtures", "dip.yml")
+    ENV["DIP_FILE"] = fixture_path("empty", "dip.yml")
     ex.run
     ENV["DIP_FILE"] = orig
   end

@@ -1,0 +1,14 @@
+version: '2'
+
+environment:
+  FOO: baz
+
+compose:
+  files:
+    - docker-compose.local.yml
+
+interaction:
+  app:
+    subcommands:
+      debug:
+        command: exec debug

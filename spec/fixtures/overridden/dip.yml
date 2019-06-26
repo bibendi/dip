@@ -1,0 +1,17 @@
+version: '2'
+
+environment:
+  FOO: bar
+
+compose:
+  files:
+    - docker-compose.yml
+
+interaction:
+  app:
+    service: backend
+    subcommands:
+      start:
+        command: exec start
+
+provision: []
