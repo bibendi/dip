@@ -42,8 +42,19 @@ describe Dip::Commands::Run, config: true do
   end
 
   context "when run vars" do
-    before { cli.start "FOO=foo run bash".shellsplit }
-    it { expected_exec("docker-compose", ["run", "-e", "FOO=foo", "--rm", "app"]) }
+    context "when execute through `compose run`" do
+      before { cli.start "FOO=foo run bash".shellsplit }
+
+      it { expected_exec("docker-compose", ["run", "-e", "FOO=foo", "--rm", "app"]) }
+    end
+
+    context "when execute through `compose up`" do
+      let(:commands) { {rails: {service: "app", command: "rails", compose_method: "up"}} }
+
+      before { cli.start "FOO=foo run rails server".shellsplit }
+
+      it { expected_exec("docker-compose", ["up", "app", "rails", "server"]) }
+    end
   end
 
   context "when config with environment vars" do
