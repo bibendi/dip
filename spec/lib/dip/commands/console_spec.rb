@@ -13,8 +13,9 @@ describe Dip::Commands::Console do
 
       it { expect { subject }.to output(/export DIP_SHELL=1/).to_stdout }
       it { expect { subject }.to output(/export DIP_EARLY_ENVS/).to_stdout }
-      it { expect { subject }.to output(/function dip_remove_aliases/).to_stdout }
-      it { expect { subject }.to output(/function dip_source_aliases/).to_stdout }
+      it { expect { subject }.to output(/function dip_clear/).to_stdout }
+      it { expect { subject }.to output(/function dip_inject/).to_stdout }
+      it { expect { subject }.to output(/function dip_reload/).to_stdout }
     end
   end
 
@@ -26,13 +27,15 @@ describe Dip::Commands::Console do
       it { expect { subject }.to output(/unset -f compose/).to_stdout }
       it { expect { subject }.to output(/function up/).to_stdout }
       it { expect { subject }.to output(/unset -f up/).to_stdout }
+      it { expect { subject }.to output(/function stop/).to_stdout }
+      it { expect { subject }.to output(/unset -f stop/).to_stdout }
       it { expect { subject }.to output(/function down/).to_stdout }
       it { expect { subject }.to output(/unset -f down/).to_stdout }
       it { expect { subject }.to output(/function provision/).to_stdout }
       it { expect { subject }.to output(/unset -f provision/).to_stdout }
     end
 
-    context "when has provison command", config: true do
+    context "when has provision command", config: true do
       let(:config) { {interaction: commands} }
       let(:commands) { {bash: {service: "app"}, rails: {service: "app", command: "rails"}} }
 

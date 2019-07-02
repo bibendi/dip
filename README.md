@@ -22,10 +22,10 @@ Command line utility that gives the "native" interaction with applications confi
 
 ## Integration with shell
 
-Dip can be injected into current shell. For now, it supported ZSH only.
+Dip can be injected into current shell (ZSH or Bash).
 
 ```sh
-dip console | source /dev/stdin
+eval "$(dip console)"
 ```
 
 After that we can type commands without `dip` prefix. For example:
@@ -45,6 +45,9 @@ Also, in shell mode Dip is trying to determine passed manually environment varia
 ```sh
 VERSION=20180515103400 rails db:migrate:down
 ```
+
+You could add this `eval` at the end of your `~/.zshrc`, or `~/.bashrc`, or `~/.bash_profile`. 
+After that, it will be automatically applied when you open your preferred terminal.
 
 ## Installation
 
