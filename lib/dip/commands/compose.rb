@@ -8,18 +8,17 @@ module Dip
     class Compose < Dip::Command
       DOCKER_EMBEDDED_DNS = "127.0.0.11"
 
-      def initialize(cmd, argv = [])
-        @cmd = cmd
+      attr_reader :argv, :config
+
+      def initialize(*argv)
         @argv = argv
         @config = ::Dip.config.compose || {}
       end
 
       def execute
-        compose_argv = Array(find_files) + Array(find_project_name)
-        compose_argv << @cmd
-        compose_argv += @argv
-
         Dip.env["DIP_DNS"] ||= find_dns
+
+        compose_argv = Array(find_files) + Array(find_project_name) + argv
 
         shell("docker-compose", compose_argv)
       end
@@ -27,7 +26,7 @@ module Dip
       private
 
       def find_files
-        return unless (files = @config[:files])
+        return unless (files = config[:files])
 
         if files.is_a?(Array)
           files.each_with_object([]) do |file_name, memo|
@@ -41,7 +40,7 @@ module Dip
       end
 
       def find_project_name
-        return unless (project_name = @config[:project_name])
+        return unless (project_name = config[:project_name])
 
         if project_name.is_a?(String)
           project_name = ::Dip.env.interpolate(project_name)

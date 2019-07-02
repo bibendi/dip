@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'thor'
+require 'dip/run_vars'
 
 module Dip
   class CLI < Thor
@@ -39,15 +40,9 @@ module Dip
     map %w(--version -v) => :version
 
     desc 'compose CMD [OPTIONS]', 'Run docker-compose commands'
-    method_option :help, aliases: '-h', type: :boolean,
-                         desc: 'Display usage information'
-    def compose(cmd, *argv)
-      if options[:help]
-        invoke :help, ['compose']
-      else
-        require_relative 'commands/compose'
-        Dip::Commands::Compose.new(cmd, argv).execute
-      end
+    def compose(*argv)
+      require_relative 'commands/compose'
+      Dip::Commands::Compose.new(*argv).execute
     end
 
     desc "up [OPTIONS] SERVICE", "Run `docker-compose up` command"
@@ -60,21 +55,15 @@ module Dip
       compose("stop", *argv)
     end
 
-    desc "down [OPTIONS]", "Run `docker-compose down` command"
+    desc "down all services [OPTIONS]", "Run `docker-compose down` command"
     def down(*argv)
       compose("down", *argv)
     end
 
     desc 'CMD or dip run CMD [OPTIONS]', 'Run configured command in a docker-compose service'
-    method_option :help, aliases: '-h', type: :boolean,
-                         desc: 'Display usage information'
-    def run(cmd, subcmd = nil, *argv)
-      if options[:help]
-        invoke :help, ['run']
-      else
-        require_relative 'commands/run'
-        Dip::Commands::Run.new(cmd, subcmd, argv).execute
-      end
+    def run(*argv)
+      require_relative 'commands/run'
+      Dip::Commands::Run.new(*argv).execute
     end
 
     desc "provision", "Execute commands within provision section"
