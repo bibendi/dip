@@ -33,8 +33,12 @@ module Dip
 
         compose_argv = []
         compose_argv.concat(prepare_compose_run_options(command[:compose_run_options]))
-        compose_argv.concat(run_vars)
-        compose_argv << "--rm" if compose_method == "run"
+
+        if compose_method == "run"
+          compose_argv.concat(run_vars)
+          compose_argv << "--rm"
+        end
+
         compose_argv << command.fetch(:service).to_s
         compose_argv += command[:command].to_s.shellsplit
         compose_argv.concat(@argv)
