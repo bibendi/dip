@@ -7,7 +7,7 @@ require_relative 'compose'
 module Dip
   module Commands
     class Run < Dip::Command
-      def initialize(cmd, subcmd = nil, argv = [])
+      def initialize(cmd, subcmd = nil, *argv)
         @cmd = cmd.to_sym
         @subcmd = subcmd.to_sym if subcmd
         @argv = argv
@@ -43,7 +43,7 @@ module Dip
         compose_argv += command[:command].to_s.shellsplit
         compose_argv.concat(@argv)
 
-        Dip::Commands::Compose.new(compose_method, compose_argv).execute
+        Dip::Commands::Compose.new(compose_method, *compose_argv).execute
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
