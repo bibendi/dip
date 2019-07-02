@@ -50,12 +50,17 @@ module Dip
       end
     end
 
-    desc "up [OPTIONS] SERVICE", "Run docker-compose up command"
+    desc "up [OPTIONS] SERVICE", "Run `docker-compose up` command"
     def up(*argv)
       compose("up", *argv)
     end
 
-    desc "down [OPTIONS]", "Run docker-compose down command"
+    desc "stop [OPTIONS] SERVICE", "Run `docker-compose stop` command"
+    def stop(*argv)
+      compose("stop", *argv)
+    end
+
+    desc "down [OPTIONS]", "Run `docker-compose down` command"
     def down(*argv)
       compose("down", *argv)
     end
@@ -97,7 +102,7 @@ module Dip
     subcommand :nginx, Dip::CLI::Nginx
 
     require_relative 'cli/console'
-    desc "console", "Integrate Dip commands into shell (only ZSH is supported now)"
+    desc "console", "Integrate Dip commands into shell (only ZSH and Bash is supported)"
     subcommand :console, Dip::CLI::Console
   end
 end
