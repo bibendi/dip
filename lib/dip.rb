@@ -16,8 +16,7 @@ module Dip
     end
 
     def bin_path
-      # TODO: Maybe there's a better way?
-      $PROGRAM_NAME.start_with?("./") ? File.expand_path($PROGRAM_NAME) : $PROGRAM_NAME
+      $PROGRAM_NAME.start_with?("./") ? File.expand_path($PROGRAM_NAME) : "dip"
     end
 
     %w(test debug).each do |key|
