@@ -51,9 +51,22 @@ After that, it will be automatically applied when you open your preferred termin
 
 ## Installation
 
+You have two ways.
+
+Install like a typical Ruby gem:
+
 ```sh
 gem install dip
 ```
+
+If you don't have installed Ruby then you could copy a precompiled binary to your system. 
+It can be found at [releases page](https://github.com/bibendi/dip/releases)
+or type bellow into your terminal:
+
+```sh
+curl -L https://github.com/bibendi/dip/releases/download/3.8.0/dip-`uname -s`-`uname -m` > /usr/local/bin/dip
+chmod +x /usr/local/bin/dip
+``` 
 
 ## Docker installation
 

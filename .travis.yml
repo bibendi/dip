@@ -1,21 +1,64 @@
 language: ruby
+
 rvm:
   - 2.6
 
-sudo: require
+os:
+  - osx
+  - linux
+
+branches:
+  only:
+    - master
 
 services:
   - docker
 
+cache:
+  directories:
+    - "${HOME}/rubyc"
+
+addons:
+  apt:
+    packages:
+      - squashfs-tools
+      - libncurses5-dev
+      - libncursesw5-dev
+  homebrew:
+    packages:
+      - squashfs
+    update: true
+
 install:
-  - gem install dip
+  - if [[ "`uname`" == "Darwin" ]]; then curl -L http://enclose.io/rubyc/rubyc-darwin-x64.gz | gunzip > rubyc; fi
+  - if [[ "`uname`" == "Linux" ]]; then curl -L http://enclose.io/rubyc/rubyc-linux-x64.gz | gunzip > rubyc; fi
+  - chmod +x rubyc
+  - sudo mv ./rubyc /usr/local/bin/rubyc
   - gem install danger
 
 before_script:
   - unset BUNDLE_GEMFILE
-  - dip provision
+  - gem uninstall -a --force dip
+  - CPPFLAGS="-P" rubyc --quiet --tmpdir=${HOME}/rubyc bundle exec exe/dip >/dev/null
+  - sudo cp a.out /usr/local/bin/dip
+  - mv a.out dip-`uname`-`uname -m`
+  - ls -hl dip-`uname`-`uname -m`
 
 script:
-  - danger
-  - dip rubocop
-  - dip rspec
+  - if [[ "`uname`" == "Linux" ]]; then danger; fi
+  - if [[ "`uname`" == "Linux" ]]; then dip provision; fi
+  - if [[ "`uname`" == "Linux" ]]; then dip rubocop; fi
+  - if [[ "`uname`" == "Linux" ]]; then dip rspec; fi
+  - if [[ "`uname`" == "Darwin" ]]; then echo 'OK'; fi
+
+deploy:
+  provider: releases
+  api_key:
+    secure: AaXw17YCaRIdphhnG2ym5wzMtMZCzAGOtK6XXcdsDjUYNEUUolEwHe8lm+M15H2OcTGR5dVisCR7DVj5ynPFDazcnF2x5hncMMSwFzVSvTAjSx0ogViRuW8F65GtcY9G7CuRlVUe7V1+e2a4DpTMnatxUNfVH/3dOEvC15KAjDwWFJNuCqnAng9k3IO3c4a5J+aSSJ6BfLc9spvF0D5ofDr6JGn5EfAmNULRgbun64Qm2/B9MLQ5n5RDeyEGth3qIXey9lgBiCLOls7H2b4mGgOlDd+FDVGcay4h1CJfsYpFFxhC+znjNrFPvYAVYvwO3+NRSi10aO43V1jXyUZ30sEkptX2qKJlGHDs8RDvjIW08RWrxStNEcyqJJu2OcmYWHsDBkBzHK+iqznlGoEObaCzmOolVjfoOdeTLBlp2KOOkuHStOPvB9S+1wU6GVKN44DCcclZ5pypEJn4Ga11ATwST0sD/h+YRKdbFBn89xTZ1SoFS9nn3EeVvIZRZvul5KKHY/pgv2rb2zYvZob0m1STTYEdJH+De0YphgdUPgj6oZSy3IHu6oOxRu5qp9Jo6wKOvtTyKs4Y9R6Dkggvqzmq4mi1LHHat9lONwLXRy2LLXryaHjLbXXAwVaqC8vU0GEaJfcvI8nmTjN08k3QF7gSfn0rrWSsVnYl5KjHyww=
+  file:
+    - dip-Linux-x86_64
+    - dip-Darwin-x86_64
+  overwrite: true
+  skip_cleanup: true
+  on:
+    tags: true
