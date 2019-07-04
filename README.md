@@ -64,7 +64,7 @@ It can be found at [releases page](https://github.com/bibendi/dip/releases)
 or type bellow into your terminal:
 
 ```sh
-curl -L https://github.com/bibendi/dip/releases/download/3.8.0/dip-`uname -s`-`uname -m` > /usr/local/bin/dip
+curl -L https://github.com/bibendi/dip/releases/download/3.8.2/dip-`uname -s`-`uname -m` > /usr/local/bin/dip
 chmod +x /usr/local/bin/dip
 ``` 
 

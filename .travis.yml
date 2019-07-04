@@ -52,14 +52,21 @@ script:
   - if [[ "`uname`" == "Darwin" ]]; then echo 'OK'; fi
 
 deploy:
-  provider: releases
-  api_key:
-    secure: AaXw17YCaRIdphhnG2ym5wzMtMZCzAGOtK6XXcdsDjUYNEUUolEwHe8lm+M15H2OcTGR5dVisCR7DVj5ynPFDazcnF2x5hncMMSwFzVSvTAjSx0ogViRuW8F65GtcY9G7CuRlVUe7V1+e2a4DpTMnatxUNfVH/3dOEvC15KAjDwWFJNuCqnAng9k3IO3c4a5J+aSSJ6BfLc9spvF0D5ofDr6JGn5EfAmNULRgbun64Qm2/B9MLQ5n5RDeyEGth3qIXey9lgBiCLOls7H2b4mGgOlDd+FDVGcay4h1CJfsYpFFxhC+znjNrFPvYAVYvwO3+NRSi10aO43V1jXyUZ30sEkptX2qKJlGHDs8RDvjIW08RWrxStNEcyqJJu2OcmYWHsDBkBzHK+iqznlGoEObaCzmOolVjfoOdeTLBlp2KOOkuHStOPvB9S+1wU6GVKN44DCcclZ5pypEJn4Ga11ATwST0sD/h+YRKdbFBn89xTZ1SoFS9nn3EeVvIZRZvul5KKHY/pgv2rb2zYvZob0m1STTYEdJH+De0YphgdUPgj6oZSy3IHu6oOxRu5qp9Jo6wKOvtTyKs4Y9R6Dkggvqzmq4mi1LHHat9lONwLXRy2LLXryaHjLbXXAwVaqC8vU0GEaJfcvI8nmTjN08k3QF7gSfn0rrWSsVnYl5KjHyww=
-  file:
-    - dip-Linux-x86_64
-    - dip-Darwin-x86_64
-  overwrite: true
-  skip_cleanup: true
-  on:
-    tags: true
-    all_branches: true
+  - provider: releases
+    api_key:
+      secure: AaXw17YCaRIdphhnG2ym5wzMtMZCzAGOtK6XXcdsDjUYNEUUolEwHe8lm+M15H2OcTGR5dVisCR7DVj5ynPFDazcnF2x5hncMMSwFzVSvTAjSx0ogViRuW8F65GtcY9G7CuRlVUe7V1+e2a4DpTMnatxUNfVH/3dOEvC15KAjDwWFJNuCqnAng9k3IO3c4a5J+aSSJ6BfLc9spvF0D5ofDr6JGn5EfAmNULRgbun64Qm2/B9MLQ5n5RDeyEGth3qIXey9lgBiCLOls7H2b4mGgOlDd+FDVGcay4h1CJfsYpFFxhC+znjNrFPvYAVYvwO3+NRSi10aO43V1jXyUZ30sEkptX2qKJlGHDs8RDvjIW08RWrxStNEcyqJJu2OcmYWHsDBkBzHK+iqznlGoEObaCzmOolVjfoOdeTLBlp2KOOkuHStOPvB9S+1wU6GVKN44DCcclZ5pypEJn4Ga11ATwST0sD/h+YRKdbFBn89xTZ1SoFS9nn3EeVvIZRZvul5KKHY/pgv2rb2zYvZob0m1STTYEdJH+De0YphgdUPgj6oZSy3IHu6oOxRu5qp9Jo6wKOvtTyKs4Y9R6Dkggvqzmq4mi1LHHat9lONwLXRy2LLXryaHjLbXXAwVaqC8vU0GEaJfcvI8nmTjN08k3QF7gSfn0rrWSsVnYl5KjHyww=
+    file:
+      - dip-Linux-x86_64
+      - dip-Darwin-x86_64
+    overwrite: true
+    skip_cleanup: true
+    on:
+      tags: true
+
+  - provider: rubygems
+    api_key:
+      secure: iaGo/N+zzkoe3FmMH5HvUVLI+p9h4dlYz/M0osFM043EohdlbOFmWhqoyb2DvUF3FEBf82N54IhWUtVSkBOLYdDfJD9N815hdeCEAF27JAMLnaoI9RmI1sgER/VDLzz77h5jxzlm5Y8daz9NPaN6hqSBL7butfqYb8AJ4og2E/vDBQxof3P3WbebUKRPyY/BIzsZVNc9Ewven4nWLc0K8Yegfo6pawfvw2i47J6t1RAUXcVOECU+EQ1v6UBR+O6VHpNuVHVAWXkbmxBkKevLaLRRX/Rophw1GewUekaS4JV0uj0zzlc0ajoVu+ljCwdvIR6TfGR76YiE3USF4V3losljJn4L7APpE8L7mRkuSRRDHTk5K5wVVF3ulmD1ZTWVvmu+A00Wz+l09SgTNZ2xIoPKTlmZ4AMIR9CO8FYTdSi+eOH/MdOlSxLvmviDbRe6Pm+XaPUAoz9P9Hk6LNt0folN7dqFQZi1VRA9UHBt2AYXj+qSgkCgcXf1HBbTgX9g4WMfJxdWsZPxJDqlg7DA+gDIfO9ITARFMmUeQOjtoA7kwyPy3yypYAjTOO4RNxcl7ogkASlcy/Hs5rrUMIeZd94xN1p726QF6Zo/AQTYPCgcuEJ0XjSNDn7itmPTwvUF0UlfKCQ2r9xi+rcKf8Gg57ds6WSzDnFw10T+rIzpIQ0=
+    skip_cleanup: true
+    on:
+      tags: true
+      os: linux
