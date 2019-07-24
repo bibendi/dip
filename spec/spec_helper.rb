@@ -43,6 +43,7 @@ RSpec.configure do |config|
 
   config.before do
     Dip.reset!
+    Dip::RunVars.env.clear
   end
 
   Kernel.srand config.seed
