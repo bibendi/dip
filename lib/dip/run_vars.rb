@@ -17,8 +17,6 @@ module Dip
     def initialize(argv, env = ENV)
       @argv = argv
       @env = env
-
-      self.class.env.clear
     end
 
     def call
@@ -32,7 +30,7 @@ module Dip
       return if early_envs.empty?
 
       (env.keys - early_envs).each do |key|
-        next if env_excluded?(key)
+        next if ignore_var?(key)
 
         self.class.env[key] = env[key]
       end
@@ -56,7 +54,7 @@ module Dip
       @early_envs ||= env["DIP_EARLY_ENVS"].to_s.split(",")
     end
 
-    def env_excluded?(key)
+    def ignore_var?(key)
       key.start_with?("DIP_", "_")
     end
   end
