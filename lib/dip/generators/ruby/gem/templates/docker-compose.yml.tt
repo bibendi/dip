@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+  app:
+    image: ruby:<%= options["ruby"] %>
+    environment:
+      BUNDLE_PATH: /bundle
+      BUNDLE_CONFIG: /app/.bundle/config
+      <%- if options["postgres"] -%>
+      DB_HOST: db
+      DB_NAME: docker
+      DB_USERNAME: postgres
+      <%- end -%>
+    command: bash
+    working_dir: /app
+    volumes:
+      - .:/app:cached
+      - bundler_data:/bundle
+    tmpfs:
+      - /tmp
+    <%- if options["postgres"] -%>
+    depends_on:
+      - db
+    <%- end -%>
+
+  <%- if options["postgres"] -%>
+  db:
+    image: postgres:<%= options["postgres"] %>
+    environment:
+      - POSTGRES_DB=docker
+
+  <%- end -%>
+volumes:
+  bundler_data:

@@ -84,6 +84,14 @@ module Dip
       end
     end
 
+    desc "generate STACK [OPTIONS]", "Generate config files for a given stack"
+    def generate(stack, *argv)
+      # TODO: Add ability to download stack from any github repository.
+      require_relative "generators/#{stack}/generator.rb"
+
+      Dip::Generator.start(argv)
+    end
+
     require_relative 'cli/ssh'
     desc "ssh", "ssh-agent container commands"
     subcommand :ssh, Dip::CLI::SSH
