@@ -255,7 +255,7 @@ curl www.bar-app.docker/api/v1/baz_service/qzz
 
 ### dip dns
 
-It runs a DNS server container based on https://github.com/aacebedo/dnsdock. It is used for container to container requests through Nginx. An application's docker-compose.yml should define `dns` configuration with environment variable `$DIP_DNS` and connect to external network `frontend`. `$DIP_DNS` will be automatically assigned by dip.
+Runs a DNS server container based on https://github.com/aacebedo/dnsdock. It is used for container to container requests through Nginx. An application's docker-compose.yml should define `dns` configuration with environment variable `$DIP_DNS` and connect to external network `frontend`. `$DIP_DNS` will be automatically assigned by dip.
 
 ```sh
 dip dns up
