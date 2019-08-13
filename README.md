@@ -6,7 +6,7 @@
 
 Docker Interaction Process
 
-Command line utility that gives the "native" interaction with applications configured with Docker Compose. It is for the local development only. In practice, it creates the feeling that you work without containers.
+A command-line utility that gives the "native" interaction with applications configured with Docker Compose. It is for local development only. In practice, it creates the feeling that you work without containers.
 
 <a href="https://evilmartians.com/?utm_source=dip">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
@@ -22,7 +22,7 @@ Command line utility that gives the "native" interaction with applications confi
 
 ## Integration with shell
 
-Dip can be injected into current shell (ZSH or Bash).
+Dip can be injected into the current shell (ZSH or Bash).
 
 ```sh
 eval "$(dip console)"
@@ -38,9 +38,9 @@ down
 provision
 ```
 
-When we change the current directory, all shell aliases will be automatically removed. But when we will enter back to a directory with a dip.yml file, then shell aliases will be renewed.
+When we change the current directory, all shell aliases will be automatically removed. But when we enter back into a directory with a `dip.yml` file, then shell aliases will be renewed.
 
-Also, in shell mode Dip is trying to determine passed manually environment variables. For example:
+Also, in shell mode Dip is trying to determine manually passed environment variables. For example:
 
 ```sh
 VERSION=20180515103400 rails db:migrate:down
@@ -59,7 +59,7 @@ Install like a typical Ruby gem:
 gem install dip
 ```
 
-If you don't have installed Ruby then you could copy a precompiled binary to your system. 
+If you don't have installed Ruby, then you could copy a precompiled binary to your system. 
 It can be found at [releases page](https://github.com/bibendi/dip/releases)
 or type bellow into your terminal:
 
@@ -86,10 +86,9 @@ The configuration file `dip.yml` should be placed in a project root directory.
 Also, in some cases, you may want to change the default config path by providing an environment variable `DIP_FILE`.
 If nearby places `dip.override.yml` file it would be merged into the main config.
 
-Below is an example of real config. 
+Below is an example of a real config. 
 `dip.yml` reference will be written soon. 
-Also, you can check out examples in the top.       
-
+Also, you can check out examples in the top.
 
 ```yml
 version: '2'
@@ -143,14 +142,14 @@ provision:
 
 ### dip run
 
-Run commands defined within `interaction` section of dip.yml
+Run commands defined within the `interaction` section of dip.yml
 
 ```sh
 dip run rails c
 dip run rake db:migrate
 ```
 
-`run` argument can be ommited
+`run` argument can be omitted
 
 ```sh
 dip rake db:migrate
@@ -163,7 +162,7 @@ Run commands each by each from `provision` section of dip.yml
 
 ### dip compose
 
-Run docker-compose commands that are configured according with application dip.yml
+Run docker-compose commands that are configured according to the application's dip.yml :
 
 ```sh
 dip compose COMMAND [OPTIONS]
@@ -197,9 +196,9 @@ volumes:
       name: ssh_data
 ```
 
-### dip nginx
+### dip Nginx
 
-Runs Nginx server container based on [bibendi/nginx-proxy](https://github.com/bibendi/nginx-proxy) image. An application's docker-compose.yml should contains environment variable `VIRTUAL_HOST` and `VIRTUAL_PATH` and connects to external network `frontend`.
+Runs Nginx server container based on [bibendi/nginx-proxy](https://github.com/bibendi/nginx-proxy) image. An application's docker-compose.yml should contain environment variable `VIRTUAL_HOST` and `VIRTUAL_PATH` and connects to external network `frontend`.
 
 foo-project/docker-compose.yml
 
@@ -255,7 +254,7 @@ curl www.bar-app.docker/api/v1/baz_service/qzz
 
 ### dip dns
 
-Runs DNS server container based on https://github.com/aacebedo/dnsdock It used for container to container requests through nginx. An application's docker-compose.yml should define `dns` configuration with environment variable `$DIP_DNS` and connect to external network `frontend`. `$DIP_DNS` will be automatically assigned by dip.
+Runs a DNS server container based on https://github.com/aacebedo/dnsdock. It is used for container to container requests through Nginx. An application's docker-compose.yml should define `dns` configuration with environment variable `$DIP_DNS` and connect to external network `frontend`. `$DIP_DNS` will be automatically assigned by dip.
 
 ```sh
 dip dns up
