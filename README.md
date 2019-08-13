@@ -88,8 +88,7 @@ If nearby places `dip.override.yml` file it would be merged into the main config
 
 Below is an example of a real config. 
 `dip.yml` reference will be written soon. 
-Also, you can check out examples in the top.       
-
+Also, you can check out examples in the top.
 
 ```yml
 version: '2'
@@ -150,7 +149,7 @@ dip run rails c
 dip run rake db:migrate
 ```
 
-`run` argument can be ommited
+`run` argument can be omitted
 
 ```sh
 dip rake db:migrate
