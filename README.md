@@ -48,13 +48,27 @@ After that, it will be automatically applied when you open your preferred termin
 
 ## Installation
 
-You have two ways.
+You have many ways.
 
-Install like a typical Ruby gem:
+### Homebrew
+
+
+You can use [Homebrew](https://brew.sh) on macOS (or [Linux](https://docs.brew.sh/Homebrew-on-Linux)).
+
+Today Homebrew tap for DIP is located at https://github.com/bibendi/homebrew-dip
+
+```sh
+brew tap bibendi/dip
+brew install dip
+```
+
+### Ruby Gem
 
 ```sh
 gem install dip
 ```
+
+### Precompiled binary
 
 If you don't have installed Ruby, then you could copy a precompiled binary to your system. 
 It can be found at [releases page](https://github.com/bibendi/dip/releases)
