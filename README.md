@@ -207,7 +207,7 @@ volumes:
       name: ssh_data
 ```
 
-### dip Nginx
+### dip nginx
 
 Runs Nginx server container based on [bibendi/nginx-proxy](https://github.com/bibendi/nginx-proxy) image. An application's docker-compose.yml should contain environment variable `VIRTUAL_HOST` and `VIRTUAL_PATH` and connects to external network `frontend`.
 
