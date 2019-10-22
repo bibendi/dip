@@ -14,6 +14,11 @@ describe Dip::Commands::Run, config: true do
     it { expected_exec("docker-compose", ["run", "--rm", "app"]) }
   end
 
+  context "when run shorthanded bash command" do
+    before { cli.start ["bash"] }
+    it { expected_exec("docker-compose", ["run", "--rm", "app"]) }
+  end
+
   context "when run rails command" do
     before { cli.start "run rails".shellsplit }
     it { expected_exec("docker-compose", ["run", "--rm", "app", "rails"]) }

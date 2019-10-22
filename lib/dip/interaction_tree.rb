@@ -15,7 +15,7 @@ module Dip
       entry = entries[name.to_sym]
       return unless entry
 
-      commands = expand(name, entry)
+      commands = expand(name.to_s, entry)
 
       keys = [name, *argv]
       rest = []
@@ -27,6 +27,8 @@ module Dip
           rest << keys.pop
         end
       end
+
+      nil
     end
 
     def list

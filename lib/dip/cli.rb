@@ -22,7 +22,7 @@ module Dip
 
     def method_missing(cmd, *args)
       if Dip.config.interaction.key?(cmd.to_sym)
-        self.class.start(["run", cmd] + args)
+        self.class.start(["run", cmd.to_s, *args])
       else
         super
       end
