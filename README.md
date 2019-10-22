@@ -119,7 +119,8 @@ interaction:
   bash:
     description: Open the Bash shell in app's container
     service: app
-    compose_run_options: [no-deps]
+    compose:
+      run_options: [no-deps]
 
   bundle:
     description: Run Bundler commands
@@ -146,7 +147,15 @@ interaction:
       s:
         description: Run Rails server at http://localhost:3000
         service: web
-        compose_run_options: [service-ports]
+        compose:
+          run_options: [service-ports]
+
+  sidekiq:
+    description: Run sidekiq in background
+    service: worker
+    compose:
+      method: up
+      run_options: [detach]
 
   psql:
     description: Run Postgres psql console
