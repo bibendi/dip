@@ -22,7 +22,6 @@ module Dip
                             desc: 'Docker image name'
       method_option :domain, aliases: '-d', type: :string, default: "docker",
                              desc: 'Top level domain'
-      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def up
         if options[:help]
           invoke :help, ['up']
@@ -37,7 +36,6 @@ module Dip
           ).execute
         end
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
       desc "down", "Stop dnsdock container"
       method_option :help, aliases: '-h', type: :boolean,

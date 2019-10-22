@@ -29,14 +29,28 @@ describe Dip::Commands::Run, config: true do
     it { expected_exec("docker-compose", ["run", "--rm", "app", "rails", "g", "migration", "add_index", "--force"]) }
   end
 
+  # backward compatibility
   context "when config with compose_run_options" do
     let(:commands) { {bash: {service: "app", compose_run_options: ["foo", "-bar", "--baz=qux"]}} }
     before { cli.start "run bash".shellsplit }
     it { expected_exec("docker-compose", ["run", "--foo", "-bar", "--baz=qux", "--rm", "app"]) }
   end
 
+  context "when config with compose: run_options" do
+    let(:commands) { {bash: {service: "app", compose: {run_options: ["foo", "-bar", "--baz=qux"]}}} }
+    before { cli.start "run bash".shellsplit }
+    it { expected_exec("docker-compose", ["run", "--foo", "-bar", "--baz=qux", "--rm", "app"]) }
+  end
+
+  # backward compatibility
   context "when config with compose_method" do
     let(:commands) { {rails: {service: "app", command: "rails", compose_method: "up"}} }
+    before { cli.start "run rails server".shellsplit }
+    it { expected_exec("docker-compose", ["up", "app", "rails", "server"]) }
+  end
+
+  context "when config with compose: method" do
+    let(:commands) { {rails: {service: "app", command: "rails", compose: {method: "up"}}} }
     before { cli.start "run rails server".shellsplit }
     it { expected_exec("docker-compose", ["up", "app", "rails", "server"]) }
   end

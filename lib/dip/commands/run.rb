@@ -2,58 +2,47 @@
 
 require 'shellwords'
 require_relative '../command'
+require_relative '../interaction_tree'
 require_relative 'compose'
 
 module Dip
   module Commands
     class Run < Dip::Command
-      def initialize(cmd, subcmd = nil, *argv)
-        @cmd = cmd.to_sym
-        @subcmd = subcmd.to_sym if subcmd
-        @argv = argv
-        @config = ::Dip.config.interaction
+      def initialize(cmd, *argv)
+        @command, @argv = InteractionTree.
+                          new(Dip.config.interaction).
+                          find(cmd, *argv)&.
+                          values_at(:command, :argv)
+
+        raise Dip::Error, "Command `#{[cmd, *argv].join(' ')}` not recognized!" unless command
+
+        Dip.env.merge(command[:environment])
       end
 
-      # TODO: Refactor
-      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def execute
-        command = @config.fetch(@cmd)
-        command[:subcommands] ||= {}
+        Dip::Commands::Compose.new(
+          command[:compose][:method],
+          *compose_arguments
+        ).execute
+      end
 
-        if (subcommand = command[:subcommands].fetch(@subcmd, {})).any?
-          subcommand[:command] ||= nil
-          command.merge!(subcommand)
-        elsif @subcmd
-          @argv.unshift(@subcmd.to_s)
-        end
+      private
 
-        Dip.env.merge(command[:environment]) if command[:environment]
+      attr_reader :command, :argv
 
-        compose_method = command.fetch(:compose_method, "run").to_s
+      def compose_arguments
+        compose_argv = command[:compose][:run_options].dup
 
-        compose_argv = []
-        compose_argv.concat(prepare_compose_run_options(command[:compose_run_options]))
-
-        if compose_method == "run"
+        if command[:compose][:method] == "run"
           compose_argv.concat(run_vars)
           compose_argv << "--rm"
         end
 
-        compose_argv << command.fetch(:service).to_s
-        compose_argv += command[:command].to_s.shellsplit
-        compose_argv.concat(@argv)
+        compose_argv << command.fetch(:service)
+        compose_argv.concat(command[:command].to_s.shellsplit)
+        compose_argv.concat(argv)
 
-        Dip::Commands::Compose.new(compose_method, *compose_argv).execute
-      end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
-
-      def prepare_compose_run_options(value)
-        return [] unless value
-
-        value.map do |o|
-          o = o.start_with?("-") ? o : "--#{o}"
-          o.shellsplit
-        end.flatten
+        compose_argv
       end
 
       def run_vars

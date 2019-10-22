@@ -3,7 +3,7 @@ AllCops:
   Exclude:
     - tmp/**/*
     - vendor/**/*
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.3
 
 Documentation:
   Enabled: false
@@ -55,3 +55,9 @@ Layout/DotPosition:
 
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
+
+Metrics/AbcSize:
+  Max: 30
+
+Metrics/MethodLength:
+  Max: 15

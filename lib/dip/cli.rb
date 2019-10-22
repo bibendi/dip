@@ -39,6 +39,12 @@ module Dip
     end
     map %w(--version -v) => :version
 
+    desc 'ls', 'List available run commands'
+    def ls
+      require_relative 'commands/list'
+      Dip::Commands::List.new.execute
+    end
+
     desc 'compose CMD [OPTIONS]', 'Run docker-compose commands'
     def compose(*argv)
       require_relative 'commands/compose'

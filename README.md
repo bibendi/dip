@@ -102,7 +102,8 @@ Below is an example of a real config.
 Also, you can check out examples in the top.
 
 ```yml
-version: '2'
+# Required minimum dip version
+version: '4'
 
 environment:
   COMPOSE_EXT: development
@@ -116,32 +117,48 @@ compose:
 
 interaction:
   bash:
+    description: Open the Bash shell in app's container
     service: app
-    compose_run_options: [no-deps]
+    compose:
+      run_options: [no-deps]
 
   bundle:
+    description: Run Bundler commands
     service: app
     command: bundle
 
   rake:
+    description: Run Rake commands
     service: app
     command: bundle exec rake
 
   rspec:
+    description: Run Rspec commands
     service: app
     environment:
       RAILS_ENV: test
     command: bundle exec rspec
 
   rails:
+    description: Run Rails commands
     service: app
     command: bundle exec rails
     subcommands:
       s:
+        description: Run Rails server at http://localhost:3000
         service: web
-        compose_run_options: [service-ports]
+        compose:
+          run_options: [service-ports]
+
+  sidekiq:
+    description: Run sidekiq in background
+    service: worker
+    compose:
+      method: up
+      run_options: [detach]
 
   psql:
+    description: Run Postgres psql console
     service: app
     command: psql -h pg -U postgres
 
@@ -165,6 +182,18 @@ dip run rake db:migrate
 ```sh
 dip rake db:migrate
 dip VERSION=12352452 rake db:rollback
+```
+
+### dip ls
+
+List al available run commands.
+
+```sh
+dip ls
+
+bash     # Open the Bash shell in app's container
+rails    # Run Rails command
+rails s  # Run Rails server at http://localhost:3000
 ```
 
 ### dip provision

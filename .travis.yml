@@ -1,7 +1,7 @@
 language: ruby
 
 rvm:
-  - 2.6
+  - 2.3
 
 os:
   - osx
@@ -13,15 +13,14 @@ branches:
     - /^v\d+\.\d+\.\d+/
 
 stages:
+  # Skipping. I don't know how to run test stage only on linux.
+  - name: test
+    if: 1 = 2
   - check
-  - test
   - name: build-on-linux
     if: tag IS present
   - name: build-on-osx
     if: tag IS present
-
-script:
-  - bundle exec rspec
 
 jobs:
   include:
@@ -32,6 +31,7 @@ jobs:
       script:
         - danger
         - bundle exec rubocop
+        - bundle exec rspec
 
     - stage: build-on-linux
       os: linux
