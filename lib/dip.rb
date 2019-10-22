@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
+require "dip/errors"
 require "dip/config"
 require "dip/environment"
 
 module Dip
-  Error = Class.new(StandardError)
-
   class << self
     def config
       @config ||= Dip::Config.new

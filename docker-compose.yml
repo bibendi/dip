@@ -6,6 +6,7 @@ services:
     environment:
       - GEM_HOME=/bundle
       - BUNDLE_PATH=/bundle
+      - HISTFILE=/app/tmp/.bash_history
     working_dir: /app
     volumes:
       - .:/app

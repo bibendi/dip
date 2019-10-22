@@ -3,6 +3,7 @@
 require "yaml"
 require "erb"
 
+require "dip/version"
 require "dip/ext/hash"
 
 using ActiveSupportHashHelpers
@@ -52,6 +53,13 @@ module Dip
       raise ArgumentError, "Dip config not found at path '#{self.class.path}'" unless self.class.exist?
 
       config = self.class.load_yaml
+
+      unless Gem::Version.new(Dip::VERSION) >= Gem::Version.new(config.fetch(:version))
+        raise VersionMismatchError, "Your dip version is `#{Dip::VERSION}`, " \
+                                    "but config requires minimum version `#{config[:version]}`. " \
+                                    "Please upgrade your dip!"
+      end
+
       config.deep_merge!(self.class.load_yaml(self.class.override_path))
 
       @config = config
