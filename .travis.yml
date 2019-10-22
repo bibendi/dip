@@ -60,12 +60,12 @@ jobs:
           on:
             tags: true
 
-#        - provider: rubygems
-#          api_key:
-#            secure: iaGo/N+zzkoe3FmMH5HvUVLI+p9h4dlYz/M0osFM043EohdlbOFmWhqoyb2DvUF3FEBf82N54IhWUtVSkBOLYdDfJD9N815hdeCEAF27JAMLnaoI9RmI1sgER/VDLzz77h5jxzlm5Y8daz9NPaN6hqSBL7butfqYb8AJ4og2E/vDBQxof3P3WbebUKRPyY/BIzsZVNc9Ewven4nWLc0K8Yegfo6pawfvw2i47J6t1RAUXcVOECU+EQ1v6UBR+O6VHpNuVHVAWXkbmxBkKevLaLRRX/Rophw1GewUekaS4JV0uj0zzlc0ajoVu+ljCwdvIR6TfGR76YiE3USF4V3losljJn4L7APpE8L7mRkuSRRDHTk5K5wVVF3ulmD1ZTWVvmu+A00Wz+l09SgTNZ2xIoPKTlmZ4AMIR9CO8FYTdSi+eOH/MdOlSxLvmviDbRe6Pm+XaPUAoz9P9Hk6LNt0folN7dqFQZi1VRA9UHBt2AYXj+qSgkCgcXf1HBbTgX9g4WMfJxdWsZPxJDqlg7DA+gDIfO9ITARFMmUeQOjtoA7kwyPy3yypYAjTOO4RNxcl7ogkASlcy/Hs5rrUMIeZd94xN1p726QF6Zo/AQTYPCgcuEJ0XjSNDn7itmPTwvUF0UlfKCQ2r9xi+rcKf8Gg57ds6WSzDnFw10T+rIzpIQ0=
-#          skip_cleanup: true
-#          on:
-#            tags: true
+        - provider: rubygems
+          api_key:
+            secure: iaGo/N+zzkoe3FmMH5HvUVLI+p9h4dlYz/M0osFM043EohdlbOFmWhqoyb2DvUF3FEBf82N54IhWUtVSkBOLYdDfJD9N815hdeCEAF27JAMLnaoI9RmI1sgER/VDLzz77h5jxzlm5Y8daz9NPaN6hqSBL7butfqYb8AJ4og2E/vDBQxof3P3WbebUKRPyY/BIzsZVNc9Ewven4nWLc0K8Yegfo6pawfvw2i47J6t1RAUXcVOECU+EQ1v6UBR+O6VHpNuVHVAWXkbmxBkKevLaLRRX/Rophw1GewUekaS4JV0uj0zzlc0ajoVu+ljCwdvIR6TfGR76YiE3USF4V3losljJn4L7APpE8L7mRkuSRRDHTk5K5wVVF3ulmD1ZTWVvmu+A00Wz+l09SgTNZ2xIoPKTlmZ4AMIR9CO8FYTdSi+eOH/MdOlSxLvmviDbRe6Pm+XaPUAoz9P9Hk6LNt0folN7dqFQZi1VRA9UHBt2AYXj+qSgkCgcXf1HBbTgX9g4WMfJxdWsZPxJDqlg7DA+gDIfO9ITARFMmUeQOjtoA7kwyPy3yypYAjTOO4RNxcl7ogkASlcy/Hs5rrUMIeZd94xN1p726QF6Zo/AQTYPCgcuEJ0XjSNDn7itmPTwvUF0UlfKCQ2r9xi+rcKf8Gg57ds6WSzDnFw10T+rIzpIQ0=
+          skip_cleanup: true
+          on:
+            tags: true
 
     - stage: build-on-osx
       os: osx
