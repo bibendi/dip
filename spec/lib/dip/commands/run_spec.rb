@@ -6,7 +6,13 @@ require "dip/commands/run"
 
 describe Dip::Commands::Run, config: true do
   let(:config) { {interaction: commands} }
-  let(:commands) { {bash: {service: "app"}, rails: {service: "app", command: "rails"}} }
+  let(:commands) do
+    {
+      bash: {service: "app"},
+      rails: {service: "app", command: "rails"},
+      psql: {service: "postgres", command: "psql -h postgres", default_args: "db_dev"}
+    }
+  end
   let(:cli) { Dip::CLI }
 
   context "when run bash command" do
@@ -17,6 +23,16 @@ describe Dip::Commands::Run, config: true do
   context "when run shorthanded bash command" do
     before { cli.start ["bash"] }
     it { expected_exec("docker-compose", ["run", "--rm", "app"]) }
+  end
+
+  context "when run psql command without db name" do
+    before { cli.start "run psql".shellsplit }
+    it { expected_exec("docker-compose", ["run", "--rm", "postgres", "psql", "-h", "postgres", "db_dev"]) }
+  end
+
+  context "when run psql command with db name" do
+    before { cli.start "run psql db_test".shellsplit }
+    it { expected_exec("docker-compose", ["run", "--rm", "postgres", "psql", "-h", "postgres", "db_test"]) }
   end
 
   context "when run rails command" do
