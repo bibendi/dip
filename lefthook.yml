@@ -1,0 +1,7 @@
+# To install Lefthook checkout the README at https://github.com/Arkweid/lefthook/blob/master/README.md
+# After that run `lefthook install`.
+pre-commit:
+  commands:
+    rubocop:
+      glob: "**/*.rb"
+      runner: '$([ -n "$DIP_SHELL" ] && echo "dip") bundle exec rubocop --force-exclusion {staged_files}'
