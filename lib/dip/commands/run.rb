@@ -39,8 +39,12 @@ module Dip
         end
 
         compose_argv << command.fetch(:service)
-        compose_argv.concat(command[:command].to_s.shellsplit)
-        compose_argv.concat(argv)
+
+        unless (cmd = command[:command].to_s).empty?
+          compose_argv.concat(cmd.shellsplit)
+        end
+
+        compose_argv.concat(argv.any? ? argv : command[:default_args])
 
         compose_argv
       end

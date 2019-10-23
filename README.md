@@ -160,6 +160,7 @@ interaction:
   psql:
     description: Run Postgres psql console
     service: app
+    default_args: db_dev
     command: psql -h pg -U postgres
 
 provision:
