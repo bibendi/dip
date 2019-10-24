@@ -8,6 +8,9 @@ Docker Interaction Process
 
 A command-line utility that gives the "native" interaction with applications configured with Docker Compose. It is for local development only. In practice, it creates the feeling that you work without containers.
 
+<a href="https://evilmartians.com/?utm_source=dip">
+<img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
+
 ## Presentations and examples
 
 - [Local development with Docker containers](https://slides.com/bibendi/dip)
