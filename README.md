@@ -11,7 +11,7 @@ A command-line utility that gives the "native" interaction with applications con
 <p float="left">
 <a href="https://evilmartians.com/?utm_source=dip"><img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" height="80" /></a>
 <img src="https://ya-webdesign.com/images250_/vertical-divider-png-1.png" width="50" height="100" />
-<a href=" https://www.jetbrains.com/?from=DIP"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/JetBrains_Logo_2016.svg/1200px-JetBrains_Logo_2016.svg.png" alt="Sponsored by JetBrains" height="100" /></a></p>
+<a href="https://www.jetbrains.com/?from=DIP"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/JetBrains_Logo_2016.svg/1200px-JetBrains_Logo_2016.svg.png" alt="Sponsored by JetBrains" height="100" /></a></p>
 
 ## Presentations and examples
 
