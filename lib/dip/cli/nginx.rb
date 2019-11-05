@@ -23,7 +23,7 @@ module Dip
       method_option :domain, aliases: '-d', type: :string, default: "docker",
                              desc: 'Top level domain'
       method_option :certs, aliases: '-c', type: :string, default: ".",
-                           desc: 'Path to ssl certificates'
+                            desc: 'Path to ssl certificates'
       def up
         if options[:help]
           invoke :help, ['up']

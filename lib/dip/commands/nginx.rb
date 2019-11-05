@@ -29,7 +29,7 @@ module Dip
           result << "--volume #{@socket}:/tmp/docker.sock:ro"
           result << "--volume #{@certs}:/etc/nginx/certs" unless @certs.to_s.empty?
           result << "--restart always"
-          result << "#{@publish.split(',').map { |p| "--publish #{p}" }.join(' ')}"
+          result << @publish.split(',').map { |p| "--publish #{p}" }.join(' ')
           result << "--net #{@net}"
           result << "--name #{@name}"
           result << "--label com.dnsdock.alias=#{@domain}"
