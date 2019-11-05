@@ -7,13 +7,14 @@ module Dip
   module Commands
     module Nginx
       class Up < Dip::Command
-        def initialize(name:, socket:, net:, publish:, image:, domain:)
+        def initialize(name:, socket:, net:, publish:, image:, domain:, certs:)
           @name = name
           @socket = socket
           @net = net
           @publish = publish
           @image = image
           @domain = domain
+          @certs = certs
         end
 
         def execute
@@ -26,6 +27,7 @@ module Dip
         def container_args
           result = %w(--detach)
           result << "--volume #{@socket}:/tmp/docker.sock:ro"
+          result << "--volume #{@certs}:/etc/nginx/certs" unless @certs.to_s.empty?
           result << "--restart always"
           result << "--publish #{@publish}"
           result << "--net #{@net}"

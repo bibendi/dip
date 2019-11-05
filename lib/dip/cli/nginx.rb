@@ -22,6 +22,8 @@ module Dip
                             desc: 'Docker image name'
       method_option :domain, aliases: '-d', type: :string, default: "docker",
                              desc: 'Top level domain'
+      method_option :certs, aliases: '-c', type: :string, default: ".",
+                           desc: 'Path to ssl certificates'
       def up
         if options[:help]
           invoke :help, ['up']
@@ -32,7 +34,8 @@ module Dip
             net: options.fetch(:net),
             publish: options.fetch(:publish),
             image: options.fetch(:image),
-            domain: options.fetch(:domain)
+            domain: options.fetch(:domain),
+            certs: options.fetch(:certs)
           ).execute
         end
       end
