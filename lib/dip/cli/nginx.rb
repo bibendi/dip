@@ -17,7 +17,7 @@ module Dip
       method_option :net, aliases: '-t', type: :string, default: "frontend",
                           desc: 'Container network name'
       method_option :publish, aliases: '-p', type: :string, default: "80:80",
-                              desc: 'Container port'
+                              desc: 'Container port(s). For more than 1 ports separate by comma'
       method_option :image, aliases: '-i', type: :string, default: "bibendi/nginx-proxy:latest",
                             desc: 'Docker image name'
       method_option :domain, aliases: '-d', type: :string, default: "docker",
