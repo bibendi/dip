@@ -16,12 +16,13 @@ module Dip
                              desc: 'Path to docker socket'
       method_option :net, aliases: '-t', type: :string, default: "frontend",
                           desc: 'Container network name'
-      method_option :publish, aliases: '-p', type: :string, default: "80:80",
-                              desc: 'Container port'
+      method_option :publish, aliases: '-p', type: :array, default: "80:80",
+                              desc: 'Container port(s). For more than one port, separate them by a space'
       method_option :image, aliases: '-i', type: :string, default: "bibendi/nginx-proxy:latest",
                             desc: 'Docker image name'
       method_option :domain, aliases: '-d', type: :string, default: "docker",
                              desc: 'Top level domain'
+      method_option :certs, aliases: '-c', type: :string, desc: 'Path to ssl certificates'
       def up
         if options[:help]
           invoke :help, ['up']
@@ -32,7 +33,8 @@ module Dip
             net: options.fetch(:net),
             publish: options.fetch(:publish),
             image: options.fetch(:image),
-            domain: options.fetch(:domain)
+            domain: options.fetch(:domain),
+            certs: options[:certs]
           ).execute
         end
       end

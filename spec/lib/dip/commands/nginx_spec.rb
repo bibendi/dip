@@ -14,9 +14,9 @@ describe Dip::Commands::Nginx do
       it do
         expected_subshell(
           "docker",
-          ["run", "--detach", "--volume", "/var/run/docker.sock:/tmp/docker.sock:ro", "--restart", "always",
-           "--publish", "80:80", "--net", "frontend", "--name", "nginx", "--label", "com.dnsdock.alias=docker",
-           "bibendi/nginx-proxy:latest"]
+          ["run", "--detach", "--volume", "/var/run/docker.sock:/tmp/docker.sock:ro",
+           "--restart", "always", "--publish", "80:80", "--net", "frontend", "--name", "nginx",
+           "--label", "com.dnsdock.alias=docker", "bibendi/nginx-proxy:latest"]
         )
       end
     end
@@ -38,8 +38,13 @@ describe Dip::Commands::Nginx do
     end
 
     context "when option `publish` is present" do
-      before { cli.start "up --publish foo".shellsplit }
-      it { expected_subshell("docker", array_including("--publish", "foo")) }
+      before { cli.start "up --publish 80:80".shellsplit }
+      it { expected_subshell("docker", array_including("--publish", "80:80")) }
+
+      context "when more than one port given" do
+        before { cli.start "up --publish 80:80 443:443".shellsplit }
+        it { expected_subshell("docker", array_including("--publish", "80:80", "--publish", "443:443")) }
+      end
     end
 
     context "when option `image` is present" do
@@ -50,6 +55,11 @@ describe Dip::Commands::Nginx do
     context "when option `domain` is present" do
       before { cli.start "up --domain foo".shellsplit }
       it { expected_subshell("docker", array_including("com.dnsdock.alias=foo")) }
+    end
+
+    context "when option `certs` is present" do
+      before { cli.start "up --certs /home/whoami/certs_storage".shellsplit }
+      it { expected_subshell("docker", array_including("--volume", "/home/whoami/certs_storage:/etc/nginx/certs")) }
     end
   end
 

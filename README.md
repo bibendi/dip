@@ -48,7 +48,7 @@ Also, in shell mode Dip is trying to determine manually passed environment varia
 VERSION=20180515103400 rails db:migrate:down
 ```
 
-You could add this `eval` at the end of your `~/.zshrc`, or `~/.bashrc`, or `~/.bash_profile`. 
+You could add this `eval` at the end of your `~/.zshrc`, or `~/.bashrc`, or `~/.bash_profile`.
 After that, it will be automatically applied when you open your preferred terminal.
 
 ## Installation
@@ -75,14 +75,14 @@ gem install dip
 
 ### Precompiled binary
 
-If you don't have installed Ruby, then you could copy a precompiled binary to your system. 
+If you don't have installed Ruby, then you could copy a precompiled binary to your system.
 It can be found at [releases page](https://github.com/bibendi/dip/releases)
 or type bellow into your terminal:
 
 ```sh
 curl -L https://github.com/bibendi/dip/releases/download/4.1.0/dip-`uname -s`-`uname -m` > /usr/local/bin/dip
 chmod +x /usr/local/bin/dip
-``` 
+```
 
 ## Docker installation
 
@@ -102,8 +102,8 @@ The configuration file `dip.yml` should be placed in a project root directory.
 Also, in some cases, you may want to change the default config path by providing an environment variable `DIP_FILE`.
 If nearby places `dip.override.yml` file it would be merged into the main config.
 
-Below is an example of a real config. 
-`dip.yml` reference will be written soon. 
+Below is an example of a real config.
+`dip.yml` reference will be written soon.
 Also, you can check out examples in the top.
 
 ```yml
@@ -296,6 +296,20 @@ cd foo-project && dip compose up
 cd baz-project && dip compose up
 curl www.bar-app.docker/api/v1/quz
 curl www.bar-app.docker/api/v1/baz_service/qzz
+```
+
+#### Pass SSL certificates
+
+```sh
+dip nginx up -c $HOME/ssl_certificates
+```
+
+#### Publish more than one port to localhost
+
+Just pass a list, separated by a space:
+
+```sh
+dip nginx up -p 80:80 443:443
 ```
 
 ### dip dns
