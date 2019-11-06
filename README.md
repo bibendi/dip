@@ -306,7 +306,7 @@ dip nginx up -c $HOME/ssl_certificates
 
 #### Publish more than one port to localhost
 
-Just pass as list splitted by comma:
+Just pass a list, separated by a space:
 
 ```sh
 dip nginx up -p 80:80 443:443
