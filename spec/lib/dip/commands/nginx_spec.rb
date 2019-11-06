@@ -14,7 +14,7 @@ describe Dip::Commands::Nginx do
       it do
         expected_subshell(
           "docker",
-          ["run", "--detach", "--volume", "/var/run/docker.sock:/tmp/docker.sock:ro", "--volume", ".:/etc/nginx/certs",
+          ["run", "--detach", "--volume", "/var/run/docker.sock:/tmp/docker.sock:ro",
            "--restart", "always", "--publish", "80:80", "--net", "frontend", "--name", "nginx",
            "--label", "com.dnsdock.alias=docker", "bibendi/nginx-proxy:latest"]
         )
@@ -41,8 +41,8 @@ describe Dip::Commands::Nginx do
       before { cli.start "up --publish 80:80".shellsplit }
       it { expected_subshell("docker", array_including("--publish", "80:80")) }
 
-      context "when more than 1 port published" do
-        before { cli.start "up --publish 80:80,443:443".shellsplit }
+      context "when more than one port given" do
+        before { cli.start "up --publish 80:80 443:443".shellsplit }
         it { expected_subshell("docker", array_including("--publish", "80:80", "--publish", "443:443")) }
       end
     end

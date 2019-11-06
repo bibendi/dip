@@ -103,8 +103,7 @@ Also, in some cases, you may want to change the default config path by providing
 If nearby places `dip.override.yml` file it would be merged into the main config.
 
 Below is an example of a real config.
-`list via comma
-dip.yml` reference will be written soon.
+`dip.yml` reference will be written soon.
 Also, you can check out examples in the top.
 
 ```yml
@@ -302,7 +301,7 @@ curl www.bar-app.docker/api/v1/baz_service/qzz
 #### Pass SSL certificates
 
 ```sh
-dip nginx up -c /home/$(whoami)/ssl_certificates
+dip nginx up -c $HOME/ssl_certificates
 ```
 
 #### Publish more than one port to localhost
@@ -310,7 +309,7 @@ dip nginx up -c /home/$(whoami)/ssl_certificates
 Just pass as list splitted by comma:
 
 ```sh
-dip nginx up -p 80:80,443:443
+dip nginx up -p 80:80 443:443
 ```
 
 ### dip dns
