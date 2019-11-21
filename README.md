@@ -17,7 +17,7 @@ A command-line utility that gives the "native" interaction with applications con
 
 - [Local development with Docker containers](https://slides.com/bibendi/dip)
 - Dockerized Ruby on Rails applications: [one](https://github.com/bibendi/dip-example-rails), [two](https://github.com/evilmartians/evil_chat)
-- [Dockerized Node.js application](https://github.com/bibendi/yt-graphql-react-event-booking-api)
+- Dockerized Node.js application: [one](https://github.com/bibendi/twinkle.js), [two](https://github.com/bibendi/yt-graphql-react-event-booking-api)
 - [Dockerized Ruby gem](https://github.com/bibendi/schked)
 
 [![asciicast](https://asciinema.org/a/210236.svg)](https://asciinema.org/a/210236)
