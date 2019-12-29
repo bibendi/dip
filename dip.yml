@@ -10,16 +10,10 @@ interaction:
     service: app
     command: /bin/bash
 
-  dev:
+  pry:
+    description: Open Pry console
     service: app
-    command: exit
-    subcommands:
-      console:
-        description: Open the gem console
-        command: ./bin/console
-      clean:
-        description: Clean dependencies
-        command: rm -rf Gemfile.lock
+    command: ./bin/console
 
   bundle:
     description: Run Bundler commands
@@ -37,5 +31,5 @@ interaction:
     command: bundle exec rubocop
 
 provision:
-  - dip app clean
+  - rm -rf Gemfile.lock
   - dip bundle install

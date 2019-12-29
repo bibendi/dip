@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require 'thor'
+require_relative "./base"
 require_relative "../commands/ssh"
 
 module Dip
   class CLI
-    class SSH < Thor
+    class SSH < Base
       desc "up", "Run ssh-agent container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'

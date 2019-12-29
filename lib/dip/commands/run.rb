@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'shellwords'
+require_relative '../../../lib/dip/run_vars'
 require_relative '../command'
 require_relative '../interaction_tree'
 require_relative 'compose'

@@ -98,13 +98,13 @@ dip SUBCOMMAND --help
 
 ### dip.yml
 
-The configuration file `dip.yml` should be placed in a project root directory.
+The configuration is loaded from `dip.yml` file. It may be located in a working directory, or it will be found in the nearest parent directory up to the file system root. If nearby places `dip.override.yml` file, it will be merged into the main config.
+
 Also, in some cases, you may want to change the default config path by providing an environment variable `DIP_FILE`.
-If nearby places `dip.override.yml` file it would be merged into the main config.
 
 Below is an example of a real config.
-`dip.yml` reference will be written soon.
-Also, you can check out examples in the top.
+Config file reference will be written soon.
+Also, you can check out examples at the top.
 
 ```yml
 # Required minimum dip version
@@ -124,6 +124,7 @@ interaction:
   bash:
     description: Open the Bash shell in app's container
     service: app
+    command: bash
     compose:
       run_options: [no-deps]
 
@@ -153,7 +154,7 @@ interaction:
         description: Run Rails server at http://localhost:3000
         service: web
         compose:
-          run_options: [service-ports]
+          run_options: [service-ports, use-aliases]
 
   sidekiq:
     description: Run sidekiq in background
@@ -174,6 +175,44 @@ provision:
   - dip bash -c ./bin/setup
 ```
 
+### Predefined environment variables
+
+#### $DIP_OS
+
+Current OS architecture (e.g. `linux`, `darwin`, `freebsd`, and so on). Sometime it may be useful to have one common `docker-compose.yml` and OS-dependent Compose configs.
+
+#### $DIP_WORK_DIR_REL_PATH
+
+Relative path from the current directory to the nearest directory where a Dip's config is found. It is useful when you need to mount a specific local directory to a container along with ability to change its working dir. For example:
+
+```
+- project_root
+  |- dip.yml (1)
+  |- docker-compose.yml (2)
+  |- sub-project-dir
+     |- your current directory is here <<<
+```
+
+```yml
+# dip.yml (1)
+environment:
+  WORK_DIR: /app/${DIP_WORK_DIR_REL_PATH}
+```
+
+```yml
+# docker-compose.yml (2)
+services:
+  app:
+    working_dir: ${WORK_DIR:-/app}
+```
+
+```sh
+cd sub-project-dir
+dip run bash -c pwd
+```
+
+returned is `/app/sub-project-dir`.
+
 ### dip run
 
 Run commands defined within the `interaction` section of dip.yml
@@ -183,16 +222,21 @@ dip run rails c
 dip run rake db:migrate
 ```
 
-`run` argument can be omitted
+Also, `run` argument can be omitted
 
 ```sh
 dip rake db:migrate
+```
+
+You can pass in a custom environment variable into a container:
+
+```sh
 dip VERSION=12352452 rake db:rollback
 ```
 
 ### dip ls
 
-List al available run commands.
+List all available run commands.
 
 ```sh
 dip ls

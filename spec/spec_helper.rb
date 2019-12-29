@@ -11,8 +11,9 @@ end
 
 require "pry-byebug"
 require "dip"
+require "dip/run_vars"
 
-Dir["#{__dir__}/support/**/*.rb"].each { |f| require f }
+Dir["#{__dir__}/support/**/*.rb"].sort.each { |f| require f }
 
 RSpec.configure do |config|
   config.filter_run :focus

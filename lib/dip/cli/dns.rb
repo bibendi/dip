@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 require 'thor'
+require_relative "./base"
 require_relative "../commands/dns"
 
 module Dip
   class CLI
     # See more https://github.com/aacebedo/dnsdock
-    class DNS < Thor
+    class DNS < Base
       desc "up", "Run dnsdock container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'

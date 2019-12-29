@@ -33,31 +33,47 @@ describe Dip::Commands::Compose do
   context "when config contains multiple docker-compose files", config: true do
     context "and some files are not exist" do
       let(:config) { {compose: {files: %w(file1.yml file2.yml file3.yml)}} }
+      let(:file1) { fixture_path("empty", "file1.yml") }
+      let(:file2) { fixture_path("empty", "file2.yml") }
+      let(:file3) { fixture_path("empty", "file3.yml") }
 
       before do
-        allow(File).to receive(:exist?).and_call_original
-        allow(File).to receive(:exist?).with("file1.yml").and_return(true)
-        allow(File).to receive(:exist?).with("file2.yml").and_return(false)
-        allow(File).to receive(:exist?).with("file3.yml").and_return(true)
+        allow_any_instance_of(Pathname).to receive(:exist?) do |obj|
+          case obj.to_s
+          when file1, file3
+            true
+          when file2
+            false
+          else
+            File.exist?(obj.to_s)
+          end
+        end
 
         cli.start "compose run".shellsplit
       end
 
-      it { expected_exec("docker-compose", ["--file", "file1.yml", "--file", "file3.yml", "run"]) }
+      it { expected_exec("docker-compose", ["--file", file1, "--file", file3, "run"]) }
     end
 
     context "and a file name contains env var", env: true do
       let(:config) { {compose: {files: %w(file1-${DIP_OS}.yml)}} }
+      let(:file) { fixture_path("empty", "file1-darwin.yml") }
       let(:env) { {"DIP_OS" => "darwin"} }
 
       before do
-        allow(File).to receive(:exist?).and_call_original
-        allow(File).to receive(:exist?).with("file1-darwin.yml").and_return(true)
+        allow_any_instance_of(Pathname).to receive(:exist?) do |obj|
+          case obj.to_s
+          when file
+            true
+          else
+            File.exist?(obj.to_s)
+          end
+        end
 
         cli.start "compose run".shellsplit
       end
 
-      it { expected_exec("docker-compose", ["--file", "file1-darwin.yml", "run"]) }
+      it { expected_exec("docker-compose", ["--file", file, "run"]) }
     end
   end
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pathname'
+
 require_relative '../command'
 require_relative 'dns'
 
@@ -29,12 +31,14 @@ module Dip
         return unless (files = config[:files])
 
         if files.is_a?(Array)
-          files.each_with_object([]) do |file_name, memo|
-            file_name = ::Dip.env.interpolate(file_name)
-            next unless File.exist?(file_name)
+          files.each_with_object([]) do |file_path, memo|
+            file_path = ::Dip.env.interpolate(file_path)
+            file_path = Pathname.new(file_path)
+            file_path = Dip.config.file_path.parent.join(file_path).expand_path if file_path.relative?
+            next unless file_path.exist?
 
             memo << "--file"
-            memo << file_name
+            memo << file_path.to_s
           end
         end
       end

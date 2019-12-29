@@ -5,6 +5,8 @@ require 'dip/run_vars'
 
 module Dip
   class CLI < Thor
+    TOP_LEVEL_COMMANDS = %w[help version ls compose up stop down run provision ssh dns nginx console].freeze
+
     class << self
       # Hackery. Take the run method away from Thor so that we can redefine it.
       def is_thor_reserved_word?(word, type)
@@ -13,24 +15,24 @@ module Dip
         super
       end
 
+      def exit_on_failure?
+        true
+      end
+
       def start(argv)
+        argv = Dip::RunVars.call(argv, ENV)
+
+        cmd = argv.first
+
+        if cmd && !TOP_LEVEL_COMMANDS.include?(cmd) && Dip.config.exist? && Dip.config.interaction.key?(cmd.to_sym)
+          argv.unshift("run")
+        end
+
         super Dip::RunVars.call(argv, ENV)
       end
     end
 
     stop_on_unknown_option! :up
-
-    def method_missing(cmd, *args)
-      if Dip.config.interaction.key?(cmd.to_sym)
-        self.class.start(["run", cmd.to_s, *args])
-      else
-        super
-      end
-    end
-
-    def respond_to_missing?(cmd)
-      Dip.config.interaction.key?(cmd.to_sym)
-    end
 
     desc 'version', 'dip version'
     def version

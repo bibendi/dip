@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require 'thor'
+require_relative "./base"
 require_relative "../commands/console"
 
 module Dip
   class CLI
-    class Console < Thor
+    class Console < Base
       desc "start", "Integrate Dip into current shell"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'

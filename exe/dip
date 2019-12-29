@@ -4,15 +4,15 @@
 lib_path = File.expand_path('../lib', __dir__)
 $LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
 
+begin
+  require 'pry-byebug' if ENV["DIP_ENV"] == "debug"
+rescue LoadError # rubocop:disable Lint/SuppressedException
+  # do nothing
+end
+
 require 'dip'
 require 'dip/cli'
 require 'dip/run_vars'
-
-begin
-  require 'pry-byebug' if Dip.debug?
-rescue LoadError
-  puts "pry-byebug not found!"
-end
 
 Signal.trap('INT') do
   warn("\n#{caller.join("\n")}: interrupted")
