@@ -234,6 +234,12 @@ You can pass in a custom environment variable into a container:
 dip VERSION=12352452 rake db:rollback
 ```
 
+Use options `-p, --publish=[]` if you need to additionally publish a container's port(s) to the host unless this behaviour is not configured at dip.yml:
+
+```sh
+dip run -p 3000:3000 bundle exec rackup config.ru 
+```
+
 ### dip ls
 
 List all available run commands.

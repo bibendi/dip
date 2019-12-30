@@ -32,7 +32,7 @@ module Dip
       end
     end
 
-    stop_on_unknown_option! :up
+    stop_on_unknown_option! :run
 
     desc 'version', 'dip version'
     def version
@@ -68,10 +68,17 @@ module Dip
       compose("down", *argv)
     end
 
-    desc 'CMD or dip run CMD [OPTIONS]', 'Run configured command in a docker-compose service'
+    desc 'run [OPTIONS] CMD [ARGS]', 'Run configured command in a docker-compose service. `run` prefix may be omitted'
+    method_option :publish, aliases: '-p', type: :string, repeatable: true,
+                            desc: "Publish a container's port(s) to the host"
+    method_option :help, aliases: '-h', type: :boolean, desc: 'Display usage information'
     def run(*argv)
-      require_relative 'commands/run'
-      Dip::Commands::Run.new(*argv).execute
+      if argv.empty? || options[:help]
+        invoke :help, ['run']
+      else
+        require_relative 'commands/run'
+        Dip::Commands::Run.new(*argv, publish: options[:publish]).execute
+      end
     end
 
     desc "provision", "Execute commands within provision section"
