@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 require 'thor'
+require_relative "./base"
 require_relative "../commands/nginx"
 
 module Dip
   class CLI
     # See more https://github.com/bibendi/nginx-proxy
-    class Nginx < Thor
+    class Nginx < Base
       desc "up", "Run nginx container"
       method_option :help, aliases: '-h', type: :boolean,
                            desc: 'Display usage information'
@@ -16,7 +17,7 @@ module Dip
                              desc: 'Path to docker socket'
       method_option :net, aliases: '-t', type: :string, default: "frontend",
                           desc: 'Container network name'
-      method_option :publish, aliases: '-p', type: :array, default: "80:80",
+      method_option :publish, aliases: '-p', type: :array, default: ["80:80"],
                               desc: 'Container port(s). For more than one port, separate them by a space'
       method_option :image, aliases: '-i', type: :string, default: "bibendi/nginx-proxy:latest",
                             desc: 'Docker image name'

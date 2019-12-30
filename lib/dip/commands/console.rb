@@ -86,7 +86,7 @@ module Dip
         end
 
         def execute
-          if Dip::Config.exist?
+          if Dip.config.exist?
             add_aliases(*Dip.config.interaction.keys) if Dip.config.interaction
             add_aliases("compose", "up", "stop", "down", "provision")
           end

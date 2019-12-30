@@ -2,6 +2,7 @@
 
 require "yaml"
 require "erb"
+require "pathname"
 
 require "dip/version"
 require "dip/ext/hash"
@@ -12,27 +13,67 @@ module Dip
   class Config
     DEFAULT_PATH = "dip.yml"
 
-    class << self
+    class ConfigFinder
+      attr_reader :file_path
+
+      def initialize(work_dir, override: false)
+        @override = override
+
+        @file_path = if ENV["DIP_FILE"]
+                       Pathname.new(prepared_name(ENV["DIP_FILE"]))
+                     else
+                       find(Pathname.new(work_dir))
+                     end
+      end
+
       def exist?
-        File.exist?(path)
+        file_path&.exist?
       end
 
-      def path
-        ENV["DIP_FILE"] || File.join(Dir.pwd, DEFAULT_PATH)
-      end
+      private
 
-      def override_path
+      attr_reader :override
+
+      def prepared_name(path)
+        return path unless override
+
         path.gsub(/\.yml$/, ".override.yml")
       end
 
+      def find(path)
+        file = path.join(prepared_name(DEFAULT_PATH))
+        return file if file.exist?
+        return if path.root?
+
+        find(path.parent)
+      end
+    end
+
+    class << self
       def load_yaml(file_path = path)
         return {} unless File.exist?(file_path)
 
         YAML.safe_load(
           ERB.new(File.read(file_path)).result,
           [], [], true
-        ).deep_symbolize_keys!
+        )&.deep_symbolize_keys! || {}
       end
+    end
+
+    def initialize(work_dir = Dir.pwd)
+      @work_dir = work_dir
+    end
+
+    def file_path
+      finder.file_path
+    end
+
+    def exist?
+      finder.exist?
+    end
+
+    def to_h
+      config
     end
 
     %i[environment compose interaction provision].each do |key|
@@ -41,18 +82,20 @@ module Dip
       end
     end
 
-    def to_h
-      config
-    end
-
     private
+
+    attr_reader :work_dir
+
+    def finder
+      @finder ||= ConfigFinder.new(work_dir)
+    end
 
     def config
       return @config if @config
 
-      raise ArgumentError, "Dip config not found at path '#{self.class.path}'" unless self.class.exist?
+      raise Dip::Error, "Could not find dip.yml config" unless finder.exist?
 
-      config = self.class.load_yaml
+      config = self.class.load_yaml(finder.file_path)
 
       unless Gem::Version.new(Dip::VERSION) >= Gem::Version.new(config.fetch(:version))
         raise VersionMismatchError, "Your dip version is `#{Dip::VERSION}`, " \
@@ -60,7 +103,8 @@ module Dip
                                     "Please upgrade your dip!"
       end
 
-      config.deep_merge!(self.class.load_yaml(self.class.override_path))
+      override_finder = ConfigFinder.new(work_dir, override: true)
+      config.deep_merge!(self.class.load_yaml(override_finder.file_path)) if override_finder.exist?
 
       @config = config
     end

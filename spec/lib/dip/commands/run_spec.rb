@@ -25,6 +25,16 @@ describe Dip::Commands::Run, config: true do
     it { expected_exec("docker-compose", ["run", "--rm", "app"]) }
   end
 
+  context "when publish ports" do
+    before { cli.start "run --publish 3:3 -p 5:5 rails s".shellsplit }
+    it { expected_exec("docker-compose", ["run", "--publish=3:3", "--publish=5:5", "--rm", "app", "rails", "s"]) }
+  end
+
+  context "when publish is part of a command" do
+    before { cli.start "run rails s --publish=3000:3000".shellsplit }
+    it { expected_exec("docker-compose", ["run", "--rm", "app", "rails", "s", "--publish=3000:3000"]) }
+  end
+
   context "when run psql command without db name" do
     before { cli.start "run psql".shellsplit }
     it { expected_exec("docker-compose", ["run", "--rm", "postgres", "psql", "-h", "postgres", "db_dev"]) }

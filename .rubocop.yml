@@ -5,17 +5,11 @@ AllCops:
     - vendor/**/*
   TargetRubyVersion: 2.3
 
-Documentation:
-  Enabled: false
-
 Metrics/BlockLength:
   Exclude:
     - simple_contracts.gemspec
     - Gemfile
     - spec/**/*
-
-Metrics/LineLength:
-  Max: 120
 
 Metrics/ClassLength:
   Max: 300
@@ -30,6 +24,9 @@ Style/PercentLiteralDelimiters:
   Enabled: false
 
 Security/MarshalLoad:
+  Enabled: false
+
+Style/Documentation:
   Enabled: false
 
 Style/DoubleNegation:
@@ -49,6 +46,9 @@ Naming/PredicateName:
 
 Naming/MemoizedInstanceVariableName:
   Enabled: false
+
+Layout/LineLength:
+  Max: 120
 
 Layout/DotPosition:
   EnforcedStyle: trailing
