@@ -2,7 +2,7 @@ version: '2'
 
 services:
   app:
-    image: ruby:2.3
+    image: ruby:2.4-buster
     environment:
       - GEM_HOME=/bundle
       - BUNDLE_PATH=/bundle

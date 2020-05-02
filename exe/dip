@@ -6,7 +6,7 @@ $LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
 
 begin
   require 'pry-byebug' if ENV["DIP_ENV"] == "debug"
-rescue LoadError # rubocop:disable Lint/SuppressedException
+rescue LoadError
   # do nothing
 end
 
