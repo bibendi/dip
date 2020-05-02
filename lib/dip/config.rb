@@ -97,6 +97,13 @@ module Dip
 
       raise Dip::Error, "Could not find dip.yml config" unless finder.exist?
 
+      defaults = {
+        environment: {},
+        compose: {},
+        interation: {},
+        provision: [],
+      }
+
       config = self.class.load_yaml(finder.file_path)
 
       unless Gem::Version.new(Dip::VERSION) >= Gem::Version.new(config.fetch(:version))
@@ -108,7 +115,7 @@ module Dip
       override_finder = ConfigFinder.new(work_dir, override: true)
       config.deep_merge!(self.class.load_yaml(override_finder.file_path)) if override_finder.exist?
 
-      @config = config
+      @config = defaults.merge(config)
     end
   
     def config_missing_error(config_key)
