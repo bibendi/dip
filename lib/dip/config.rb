@@ -13,6 +13,15 @@ module Dip
   class Config
     DEFAULT_PATH = "dip.yml"
 
+    CONFIG_DEFAULTS = {
+      environment: {},
+      compose: {},
+      interation: {},
+      provision: []
+    }.freeze
+
+    ConfigKeyMissingError = Class.new(ArgumentError)
+
     class ConfigFinder
       attr_reader :file_path
 
@@ -78,7 +87,7 @@ module Dip
 
     %i[environment compose interaction provision].each do |key|
       define_method(key) do
-        config[key]
+        config[key] || (raise config_missing_error(key))
       end
     end
 
@@ -106,7 +115,12 @@ module Dip
       override_finder = ConfigFinder.new(work_dir, override: true)
       config.deep_merge!(self.class.load_yaml(override_finder.file_path)) if override_finder.exist?
 
-      @config = config
+      @config = CONFIG_DEFAULTS.merge(config)
+    end
+
+    def config_missing_error(config_key)
+      msg = 'config for %<key>s is not defined in %<path>s' % {key: config_key, path: finder.file_path}
+      ConfigKeyMissingError.new(msg)
     end
   end
 end
