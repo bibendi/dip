@@ -12,6 +12,8 @@ using ActiveSupportHashHelpers
 module Dip
   class Config
     DEFAULT_PATH = "dip.yml"
+    
+    ConfigKeyMissingError = Class.new(ArgumentError)
 
     class ConfigFinder
       attr_reader :file_path
@@ -78,7 +80,7 @@ module Dip
 
     %i[environment compose interaction provision].each do |key|
       define_method(key) do
-        config[key]
+        config[key] || (raise config_missing_error(key))
       end
     end
 
@@ -107,6 +109,11 @@ module Dip
       config.deep_merge!(self.class.load_yaml(override_finder.file_path)) if override_finder.exist?
 
       @config = config
+    end
+  
+    def config_missing_error(config_key)
+      msg = 'config for %s is not defined in %s' % [config_key, finder.file_path]
+      ConfigKeyMissingError.new(msg)
     end
   end
 end
