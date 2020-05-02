@@ -3,7 +3,7 @@ AllCops:
   Exclude:
     - tmp/**/*
     - vendor/**/*
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.4
 
 Metrics/BlockLength:
   Exclude:
@@ -55,6 +55,15 @@ Layout/DotPosition:
 
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: false
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
 
 Metrics/AbcSize:
   Max: 30
