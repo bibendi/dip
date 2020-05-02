@@ -12,7 +12,14 @@ using ActiveSupportHashHelpers
 module Dip
   class Config
     DEFAULT_PATH = "dip.yml"
-    
+
+    CONFIG_DEFAULTS = {
+      environment: {},
+      compose: {},
+      interation: {},
+      provision: []
+    }.freeze
+
     ConfigKeyMissingError = Class.new(ArgumentError)
 
     class ConfigFinder
@@ -97,13 +104,6 @@ module Dip
 
       raise Dip::Error, "Could not find dip.yml config" unless finder.exist?
 
-      defaults = {
-        environment: {},
-        compose: {},
-        interation: {},
-        provision: [],
-      }
-
       config = self.class.load_yaml(finder.file_path)
 
       unless Gem::Version.new(Dip::VERSION) >= Gem::Version.new(config.fetch(:version))
@@ -115,11 +115,11 @@ module Dip
       override_finder = ConfigFinder.new(work_dir, override: true)
       config.deep_merge!(self.class.load_yaml(override_finder.file_path)) if override_finder.exist?
 
-      @config = defaults.merge(config)
+      @config = CONFIG_DEFAULTS.merge(config)
     end
-  
+
     def config_missing_error(config_key)
-      msg = 'config for %s is not defined in %s' % [config_key, finder.file_path]
+      msg = 'config for %<key>s is not defined in %<path>s' % {key: config_key, path: finder.file_path}
       ConfigKeyMissingError.new(msg)
     end
   end

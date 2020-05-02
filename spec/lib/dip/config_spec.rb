@@ -30,7 +30,7 @@ describe Dip::Config do
       context "when config is missing" do
         let(:env) { {"DIP_FILE" => fixture_path("missing", "dip.yml")} }
 
-	it { expect(subject.public_send(key)).to_not be_nil }
+        it { expect(subject.public_send(key)).to_not be_nil }
       end
     end
   end
