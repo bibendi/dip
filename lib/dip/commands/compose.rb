@@ -20,7 +20,7 @@ module Dip
       def execute
         Dip.env["DIP_DNS"] ||= find_dns
 
-        compose_argv = Array(find_files) + Array(find_project_name) + argv
+        compose_argv = Array(find_files) + Array(cli_options) + argv
 
         shell("docker-compose", compose_argv)
       end
@@ -43,13 +43,14 @@ module Dip
         end
       end
 
-      def find_project_name
-        return unless (project_name = config[:project_name])
+      def cli_options
+        %i[project_name project_directory].flat_map do |name|
+          next unless (value = config[name])
+          next unless value.is_a?(String)
 
-        if project_name.is_a?(String)
-          project_name = ::Dip.env.interpolate(project_name)
-          ["--project-name", project_name]
-        end
+          value = ::Dip.env.interpolate(value)
+          ["--#{name.to_s.gsub('_', '-')}", value]
+        end.compact
       end
 
       def find_dns
