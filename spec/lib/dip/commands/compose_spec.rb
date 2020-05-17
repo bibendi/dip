@@ -30,6 +30,19 @@ describe Dip::Commands::Compose do
     it { expected_exec("docker-compose", ["--project-name", "rocket-test", "run"]) }
   end
 
+  context "when config contains project_directory", config: true do
+    let(:config) { {compose: {project_directory: "/foo/bar"}} }
+    before { cli.start "compose run".shellsplit }
+    it { expected_exec("docker-compose", ["--project-directory", "/foo/bar", "run"]) }
+  end
+
+  context "when config contains project_directory with env vars", config: true, env: true do
+    let(:config) { {compose: {project_directory: "/foo-$RAILS_ENV"}} }
+    let(:env) { {"RAILS_ENV" => "test"} }
+    before { cli.start "compose run".shellsplit }
+    it { expected_exec("docker-compose", ["--project-directory", "/foo-test", "run"]) }
+  end
+
   context "when config contains multiple docker-compose files", config: true do
     context "and some files are not exist" do
       let(:config) { {compose: {files: %w(file1.yml file2.yml file3.yml)}} }
