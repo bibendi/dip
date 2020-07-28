@@ -17,7 +17,10 @@ module Dip
         def execute
           subshell("docker", "volume create --name ssh_data".shellsplit, out: File::NULL, err: File::NULL)
 
-          subshell("docker", "run #{user_args} --detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent".shellsplit)
+          subshell(
+            "docker",
+            "run #{user_args} --detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent".shellsplit
+          )
 
           key = Dip.env.interpolate(@key)
           subshell("docker", "run #{container_args} whilp/ssh-agent ssh-add #{key}".shellsplit)

@@ -17,7 +17,7 @@ module Dip
       method_option :interactive, aliases: '-t', type: :boolean, default: true,
                                   desc: 'Run in interactive mode'
       method_option :user, aliases: '-u', type: :string,
-                                  desc: 'UID for ssh-agent container'
+                           desc: 'UID for ssh-agent container'
       # Backward compatibility
       method_option :nonteractive, aliases: '-T', type: :boolean,
                                    desc: 'Run in noninteractive mode'
