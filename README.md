@@ -237,7 +237,7 @@ dip VERSION=12352452 rake db:rollback
 Use options `-p, --publish=[]` if you need to additionally publish a container's port(s) to the host unless this behaviour is not configured at dip.yml:
 
 ```sh
-dip run -p 3000:3000 bundle exec rackup config.ru 
+dip run -p 3000:3000 bundle exec rackup config.ru
 ```
 
 ### dip ls
@@ -290,6 +290,21 @@ volumes:
   ssh-data:
     external:
       name: ssh_data
+```
+
+if you want to use non-root user you can specify UID like so:
+
+```
+dip ssh up -u 1000
+```
+
+This especially helpful if you have something like this in your docker-compose.yml:
+
+```
+services:
+  web:
+    user: "1000:1000"
+
 ```
 
 ### dip nginx

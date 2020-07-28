@@ -7,22 +7,30 @@ module Dip
   module Commands
     module SSH
       class Up < Dip::Command
-        def initialize(key:, volume:, interactive:)
+        def initialize(key:, volume:, interactive:, user: nil)
           @key = key
           @volume = volume
           @interactive = interactive
+          @user = user
         end
 
         def execute
           subshell("docker", "volume create --name ssh_data".shellsplit, out: File::NULL, err: File::NULL)
 
-          subshell("docker", "run --detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent".shellsplit)
+          subshell(
+            "docker",
+            "run #{user_args} --detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent".shellsplit
+          )
 
           key = Dip.env.interpolate(@key)
           subshell("docker", "run #{container_args} whilp/ssh-agent ssh-add #{key}".shellsplit)
         end
 
         private
+
+        def user_args
+          "-u #{@user}" if @user
+        end
 
         def container_args
           result = %w(--rm)
