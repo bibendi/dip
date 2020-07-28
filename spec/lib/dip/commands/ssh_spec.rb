@@ -31,6 +31,11 @@ describe Dip::Commands::SSH do
       before { cli.start "up --volume /foo/.ssh".shellsplit }
       it { expected_subshell("docker", array_including("--volume", "/foo/.ssh:/foo/.ssh")) }
     end
+
+    context "when option `user` is present" do
+      before { cli.start "up -u 1000".shellsplit }
+      it { expected_subshell("docker", array_including("-u", "1000")) }
+    end
   end
 
   describe Dip::Commands::SSH::Down do

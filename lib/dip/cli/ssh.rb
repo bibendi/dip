@@ -16,6 +16,8 @@ module Dip
                              desc: 'Mounted docker volume'
       method_option :interactive, aliases: '-t', type: :boolean, default: true,
                                   desc: 'Run in interactive mode'
+      method_option :user, aliases: '-u', type: :string,
+                                  desc: 'UID for ssh-agent container'
       # Backward compatibility
       method_option :nonteractive, aliases: '-T', type: :boolean,
                                    desc: 'Run in noninteractive mode'
@@ -26,7 +28,8 @@ module Dip
           Dip::Commands::SSH::Up.new(
             key: options.fetch(:key),
             volume: options.fetch(:volume),
-            interactive: options.nonteractive? ? false : options.interactive?
+            interactive: options.nonteractive? ? false : options.interactive?,
+            user: options.user
           ).execute
         end
       end
