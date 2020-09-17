@@ -1,0 +1,49 @@
+version: '2'
+
+environment:
+  BUNDLE_GEMFILE: /app/Gemfile
+
+compose:
+  files:
+    - docker-compose.yml
+
+interaction:
+  app:
+    service: app
+    subcommands:
+      bash:
+        command: /usr/bin/bash
+      console:
+        command: ./bin/console
+      clean:
+        command: rm -rf Gemfile.lock<%= " gemfiles/*.gemfile.*" if options["appraisal"] %>
+
+  bundle:
+    service: app
+    command: bundle
+
+  <%- if options["appraisal"] -%>
+  appraisal:
+    service: app
+    command: bundle exec appraisal
+
+  <%- end -%>
+  rspec:
+    service: app
+    <%- if options["appraisal"] -%>
+    command: bundle exec appraisal bundle exec rspec
+    <%- else -%>
+    command: bundle exec rspec
+    <%- end -%>
+
+  rubocop:
+    service: app
+    command: bundle exec rubocop
+    compose_run_options: [no-deps]
+
+provision:
+  - dip app clean
+  - dip bundle install
+  <%- if options["appraisal"] -%>
+  - dip appraisal install
+  <%- end -%>

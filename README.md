@@ -96,7 +96,24 @@ dip --help
 dip SUBCOMMAND --help
 ```
 
-### dip.yml
+### dip generate
+
+If your project has a typical schema, dip can generate all necessary config files with a single command.
+Available generators you can find at [here](lib/dip/generators)
+
+```sh
+dip generate ruby/gem --ruby 2.6 --bundler 2.0.2 --postgres 11.4
+
+dip generate ruby/rails --ruby 2.6 --bundler 2.0.2 --node 11 --yarn 1.13.0 --postgres 11.4 --redis 4 --webpacker --selenium 
+``` 
+
+You can omit any of above options. To list all available generator's options: 
+
+```sh
+dip generate [STACK] --help
+```
+
+### dip file reference
 
 The configuration is loaded from `dip.yml` file. It may be located in a working directory, or it will be found in the nearest parent directory up to the file system root. If nearby places `dip.override.yml` file, it will be merged into the main config.
 
