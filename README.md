@@ -19,6 +19,8 @@ A command-line utility that gives the "native" interaction with applications con
 - Dockerized Ruby on Rails applications: [one](https://github.com/lewagon/rails-k8s-demo), [two](https://github.com/bibendi/dip-example-rails), [three](https://github.com/evilmartians/evil_chat)
 - Dockerized Node.js application: [one](https://github.com/bibendi/twinkle.js), [two](https://github.com/bibendi/yt-graphql-react-event-booking-api)
 - [Dockerized Ruby gem](https://github.com/bibendi/schked)
+- [Dockerizing Ruby and Rails development](https://evilmartians.com/chronicles/ruby-on-whales-docker-for-ruby-rails-development)
+- [Reusable development containers with Docker Compose and Dip](https://evilmartians.com/chronicles/reusable-development-containers-with-docker-compose-and-dip)
 
 [![asciicast](https://asciinema.org/a/210236.svg)](https://asciinema.org/a/210236)
 
