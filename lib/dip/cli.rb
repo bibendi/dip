@@ -63,7 +63,7 @@ module Dip
       compose("stop", *argv)
     end
 
-    desc "down all services [OPTIONS]", "Run `docker-compose down` command"
+    desc "down [OPTIONS]", "Run `docker-compose down` command"
     def down(*argv)
       compose("down", *argv)
     end
