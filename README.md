@@ -38,6 +38,7 @@ After that we can type commands without `dip` prefix. For example:
 <run-command> *any-args
 compose *any-compose-arg
 up <service>
+build
 down
 provision
 ```

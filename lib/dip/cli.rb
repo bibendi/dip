@@ -53,6 +53,11 @@ module Dip
       Dip::Commands::Compose.new(*argv).execute
     end
 
+    desc "build [OPTIONS] SERVICE", "Run `docker-compose build` command"
+    def build(*argv)
+      compose("build", *argv)
+    end
+
     desc "up [OPTIONS] SERVICE", "Run `docker-compose up` command"
     def up(*argv)
       compose("up", *argv)

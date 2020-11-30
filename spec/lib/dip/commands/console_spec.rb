@@ -27,6 +27,8 @@ describe Dip::Commands::Console do
       it { expect { subject }.to output(/unset -f compose/).to_stdout }
       it { expect { subject }.to output(/function up/).to_stdout }
       it { expect { subject }.to output(/unset -f up/).to_stdout }
+      it { expect { subject }.to output(/function build/).to_stdout }
+      it { expect { subject }.to output(/unset -f build/).to_stdout }
       it { expect { subject }.to output(/function stop/).to_stdout }
       it { expect { subject }.to output(/unset -f stop/).to_stdout }
       it { expect { subject }.to output(/function down/).to_stdout }
