@@ -41,7 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry-byebug", "~> 3"
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rubocop", "~> 0.81"
+  spec.add_development_dependency "rubocop", "~> 1.8"
   spec.add_development_dependency "simplecov", '~> 0.16'
   spec.add_development_dependency "test-unit", "~> 3"
 end
