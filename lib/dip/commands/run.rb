@@ -14,8 +14,7 @@ module Dip
 
         @command, @argv = InteractionTree
           .new(Dip.config.interaction)
-          .find(cmd, *argv)
-                          &.values_at(:command, :argv)
+          .find(cmd, *argv)&.values_at(:command, :argv)
 
         raise Dip::Error, "Command `#{[cmd, *argv].join(" ")}` not recognized!" unless command
 
@@ -23,10 +22,14 @@ module Dip
       end
 
       def execute
-        Dip::Commands::Compose.new(
-          command[:compose][:method],
-          *compose_arguments
-        ).execute
+        if command[:service].nil?
+          shell(command[:command], get_args)
+        else
+          Dip::Commands::Compose.new(
+            command[:compose][:method],
+            *compose_arguments
+          ).execute
+        end
       end
 
       private
@@ -48,11 +51,7 @@ module Dip
           compose_argv << cmd
         end
 
-        if argv.any?
-          compose_argv.concat(argv)
-        elsif !(default_args = command[:default_args]).empty?
-          compose_argv << default_args
-        end
+        compose_argv.concat(get_args)
 
         compose_argv
       end
@@ -67,6 +66,16 @@ module Dip
       def published_ports
         if publish.respond_to?(:each)
           publish.map { |p| "--publish=#{p}" }
+        else
+          []
+        end
+      end
+
+      def get_args
+        if argv.any?
+          argv
+        elsif !(default_args = command[:default_args]).empty?
+          Array(default_args)
         else
           []
         end

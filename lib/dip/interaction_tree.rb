@@ -58,7 +58,7 @@ module Dip
     def build_command(entry)
       {
         description: entry[:description],
-        service: entry.fetch(:service),
+        service: entry[:service],
         command: entry[:command].to_s.strip,
         default_args: entry[:default_args].to_s.strip,
         environment: entry[:environment] || {},
