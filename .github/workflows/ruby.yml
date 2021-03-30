@@ -1,0 +1,35 @@
+name: Ruby
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ '**' ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [ '2.5', '2.6', '2.7', '3.0' ]
+    env:
+      RUBY_IMAGE: ${{ matrix.ruby }}
+    name: Ruby ${{ matrix.ruby }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+      - name: Install dependencies
+        run: |
+          gem install dip
+          gem install danger
+          dip provision
+      - name: Run linters
+        run: dip rubocop
+      - name: Run tests
+        run: dip rspec
+      - name: Run Danger rules
+        run: danger
