@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "shellwords"
-require_relative '../command'
+require_relative "../command"
 
 module Dip
   module Commands
@@ -24,13 +24,13 @@ module Dip
         private
 
         def container_args
-          result = %w(--detach)
+          result = %w[--detach]
           result << "--volume #{@socket}:/var/run/docker.sock:ro"
           result << "--restart always"
           result << "--publish #{@publish}"
           result << "--net #{@net}"
           result << "--name #{@name}"
-          result.join(' ')
+          result.join(" ")
         end
       end
 
@@ -53,10 +53,10 @@ module Dip
 
         def execute(**options)
           subshell("docker",
-                   "inspect " \
-                   "--format '{{ .NetworkSettings.Networks.#{@net}.IPAddress }}' " \
-                   "#{@name}".shellsplit,
-                   **options)
+            "inspect " \
+            "--format '{{ .NetworkSettings.Networks.#{@net}.IPAddress }}' " \
+            "#{@name}".shellsplit,
+            **options)
         end
       end
     end

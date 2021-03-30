@@ -149,8 +149,8 @@ describe Dip::Commands::Run, config: true do
 
       it do
         expected_exec("docker-compose",
-                      ["run", "--rm", "app", "rake", "db:drop", "db:tests:prepare", "db:migrate"],
-                      env: hash_including("RAILS_ENV" => "test"))
+          ["run", "--rm", "app", "rake", "db:drop", "db:tests:prepare", "db:migrate"],
+          env: hash_including("RAILS_ENV" => "test"))
       end
     end
   end

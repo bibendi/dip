@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "shellwords"
-require_relative '../command'
+require_relative "../command"
 
 module Dip
   module Commands
@@ -25,15 +25,15 @@ module Dip
         private
 
         def container_args
-          result = %w(--detach)
+          result = %w[--detach]
           result << "--volume #{@socket}:/tmp/docker.sock:ro"
           result << "--volume #{@certs}:/etc/nginx/certs" unless @certs.to_s.empty?
           result << "--restart always"
-          result << Array(@publish).map { |p| "--publish #{p}" }.join(' ')
+          result << Array(@publish).map { |p| "--publish #{p}" }.join(" ")
           result << "--net #{@net}"
           result << "--name #{@name}"
           result << "--label com.dnsdock.alias=#{@domain}"
-          result.join(' ')
+          result.join(" ")
         end
       end
 

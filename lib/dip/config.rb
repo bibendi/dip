@@ -29,10 +29,10 @@ module Dip
         @override = override
 
         @file_path = if ENV["DIP_FILE"]
-                       Pathname.new(prepared_name(ENV["DIP_FILE"]))
-                     else
-                       find(Pathname.new(work_dir))
-                     end
+          Pathname.new(prepared_name(ENV["DIP_FILE"]))
+        else
+          find(Pathname.new(work_dir))
+        end
       end
 
       def exist?
@@ -119,7 +119,7 @@ module Dip
     end
 
     def config_missing_error(config_key)
-      msg = 'config for %<key>s is not defined in %<path>s' % {key: config_key, path: finder.file_path}
+      msg = "config for %<key>s is not defined in %<path>s" % {key: config_key, path: finder.file_path}
       ConfigKeyMissingError.new(msg)
     end
   end

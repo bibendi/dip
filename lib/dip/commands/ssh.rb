@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "shellwords"
-require_relative '../command'
+require_relative "../command"
 
 module Dip
   module Commands
@@ -33,12 +33,12 @@ module Dip
         end
 
         def container_args
-          result = %w(--rm)
+          result = %w[--rm]
           volume = Dip.env.interpolate(@volume)
           result << "--volume ssh_data:/ssh"
           result << "--volume #{volume}:#{volume}"
           result << "--interactive --tty" if @interactive
-          result.join(' ')
+          result.join(" ")
         end
       end
 

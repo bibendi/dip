@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'pathname'
+require "pathname"
 
-require_relative '../command'
-require_relative 'dns'
+require_relative "../command"
+require_relative "dns"
 
 module Dip
   module Commands
@@ -49,7 +49,7 @@ module Dip
           next unless value.is_a?(String)
 
           value = ::Dip.env.interpolate(value)
-          ["--#{name.to_s.gsub('_', '-')}", value]
+          ["--#{name.to_s.tr("_", "-")}", value]
         end.compact
       end
 
@@ -58,9 +58,9 @@ module Dip
         net = Dip.env["FRONTEND_NETWORK"] || "frontend"
 
         IO.pipe do |r, w|
-          Dip::Commands::DNS::IP.
-            new(name: name, net: net).
-            execute(out: w, err: File::NULL, panic: false)
+          Dip::Commands::DNS::IP
+            .new(name: name, net: net)
+            .execute(out: w, err: File::NULL, panic: false)
 
           w.close_write
           ip = r.readlines[0].to_s.strip

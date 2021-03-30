@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'thor'
-require 'dip/run_vars'
+require "thor"
+require "dip/run_vars"
 
 module Dip
   class CLI < Thor
@@ -34,22 +34,22 @@ module Dip
 
     stop_on_unknown_option! :run
 
-    desc 'version', 'dip version'
+    desc "version", "dip version"
     def version
-      require_relative 'version'
+      require_relative "version"
       puts Dip::VERSION
     end
-    map %w(--version -v) => :version
+    map %w[--version -v] => :version
 
-    desc 'ls', 'List available run commands'
+    desc "ls", "List available run commands"
     def ls
-      require_relative 'commands/list'
+      require_relative "commands/list"
       Dip::Commands::List.new.execute
     end
 
-    desc 'compose CMD [OPTIONS]', 'Run docker-compose commands'
+    desc "compose CMD [OPTIONS]", "Run docker-compose commands"
     def compose(*argv)
-      require_relative 'commands/compose'
+      require_relative "commands/compose"
       Dip::Commands::Compose.new(*argv).execute
     end
 
@@ -73,44 +73,44 @@ module Dip
       compose("down", *argv)
     end
 
-    desc 'run [OPTIONS] CMD [ARGS]', 'Run configured command in a docker-compose service. `run` prefix may be omitted'
-    method_option :publish, aliases: '-p', type: :string, repeatable: true,
+    desc "run [OPTIONS] CMD [ARGS]", "Run configured command in a docker-compose service. `run` prefix may be omitted"
+    method_option :publish, aliases: "-p", type: :string, repeatable: true,
                             desc: "Publish a container's port(s) to the host"
-    method_option :help, aliases: '-h', type: :boolean, desc: 'Display usage information'
+    method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"
     def run(*argv)
       if argv.empty? || options[:help]
-        invoke :help, ['run']
+        invoke :help, ["run"]
       else
-        require_relative 'commands/run'
+        require_relative "commands/run"
         Dip::Commands::Run.new(*argv, publish: options[:publish]).execute
       end
     end
 
     desc "provision", "Execute commands within provision section"
-    method_option :help, aliases: '-h', type: :boolean,
-                         desc: 'Display usage information'
+    method_option :help, aliases: "-h", type: :boolean,
+                         desc: "Display usage information"
     def provision
       if options[:help]
-        invoke :help, ['provision']
+        invoke :help, ["provision"]
       else
-        require_relative 'commands/provision'
+        require_relative "commands/provision"
         Dip::Commands::Provision.new.execute
       end
     end
 
-    require_relative 'cli/ssh'
+    require_relative "cli/ssh"
     desc "ssh", "ssh-agent container commands"
     subcommand :ssh, Dip::CLI::SSH
 
-    require_relative 'cli/dns'
+    require_relative "cli/dns"
     desc "dns", "DNS server for automatic docker container discovery"
     subcommand :dns, Dip::CLI::DNS
 
-    require_relative 'cli/nginx'
+    require_relative "cli/nginx"
     desc "nginx", "Nginx reverse proxy server"
     subcommand :nginx, Dip::CLI::Nginx
 
-    require_relative 'cli/console'
+    require_relative "cli/console"
     desc "console", "Integrate Dip commands into shell (only ZSH and Bash is supported)"
     subcommand :console, Dip::CLI::Console
   end

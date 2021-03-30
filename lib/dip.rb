@@ -18,7 +18,7 @@ module Dip
       $PROGRAM_NAME.start_with?("./") ? File.expand_path($PROGRAM_NAME) : "dip"
     end
 
-    %w(test debug).each do |key|
+    %w[test debug].each do |key|
       define_method("#{key}?") do
         ENV["DIP_ENV"] == key
       end

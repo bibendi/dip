@@ -4,7 +4,7 @@ require "pathname"
 
 module Dip
   class Environment
-    VAR_REGEX = /\$[\{]?(?<var_name>[a-zA-Z_][a-zA-Z0-9_]*)[\}]?/.freeze
+    VAR_REGEX = /\$\{?(?<var_name>[a-zA-Z_][a-zA-Z0-9_]*)\}?/.freeze
     SPECIAL_VARS = %i[os work_dir_rel_path].freeze
 
     attr_reader :vars
@@ -26,8 +26,8 @@ module Dip
       vars.fetch(name) { ENV[name] }
     end
 
-    def fetch(name)
-      vars.fetch(name) { ENV.fetch(name) { yield } }
+    def fetch(name, &block)
+      vars.fetch(name) { ENV.fetch(name, &block) }
     end
 
     def []=(key, value)
@@ -46,7 +46,7 @@ module Dip
       end
     end
 
-    alias replace interpolate
+    alias_method :replace, :interpolate
 
     private
 

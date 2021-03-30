@@ -15,17 +15,26 @@ describe Dip::Commands::SSH do
 
       it { expected_subshell("docker", "volume create --name ssh_data") }
       it { expected_subshell("docker", "run --detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent") }
-      it { expected_subshell("docker", "run --rm --volume ssh_data:/ssh --volume /user:/user --interactive --tty whilp/ssh-agent ssh-add /user/.ssh/id_rsa") }
+      it {
+        expected_subshell("docker",
+          "run --rm --volume ssh_data:/ssh --volume /user:/user --interactive --tty whilp/ssh-agent ssh-add /user/.ssh/id_rsa")
+      }
     end
 
     context "when option `key` is present" do
       before { cli.start "up --key /foo/bar-baz-rsa".shellsplit }
-      it { expected_subshell("docker", "run --rm --volume ssh_data:/ssh --volume /root:/root --interactive --tty whilp/ssh-agent ssh-add /foo/bar-baz-rsa") }
+      it {
+        expected_subshell("docker",
+          "run --rm --volume ssh_data:/ssh --volume /root:/root --interactive --tty whilp/ssh-agent ssh-add /foo/bar-baz-rsa")
+      }
     end
 
     context "when option `volume` is present" do
       before { cli.start "up --volume /foo/.ssh".shellsplit }
-      it { expected_subshell("docker", "run --rm --volume ssh_data:/ssh --volume /foo/.ssh:/foo/.ssh --interactive --tty whilp/ssh-agent ssh-add /root/.ssh/id_rsa") }
+      it {
+        expected_subshell("docker",
+          "run --rm --volume ssh_data:/ssh --volume /foo/.ssh:/foo/.ssh --interactive --tty whilp/ssh-agent ssh-add /root/.ssh/id_rsa")
+      }
     end
 
     context "when option `user` is present" do

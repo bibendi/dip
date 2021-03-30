@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'shellwords'
-require_relative '../../../lib/dip/run_vars'
-require_relative '../command'
-require_relative '../interaction_tree'
-require_relative 'compose'
+require "shellwords"
+require_relative "../../../lib/dip/run_vars"
+require_relative "../command"
+require_relative "../interaction_tree"
+require_relative "compose"
 
 module Dip
   module Commands
@@ -12,12 +12,12 @@ module Dip
       def initialize(cmd, *argv, publish: nil)
         @publish = publish
 
-        @command, @argv = InteractionTree.
-                          new(Dip.config.interaction).
-                          find(cmd, *argv)&.
-                          values_at(:command, :argv)
+        @command, @argv = InteractionTree
+          .new(Dip.config.interaction)
+          .find(cmd, *argv)
+                          &.values_at(:command, :argv)
 
-        raise Dip::Error, "Command `#{[cmd, *argv].join(' ')}` not recognized!" unless command
+        raise Dip::Error, "Command `#{[cmd, *argv].join(" ")}` not recognized!" unless command
 
         Dip.env.merge(command[:environment])
       end

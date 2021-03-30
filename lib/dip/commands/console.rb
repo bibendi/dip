@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../command'
+require_relative "../command"
 
 module Dip
   module Commands
@@ -13,9 +13,9 @@ module Dip
         private
 
         def script
-          <<-SH.gsub(/^[ ]{12}/, '')
+          <<-SH.gsub(/^ {12}/, "")
             export DIP_SHELL=1
-            export DIP_EARLY_ENVS=#{ENV.keys.join(',')}
+            export DIP_EARLY_ENVS=#{ENV.keys.join(",")}
             export DIP_PROMPT_TEXT="ⅆ"
 
             function dip_clear() {
@@ -107,7 +107,7 @@ module Dip
 
         def clear_aliases
           out << "function dip_clear() { \n" \
-                  "#{aliases.any? ? aliases.map { |a| "  unset -f #{a}" }.join("\n") : 'true'} " \
+                  "#{aliases.any? ? aliases.map { |a| "  unset -f #{a}" }.join("\n") : "true"} " \
                   "\n}"
         end
       end

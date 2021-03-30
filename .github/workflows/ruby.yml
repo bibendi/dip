@@ -25,11 +25,8 @@ jobs:
       - name: Install dependencies
         run: |
           gem install dip
-          gem install danger
           dip provision
       - name: Run linters
-        run: dip rubocop
+        run: dip standardrb
       - name: Run tests
         run: dip rspec
-      - name: Run Danger rules
-        run: danger

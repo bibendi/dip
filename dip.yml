@@ -25,10 +25,10 @@ interaction:
     service: app
     command: bundle exec rspec
 
-  rubocop:
-    description: Run Rubocop commands
+  standardrb:
+    description: Run Standard commands
     service: app
-    command: bundle exec rubocop
+    command: bundle exec standardrb
 
 provision:
   - rm -rf Gemfile.lock
