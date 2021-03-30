@@ -14,52 +14,50 @@ describe Dip::Commands::Nginx do
       it do
         expected_subshell(
           "docker",
-          ["run", "--detach", "--volume", "/var/run/docker.sock:/tmp/docker.sock:ro",
-           "--restart", "always", "--publish", "80:80", "--net", "frontend", "--name", "nginx",
-           "--label", "com.dnsdock.alias=docker", "bibendi/nginx-proxy:latest"]
+          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest"
         )
       end
     end
 
     context "when option `name` is present" do
       before { cli.start "up --name foo".shellsplit }
-      it { expected_subshell("docker", array_including("--name", "foo")) }
+      it { expected_subshell("docker", "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name foo --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest") }
     end
 
     context "when option `socket` is present" do
       before { cli.start "up --socket foo".shellsplit }
-      it { expected_subshell("docker", array_including("--volume", "foo:/tmp/docker.sock:ro")) }
+      it { expected_subshell("docker", "run --detach --volume foo:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest") }
     end
 
     context "when option `net` is present" do
       before { cli.start "up --net foo".shellsplit }
       it { expected_subshell("docker", ["network", "create", "foo"]) }
-      it { expected_subshell("docker", array_including("--net", "foo")) }
+      it { expected_subshell("docker", "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net foo --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest") }
     end
 
     context "when option `publish` is present" do
       before { cli.start "up --publish 80:80".shellsplit }
-      it { expected_subshell("docker", array_including("--publish", "80:80")) }
+      it { expected_subshell("docker", "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest") }
 
       context "when more than one port given" do
         before { cli.start "up --publish 80:80 443:443".shellsplit }
-        it { expected_subshell("docker", array_including("--publish", "80:80", "--publish", "443:443")) }
+        it { expected_subshell("docker", "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest") }
       end
     end
 
     context "when option `image` is present" do
       before { cli.start "up --image foo".shellsplit }
-      it { expected_subshell("docker", array_including("foo")) }
+      it { expected_subshell("docker", "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker foo") }
     end
 
     context "when option `domain` is present" do
       before { cli.start "up --domain foo".shellsplit }
-      it { expected_subshell("docker", array_including("com.dnsdock.alias=foo")) }
+      it { expected_subshell("docker", "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=foo bibendi/nginx-proxy:latest") }
     end
 
     context "when option `certs` is present" do
       before { cli.start "up --certs /home/whoami/certs_storage".shellsplit }
-      it { expected_subshell("docker", array_including("--volume", "/home/whoami/certs_storage:/etc/nginx/certs")) }
+      it { expected_subshell("docker", "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --volume /home/whoami/certs_storage:/etc/nginx/certs --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest") }
     end
   end
 

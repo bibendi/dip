@@ -9,15 +9,15 @@ module Dip
     def_delegators self, :shell, :subshell
 
     class ExecRunner
-      def self.call(cmd, argv, env: {}, **options)
-        ::Process.exec(env, cmd, *argv, options)
+      def self.call(cmdline, env: {}, **options)
+        ::Process.exec(env, cmdline, options)
       end
     end
 
     class SubshellRunner
-      def self.call(cmd, argv, env: {}, panic: true, **options)
-        return if ::Kernel.system(env, cmd, *argv, options)
-        raise Dip::Error, "Command '#{([cmd] + argv).join(' ')}' executed with error." if panic
+      def self.call(cmdline, env: {}, panic: true, **options)
+        return if ::Kernel.system(env, cmdline, options)
+        raise Dip::Error, "Command '#{cmdline}' executed with error." if panic
       end
     end
 
@@ -25,11 +25,12 @@ module Dip
       def shell(cmd, argv = [], subshell: false, **options)
         cmd = Dip.env.interpolate(cmd)
         argv = argv.map { |arg| Dip.env.interpolate(arg) }
+        cmdline = [cmd, *argv].compact.join(" ")
 
-        puts [Dip.env.vars, cmd, argv].inspect if Dip.debug?
+        puts [Dip.env.vars, cmdline].inspect if Dip.debug?
 
         runner = subshell ? SubshellRunner : ExecRunner
-        runner.call(cmd, argv, env: Dip.env.vars, **options)
+        runner.call(cmdline, env: Dip.env.vars, **options)
       end
 
       def subshell(*args, **kwargs)

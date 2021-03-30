@@ -44,11 +44,15 @@ module Dip
 
         compose_argv << command.fetch(:service)
 
-        unless (cmd = command[:command].to_s).empty?
-          compose_argv.concat(cmd.shellsplit)
+        unless (cmd = command[:command]).empty?
+          compose_argv << cmd
         end
 
-        compose_argv.concat(argv.any? ? argv : command[:default_args])
+        if argv.any?
+          compose_argv.concat(argv)
+        elsif !(default_args = command[:default_args]).empty?
+          compose_argv << default_args
+        end
 
         compose_argv
       end
@@ -57,7 +61,7 @@ module Dip
         run_vars = Dip::RunVars.env
         return [] unless run_vars
 
-        run_vars.map { |k, v| ["-e", "#{k}=#{v}"] }.flatten
+        run_vars.map { |k, v| ["-e", "#{k}=#{Shellwords.escape(v)}"] }.flatten
       end
 
       def published_ports
