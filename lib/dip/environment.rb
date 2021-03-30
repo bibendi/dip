@@ -35,13 +35,13 @@ module Dip
     end
 
     def interpolate(value)
-      value.gsub(VAR_REGEX) do
+      value.gsub(VAR_REGEX) do |match|
         var_name = Regexp.last_match[:var_name]
 
         if special_vars.key?(var_name)
           fetch(var_name) { send(special_vars[var_name]) }
         else
-          self[var_name]
+          fetch(var_name) { match }
         end
       end
     end
