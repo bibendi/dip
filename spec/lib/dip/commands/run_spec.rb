@@ -10,10 +10,23 @@ describe Dip::Commands::Run, config: true do
     {
       bash: {service: "app"},
       rails: {service: "app", command: "rails"},
-      psql: {service: "postgres", command: "psql -h postgres", default_args: "db_dev"}
+      psql: {service: "postgres", command: "psql -h postgres", default_args: "db_dev"},
+      setup: {command: "./bin/setup", default_args: "all"}
     }
   end
   let(:cli) { Dip::CLI }
+
+  context "when run command on host" do
+    context "when using default args" do
+      before { cli.start "run setup".shellsplit }
+      it { expected_exec("./bin/setup", ["all"]) }
+    end
+
+    context "when args are provided" do
+      before { cli.start "run setup db".shellsplit }
+      it { expected_exec("./bin/setup", ["db"]) }
+    end
+  end
 
   context "when run bash command" do
     before { cli.start "run bash".shellsplit }
@@ -149,8 +162,8 @@ describe Dip::Commands::Run, config: true do
 
       it do
         expected_exec("docker-compose",
-                      ["run", "--rm", "app", "rake", "db:drop", "db:tests:prepare", "db:migrate"],
-                      env: hash_including("RAILS_ENV" => "test"))
+          ["run", "--rm", "app", "rake", "db:drop", "db:tests:prepare", "db:migrate"],
+          env: hash_including("RAILS_ENV" => "test"))
       end
     end
   end

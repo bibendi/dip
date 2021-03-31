@@ -45,7 +45,7 @@ describe Dip::Commands::Compose do
 
   context "when config contains multiple docker-compose files", config: true do
     context "and some files are not exist" do
-      let(:config) { {compose: {files: %w(file1.yml file2.yml file3.yml)}} }
+      let(:config) { {compose: {files: %w[file1.yml file2.yml file3.yml]}} }
       let(:file1) { fixture_path("empty", "file1.yml") }
       let(:file2) { fixture_path("empty", "file2.yml") }
       let(:file3) { fixture_path("empty", "file3.yml") }
@@ -69,7 +69,7 @@ describe Dip::Commands::Compose do
     end
 
     context "and a file name contains env var", env: true do
-      let(:config) { {compose: {files: %w(file1-${DIP_OS}.yml)}} }
+      let(:config) { {compose: {files: %w[file1-${DIP_OS}.yml]}} }
       let(:file) { fixture_path("empty", "file1-darwin.yml") }
       let(:env) { {"DIP_OS" => "darwin"} }
 

@@ -58,9 +58,9 @@ module Dip
     def build_command(entry)
       {
         description: entry[:description],
-        service: entry.fetch(:service),
-        command: entry[:command],
-        default_args: prepare_default_args(entry[:default_args]),
+        service: entry[:service],
+        command: entry[:command].to_s.strip,
+        default_args: entry[:default_args].to_s.strip,
         environment: entry[:environment] || {},
         compose: {
           method: entry.dig(:compose, :method) || entry[:compose_method] || "run",
@@ -74,19 +74,6 @@ module Dip
       entry[:default_args] ||= nil
       entry[:subcommands] ||= nil
       entry[:description] ||= nil
-    end
-
-    def prepare_default_args(args)
-      return [] if args.nil?
-
-      case args
-      when Array
-        args
-      when String
-        args.shellsplit
-      else
-        raise ArgumentError, "Unknown type for default_args: #{args.inspect}"
-      end
     end
 
     def compose_run_options(value)

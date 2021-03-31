@@ -30,4 +30,18 @@ describe Dip::Environment do
       it { is_expected.to include("BAZ" => "baz", "FOO" => "foo-bar-baz") }
     end
   end
+
+  describe "#interpolate" do
+    let(:key) { "foo $BAR baz" }
+
+    subject { described_class.new(vars).interpolate(key) }
+
+    it { is_expected.to eq "foo $BAR baz" }
+
+    context "when vars are provided" do
+      let(:vars) { {"BAR" => "bar"} }
+
+      it { is_expected.to eq "foo bar baz" }
+    end
+  end
 end

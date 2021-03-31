@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'shellwords'
-require_relative '../../../lib/dip/run_vars'
-require_relative '../command'
-require_relative '../interaction_tree'
-require_relative 'compose'
+require "shellwords"
+require_relative "../../../lib/dip/run_vars"
+require_relative "../command"
+require_relative "../interaction_tree"
+require_relative "compose"
 
 module Dip
   module Commands
@@ -12,21 +12,24 @@ module Dip
       def initialize(cmd, *argv, publish: nil)
         @publish = publish
 
-        @command, @argv = InteractionTree.
-                          new(Dip.config.interaction).
-                          find(cmd, *argv)&.
-                          values_at(:command, :argv)
+        @command, @argv = InteractionTree
+          .new(Dip.config.interaction)
+          .find(cmd, *argv)&.values_at(:command, :argv)
 
-        raise Dip::Error, "Command `#{[cmd, *argv].join(' ')}` not recognized!" unless command
+        raise Dip::Error, "Command `#{[cmd, *argv].join(" ")}` not recognized!" unless command
 
         Dip.env.merge(command[:environment])
       end
 
       def execute
-        Dip::Commands::Compose.new(
-          command[:compose][:method],
-          *compose_arguments
-        ).execute
+        if command[:service].nil?
+          shell(command[:command], get_args)
+        else
+          Dip::Commands::Compose.new(
+            command[:compose][:method],
+            *compose_arguments
+          ).execute
+        end
       end
 
       private
@@ -44,11 +47,11 @@ module Dip
 
         compose_argv << command.fetch(:service)
 
-        unless (cmd = command[:command].to_s).empty?
-          compose_argv.concat(cmd.shellsplit)
+        unless (cmd = command[:command]).empty?
+          compose_argv << cmd
         end
 
-        compose_argv.concat(argv.any? ? argv : command[:default_args])
+        compose_argv.concat(get_args)
 
         compose_argv
       end
@@ -57,12 +60,22 @@ module Dip
         run_vars = Dip::RunVars.env
         return [] unless run_vars
 
-        run_vars.map { |k, v| ["-e", "#{k}=#{v}"] }.flatten
+        run_vars.map { |k, v| ["-e", "#{k}=#{Shellwords.escape(v)}"] }.flatten
       end
 
       def published_ports
         if publish.respond_to?(:each)
           publish.map { |p| "--publish=#{p}" }
+        else
+          []
+        end
+      end
+
+      def get_args
+        if argv.any?
+          argv
+        elsif !(default_args = command[:default_args]).empty?
+          Array(default_args)
         else
           []
         end
