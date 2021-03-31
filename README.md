@@ -56,41 +56,11 @@ After that, it will be automatically applied when you open your preferred termin
 
 ## Installation
 
-You have many ways.
-
-### Homebrew
-
-
-You can use [Homebrew](https://brew.sh) on macOS (or [Linux](https://docs.brew.sh/Homebrew-on-Linux)).
-
-Today Homebrew tap for DIP is located at https://github.com/bibendi/homebrew-dip
-
-```sh
-brew tap bibendi/dip
-brew install dip
-```
-
-### Ruby Gem
-
 ```sh
 gem install dip
 ```
 
-### Precompiled binary
-
-If you don't have installed Ruby, then you could copy a precompiled binary to your system.
-It can be found at [releases page](https://github.com/bibendi/dip/releases)
-or type bellow into your terminal:
-
-```sh
-curl -L https://github.com/bibendi/dip/releases/download/v6.1.0/dip-`uname -s`-`uname -m` > /usr/local/bin/dip
-chmod +x /usr/local/bin/dip
-```
-
-## Docker installation
-
-- [Ubuntu](docs/docker-ubuntu-install.md)
-- [Mac OS](docs/docker-for-mac-install.md)
+The compiled binary is no more provided since version 7, because of new version of [Ruby Packer](https://github.com/pmq20/ruby-packer) not released for a long time with recent Ruby version. Also there was a lot of work to prepare each release of Dip for MacOS version.
 
 ## Usage
 
@@ -111,7 +81,7 @@ Also, you can check out examples at the top.
 
 ```yml
 # Required minimum dip version
-version: '4.1'
+version: '7.0'
 
 environment:
   COMPOSE_EXT: development
@@ -124,7 +94,7 @@ compose:
   project_name: bear
 
 interaction:
-  bash:
+  shell:
     description: Open the Bash shell in app's container
     service: app
     command: bash
@@ -172,8 +142,13 @@ interaction:
     default_args: db_dev
     command: psql -h pg -U postgres
 
+  clean_cache:
+    description: Delete cache files on the host machine
+    command: rm -rf $(pwd)/tmp/cache/*
+
 provision:
   - dip compose down --volumes
+  - dip clean_cache
   - dip compose up -d pg redis
   - dip bash -c ./bin/setup
 ```
