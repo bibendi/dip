@@ -24,8 +24,9 @@ module Dip
     class << self
       def shell(cmd, argv = [], subshell: false, **options)
         cmd = Dip.env.interpolate(cmd)
+        argv = [argv] if argv.is_a?(String)
         argv = argv.map { |arg| Dip.env.interpolate(arg) }
-        cmdline = [cmd, *argv].compact.join(" ")
+        cmdline = [cmd, *argv].compact.join(" ").strip
 
         puts [Dip.env.vars, cmdline].inspect if Dip.debug?
 

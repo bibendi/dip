@@ -54,6 +54,6 @@ describe Dip::Commands::SSH do
   describe Dip::Commands::SSH::Status do
     before { cli.start "status".shellsplit }
 
-    it { expected_subshell("docker", "inspect --format {{.State.Status}} ssh-agent") }
+    it { expected_subshell("docker", "inspect --format '{{.State.Status}}' ssh-agent") }
   end
 end

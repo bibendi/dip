@@ -12,12 +12,12 @@ end
 
 def expected_exec(cmd, argv, options = kind_of(Hash))
   argv = Array(argv) if argv.is_a?(String)
-  cmdline = [cmd, *argv].join(" ")
+  cmdline = [cmd, *argv].compact.join(" ").strip
   expect(exec_runner).to have_received(:call).with(cmdline, options)
 end
 
 def expected_subshell(cmd, argv, options = kind_of(Hash))
   argv = Array(argv) if argv.is_a?(String)
-  cmdline = [cmd, *argv].join(" ")
+  cmdline = [cmd, *argv].compact.join(" ").strip
   expect(subshell_runner).to have_received(:call).with(cmdline, options)
 end

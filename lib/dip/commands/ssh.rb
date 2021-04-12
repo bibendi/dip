@@ -15,21 +15,21 @@ module Dip
         end
 
         def execute
-          subshell("docker", "volume create --name ssh_data".shellsplit, out: File::NULL, err: File::NULL)
+          subshell("docker", "volume create --name ssh_data", out: File::NULL, err: File::NULL)
 
           subshell(
             "docker",
-            "run #{user_args} --detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent".shellsplit
+            "run #{user_args}--detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent"
           )
 
           key = Dip.env.interpolate(@key)
-          subshell("docker", "run #{container_args} whilp/ssh-agent ssh-add #{key}".shellsplit)
+          subshell("docker", "run #{container_args} whilp/ssh-agent ssh-add #{key}")
         end
 
         private
 
         def user_args
-          "-u #{@user}" if @user
+          "-u #{@user} " if @user
         end
 
         def container_args
@@ -44,15 +44,15 @@ module Dip
 
       class Down < Dip::Command
         def execute
-          subshell("docker", "stop ssh-agent".shellsplit, panic: false, out: File::NULL, err: File::NULL)
-          subshell("docker", "rm -v ssh-agent".shellsplit, panic: false, out: File::NULL, err: File::NULL)
-          subshell("docker", "volume rm ssh_data".shellsplit, panic: false, out: File::NULL, err: File::NULL)
+          subshell("docker", "stop ssh-agent", panic: false, out: File::NULL, err: File::NULL)
+          subshell("docker", "rm -v ssh-agent", panic: false, out: File::NULL, err: File::NULL)
+          subshell("docker", "volume rm ssh_data", panic: false, out: File::NULL, err: File::NULL)
         end
       end
 
       class Status < Dip::Command
         def execute
-          subshell("docker", "inspect --format '{{.State.Status}}' ssh-agent".shellsplit)
+          subshell("docker", "inspect --format '{{.State.Status}}' ssh-agent")
         end
       end
     end

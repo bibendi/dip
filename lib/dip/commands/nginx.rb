@@ -18,8 +18,8 @@ module Dip
         end
 
         def execute
-          subshell("docker", "network create #{@net}".shellsplit, panic: false, err: File::NULL)
-          subshell("docker", "run #{container_args} #{@image}".shellsplit)
+          subshell("docker", "network create #{@net}", panic: false, err: File::NULL)
+          subshell("docker", "run #{container_args} #{@image}")
         end
 
         private
@@ -43,8 +43,8 @@ module Dip
         end
 
         def execute
-          subshell("docker", "stop #{@name}".shellsplit, panic: false, out: File::NULL, err: File::NULL)
-          subshell("docker", "rm -v #{@name}".shellsplit, panic: false, out: File::NULL, err: File::NULL)
+          subshell("docker", "stop #{@name}", panic: false, out: File::NULL, err: File::NULL)
+          subshell("docker", "rm -v #{@name}", panic: false, out: File::NULL, err: File::NULL)
         end
       end
     end

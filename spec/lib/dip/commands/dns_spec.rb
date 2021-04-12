@@ -78,18 +78,18 @@ describe Dip::Commands::DNS do
     context "when without arguments" do
       before { cli.start "ip".shellsplit }
       it do
-        expected_subshell("docker", "inspect --format {{ .NetworkSettings.Networks.frontend.IPAddress }} dnsdock")
+        expected_subshell("docker", "inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' dnsdock")
       end
     end
 
     context "when option `name` is present" do
       before { cli.start "ip --name foo".shellsplit }
-      it { expected_subshell("docker", "inspect --format {{ .NetworkSettings.Networks.frontend.IPAddress }} foo") }
+      it { expected_subshell("docker", "inspect --format '{{ .NetworkSettings.Networks.frontend.IPAddress }}' foo") }
     end
 
     context "when option `net` is present" do
       before { cli.start "ip --net foo".shellsplit }
-      it { expected_subshell("docker", "inspect --format {{ .NetworkSettings.Networks.foo.IPAddress }} dnsdock") }
+      it { expected_subshell("docker", "inspect --format '{{ .NetworkSettings.Networks.foo.IPAddress }}' dnsdock") }
     end
   end
 end
