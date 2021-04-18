@@ -111,7 +111,7 @@ module Dip
     subcommand :nginx, Dip::CLI::Nginx
 
     require_relative "cli/console"
-    desc "console", "Integrate Dip commands into shell (only ZSH and Bash is supported)"
+    desc "console", "Integrate Dip commands into shell (only ZSH and Bash are supported)"
     subcommand :console, Dip::CLI::Console
   end
 end
