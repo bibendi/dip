@@ -8,7 +8,8 @@ describe Dip::Commands::SSH do
   let(:cli) { Dip::CLI::SSH }
 
   describe Dip::Commands::SSH::Up, env: true do
-      let(:env) { {"HOME" => "/user"} }
+    let(:env) { {"HOME" => "/user"} }
+
     context "when without arguments" do
       before { cli.start "up".shellsplit }
 
