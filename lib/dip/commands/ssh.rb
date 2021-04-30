@@ -15,15 +15,15 @@ module Dip
         end
 
         def execute
-          subshell("docker", "volume create --name ssh_data", out: File::NULL, err: File::NULL)
+          exec_subprocess("docker", "volume create --name ssh_data", out: File::NULL, err: File::NULL)
 
-          subshell(
+          exec_subprocess(
             "docker",
             "run #{user_args}--detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent"
           )
 
           key = Dip.env.interpolate(@key)
-          subshell("docker", "run #{container_args} whilp/ssh-agent ssh-add #{key}")
+          exec_subprocess("docker", "run #{container_args} whilp/ssh-agent ssh-add #{key}")
         end
 
         private
@@ -44,15 +44,15 @@ module Dip
 
       class Down < Dip::Command
         def execute
-          subshell("docker", "stop ssh-agent", panic: false, out: File::NULL, err: File::NULL)
-          subshell("docker", "rm -v ssh-agent", panic: false, out: File::NULL, err: File::NULL)
-          subshell("docker", "volume rm ssh_data", panic: false, out: File::NULL, err: File::NULL)
+          exec_subprocess("docker", "stop ssh-agent", panic: false, out: File::NULL, err: File::NULL)
+          exec_subprocess("docker", "rm -v ssh-agent", panic: false, out: File::NULL, err: File::NULL)
+          exec_subprocess("docker", "volume rm ssh_data", panic: false, out: File::NULL, err: File::NULL)
         end
       end
 
       class Status < Dip::Command
         def execute
-          subshell("docker", "inspect --format '{{.State.Status}}' ssh-agent")
+          exec_subprocess("docker", "inspect --format '{{.State.Status}}' ssh-agent")
         end
       end
     end
