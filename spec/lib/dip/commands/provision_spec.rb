@@ -17,6 +17,6 @@ describe Dip::Commands::Provision, config: true do
 
     before { cli.start ["provision"] }
 
-    it { expected_subshell("dip bundle install", []) }
+    it { expected_subprocess("dip bundle install", []) }
   end
 end

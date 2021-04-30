@@ -142,6 +142,12 @@ interaction:
     default_args: db_dev
     command: psql -h pg -U postgres
 
+  setup_key:
+    description: Copy key
+    service: app
+    command: cp `pwd`/config/key.pem /root/keys/
+    shell: false # you can disable shell interpolations on the host machine and send the command as is
+
   clean_cache:
     description: Delete cache files on the host machine
     command: rm -rf $(pwd)/tmp/cache/*

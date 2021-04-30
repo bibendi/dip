@@ -60,6 +60,7 @@ module Dip
         description: entry[:description],
         service: entry[:service],
         command: entry[:command].to_s.strip,
+        shell: entry.fetch(:shell, true),
         default_args: entry[:default_args].to_s.strip,
         environment: entry[:environment] || {},
         compose: {

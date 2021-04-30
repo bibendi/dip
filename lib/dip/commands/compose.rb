@@ -10,10 +10,11 @@ module Dip
     class Compose < Dip::Command
       DOCKER_EMBEDDED_DNS = "127.0.0.11"
 
-      attr_reader :argv, :config
+      attr_reader :argv, :config, :shell
 
-      def initialize(*argv)
+      def initialize(*argv, shell: true)
         @argv = argv
+        @shell = shell
         @config = ::Dip.config.compose || {}
       end
 
@@ -22,7 +23,7 @@ module Dip
 
         compose_argv = Array(find_files) + Array(cli_options) + argv
 
-        shell("docker-compose", compose_argv)
+        exec_program("docker-compose", compose_argv, shell: shell)
       end
 
       private

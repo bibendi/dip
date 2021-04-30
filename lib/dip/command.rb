@@ -6,37 +6,46 @@ module Dip
   class Command
     extend Forwardable
 
-    def_delegators self, :shell, :subshell
+    def_delegators self, :exec_program, :exec_subprocess
 
-    class ExecRunner
+    class ProgramRunner
       def self.call(cmdline, env: {}, **options)
-        ::Process.exec(env, cmdline, options)
+        if cmdline.is_a?(Array)
+          ::Kernel.exec(env, cmdline[0], *cmdline[1..-1], **options)
+        else
+          ::Kernel.exec(env, cmdline, **options)
+        end
       end
     end
 
-    class SubshellRunner
+    class SubprocessRunner
       def self.call(cmdline, env: {}, panic: true, **options)
-        return if ::Kernel.system(env, cmdline, options)
+        return if ::Kernel.system(env, cmdline, **options)
         raise Dip::Error, "Command '#{cmdline}' executed with error." if panic
       end
     end
 
     class << self
-      def shell(cmd, argv = [], subshell: false, **options)
+      def exec_program(*args, **kwargs)
+        run(ProgramRunner, *args, **kwargs)
+      end
+
+      def exec_subprocess(*args, **kwargs)
+        run(SubprocessRunner, *args, **kwargs)
+      end
+
+      private
+
+      def run(runner, cmd, argv = [], shell: true, **options)
         cmd = Dip.env.interpolate(cmd)
         argv = [argv] if argv.is_a?(String)
         argv = argv.map { |arg| Dip.env.interpolate(arg) }
-        cmdline = [cmd, *argv].compact.join(" ").strip
+        cmdline = [cmd, *argv].compact
+        cmdline = cmdline.join(" ").strip if shell
 
         puts [Dip.env.vars, cmdline].inspect if Dip.debug?
 
-        runner = subshell ? SubshellRunner : ExecRunner
         runner.call(cmdline, env: Dip.env.vars, **options)
-      end
-
-      def subshell(*args, **kwargs)
-        kwargs[:subshell] = true
-        shell(*args, **kwargs)
       end
     end
   end

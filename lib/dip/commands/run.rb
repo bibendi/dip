@@ -23,11 +23,12 @@ module Dip
 
       def execute
         if command[:service].nil?
-          shell(command[:command], get_args)
+          exec_program(command[:command], get_args, shell: command[:shell])
         else
           Dip::Commands::Compose.new(
             command[:compose][:method],
-            *compose_arguments
+            *compose_arguments,
+            shell: command[:shell]
           ).execute
         end
       end
@@ -48,7 +49,11 @@ module Dip
         compose_argv << command.fetch(:service)
 
         unless (cmd = command[:command]).empty?
-          compose_argv << cmd
+          if command[:shell]
+            compose_argv << cmd
+          else
+            compose_argv.concat(cmd.shellsplit)
+          end
         end
 
         compose_argv.concat(get_args)
@@ -75,7 +80,11 @@ module Dip
         if argv.any?
           argv
         elsif !(default_args = command[:default_args]).empty?
-          Array(default_args)
+          if command[:shell]
+            default_args.shellsplit
+          else
+            Array(default_args)
+          end
         else
           []
         end
