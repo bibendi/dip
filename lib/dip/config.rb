@@ -62,10 +62,19 @@ module Dip
       def load_yaml(file_path = path)
         return {} unless File.exist?(file_path)
 
-        YAML.safe_load(
-          ERB.new(File.read(file_path)).result,
-          [], [], true
-        )&.deep_symbolize_keys! || {}
+        data = if Gem::Version.new(Psych::VERSION) >= Gem::Version.new("4.0.0")
+          YAML.safe_load(
+            ERB.new(File.read(file_path)).result,
+            aliases: true
+          )
+        else
+          YAML.safe_load(
+            ERB.new(File.read(file_path)).result,
+            [], [], true
+          )
+        end
+
+        data&.deep_symbolize_keys! || {}
       end
     end
 
