@@ -78,7 +78,11 @@ module Dip
 
       def get_args
         if argv.any?
-          argv
+          if command[:shell]
+            [argv.shelljoin]
+          else
+            Array(default_args)
+          end
         elsif !(default_args = command[:default_args]).empty?
           if command[:shell]
             default_args.shellsplit

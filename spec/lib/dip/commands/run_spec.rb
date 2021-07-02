@@ -45,7 +45,7 @@ describe Dip::Commands::Run, config: true do
 
   context "when publish is part of a command" do
     before { cli.start "run rails s --publish=3000:3000".shellsplit }
-    it { expected_exec("docker-compose", ["run", "--rm", "app", "rails", "s", "--publish=3000:3000"]) }
+    it { expected_exec("docker-compose", ["run", "--rm", "app", "rails", "s", "--publish\\=3000:3000"]) }
   end
 
   context "when run psql command without db name" do
