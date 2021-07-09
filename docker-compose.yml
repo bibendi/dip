@@ -1,8 +1,6 @@
-version: '2'
-
 services:
   app:
-    image: ruby:2.5-buster
+    image: ruby:${RUBY_IMAGE:-3.0}-buster
     environment:
       - GEM_HOME=/bundle
       - BUNDLE_PATH=/bundle
