@@ -12,3 +12,6 @@
 
 # rspec failure tracking
 .rspec_status
+
+.lefthook-local/
+lefthook-local.yml
