@@ -298,8 +298,6 @@ Runs Nginx server container based on [bibendi/nginx-proxy](https://github.com/bi
 foo-project/docker-compose.yml
 
 ```yml
-version: '2'
-
 services:
   foo-web:
     image: company/foo_image
@@ -320,8 +318,6 @@ networks:
 baz-project/docker-compose.yml
 
 ```yml
-version: '2'
-
 services:
   baz-web:
     image: company/baz_image
