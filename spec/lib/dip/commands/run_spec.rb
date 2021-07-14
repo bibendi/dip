@@ -9,6 +9,7 @@ describe Dip::Commands::Run, config: true do
   let(:commands) do
     {
       bash: {service: "app"},
+      bash_shell: {service: "app", command: "bash", shell: false},
       rails: {service: "app", command: "rails"},
       psql: {service: "postgres", command: "psql -h postgres", default_args: "db_dev"},
       setup: {command: "./bin/setup", default_args: "all"}
@@ -31,6 +32,13 @@ describe Dip::Commands::Run, config: true do
   context "when run bash command" do
     before { cli.start "run bash".shellsplit }
     it { expected_exec("docker-compose", ["run", "--rm", "app"]) }
+  end
+
+  context "when the command has shell: false option" do
+    before { cli.start "run bash_shell pwd".shellsplit }
+    it do
+      expect(exec_program_runner).to have_received(:call).with(["docker-compose", "run", "--rm", "app", "bash", "pwd"], kind_of(Hash))
+    end
   end
 
   context "when run shorthanded bash command" do
