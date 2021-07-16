@@ -39,7 +39,7 @@ module Dip
             next unless file_path.exist?
 
             memo << "--file"
-            memo << file_path.to_s
+            memo << Shellwords.escape(file_path.to_s)
           end
         end
       end
