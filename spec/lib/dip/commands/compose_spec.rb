@@ -43,6 +43,26 @@ describe Dip::Commands::Compose do
     it { expected_exec("docker-compose", ["--project-directory", "/foo-test", "run"]) }
   end
 
+  context "when compose's config path contains spaces", config: true do
+    let(:config) { {compose: {files: ["file name.yml"]}} }
+    let(:file) { fixture_path("empty", "file name.yml") }
+
+    before do
+      allow_any_instance_of(Pathname).to receive(:exist?) do |obj|
+        case obj.to_s
+        when file
+          true
+        else
+          File.exist?(obj.to_s)
+        end
+      end
+
+      cli.start "compose run".shellsplit
+    end
+
+    it { expected_exec("docker-compose", ["--file", Shellwords.escape(file), "run"]) }
+  end
+
   context "when config contains multiple docker-compose files", config: true do
     context "and some files are not exist" do
       let(:config) { {compose: {files: %w[file1.yml file2.yml file3.yml]}} }
