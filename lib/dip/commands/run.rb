@@ -81,7 +81,7 @@ module Dip
           if command[:shell]
             [argv.shelljoin]
           else
-            Array(default_args)
+            Array(argv)
           end
         elsif !(default_args = command[:default_args]).empty?
           if command[:shell]
