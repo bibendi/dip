@@ -23,7 +23,11 @@ module Dip
 
         compose_argv = Array(find_files) + Array(cli_options) + argv
 
-        exec_program("docker-compose", compose_argv, shell: shell)
+        if compose_v2?
+          exec_program("docker", compose_argv.unshift("compose"), shell: shell)
+        else
+          exec_program("docker-compose", compose_argv, shell: shell)
+        end
       end
 
       private
@@ -67,6 +71,14 @@ module Dip
           ip = r.readlines[0].to_s.strip
           ip.empty? ? DOCKER_EMBEDDED_DNS : ip
         end
+      end
+
+      def compose_v2?
+        if %w[false no 0].include?(Dip.env["DIP_COMPOSE_V2"]) || Dip.test?
+          return false
+        end
+
+        !!exec_subprocess("docker", "compose version", panic: false, out: File::NULL, err: File::NULL)
       end
     end
   end

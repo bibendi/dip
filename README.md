@@ -47,7 +47,7 @@ When we change the current directory, all shell aliases will be automatically re
 
 Also, in shell mode Dip is trying to determine manually passed environment variables. For example:
 
-```shhttps://ya-webdesign.com/images250_/vertical-divider-png-1.pnghttps://ya-webdesign.com/images250_/vertical-divider-png-1.png
+```sh
 VERSION=20180515103400 rails db:migrate:down
 ```
 
@@ -200,6 +200,8 @@ returned is `/app/sub-project-dir`.
 ### dip run
 
 Run commands defined within the `interaction` section of dip.yml
+
+By default, a command will be executed using [`docker compose`](https://docs.docker.com/compose/install/) command. If you are still using `docker-compose` binary (i.e., prior to Compose V2 changes), a command would be run through it. You can disable using of Compose V2 by passing an environment variable `DIP_COMPOSE_V2=false dip run`.
 
 ```sh
 dip run rails c
