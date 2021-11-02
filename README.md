@@ -6,12 +6,10 @@
 
 Docker Interaction Process
 
-A command-line utility that gives the "native" interaction with applications configured with Docker Compose. It is for local development only. In practice, it creates the feeling that you work without containers.
+A command-line utility that gives you the native-like interaction with applications through Docker in a development environment. In practice, it creates the feeling that you are working without mind-blowing approaches to run the containers
 
-<p float="left">
-<a href="https://evilmartians.com/?utm_source=dip"><img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" height="80" /></a>
-<img src="https://ya-webdesign.com/images250_/vertical-divider-png-1.png" width="50" height="100" />
-<a href="https://www.jetbrains.com/?from=DIP"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/JetBrains_Logo_2016.svg/1200px-JetBrains_Logo_2016.svg.png" alt="Sponsored by JetBrains" height="100" /></a></p>
+<a href="https://evilmartians.com/?utm_source=dip">
+<img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" height="80" /></a>
 
 ## Presentations and examples
 
