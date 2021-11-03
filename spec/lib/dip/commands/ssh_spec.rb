@@ -15,6 +15,7 @@ describe Dip::Commands::SSH do
 
       it { expected_subprocess("docker", "volume create --name ssh_data") }
       it { expected_subprocess("docker", "run --detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent") }
+
       it {
         expected_subprocess("docker",
           "run --rm --volume ssh_data:/ssh --volume /user:/user --interactive --tty whilp/ssh-agent ssh-add /user/.ssh/id_rsa")
@@ -23,6 +24,7 @@ describe Dip::Commands::SSH do
 
     context "when option `key` is present" do
       before { cli.start "up --key /foo/bar-baz-rsa".shellsplit }
+
       it {
         expected_subprocess("docker",
           "run --rm --volume ssh_data:/ssh --volume /root:/root --interactive --tty whilp/ssh-agent ssh-add /foo/bar-baz-rsa")
@@ -31,6 +33,7 @@ describe Dip::Commands::SSH do
 
     context "when option `volume` is present" do
       before { cli.start "up --volume /foo/.ssh".shellsplit }
+
       it {
         expected_subprocess("docker",
           "run --rm --volume ssh_data:/ssh --volume /foo/.ssh:/foo/.ssh --interactive --tty whilp/ssh-agent ssh-add /root/.ssh/id_rsa")
@@ -39,6 +42,7 @@ describe Dip::Commands::SSH do
 
     context "when option `user` is present" do
       before { cli.start "up -u 1000".shellsplit }
+
       it { expected_subprocess("docker", "run -u 1000 --detach --volume ssh_data:/ssh --name=ssh-agent whilp/ssh-agent") }
     end
   end

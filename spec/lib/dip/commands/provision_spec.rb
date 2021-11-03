@@ -9,7 +9,8 @@ describe Dip::Commands::Provision, config: true do
 
   context "when has no any commands" do
     let(:commands) { [] }
-    it { expect { cli.start ["provision"] }.to_not raise_error }
+
+    it { expect { cli.start ["provision"] }.not_to raise_error }
   end
 
   context "when has some commands" do

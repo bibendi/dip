@@ -1,4 +1,7 @@
-require: standard
+require:
+  - rubocop-rake
+  - rubocop-rspec
+  - standard
 
 inherit_gem:
   standard: config/base.yml
@@ -7,7 +10,31 @@ AllCops:
   TargetRubyVersion: 2.5
   Exclude:
     - 'tmp/**/*'
-  DisplayCopNames: true
+  NewCops: enable
 
 Style/FrozenStringLiteralComment:
   Enabled: true
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/VerifiedDoubles:
+  Enabled: false

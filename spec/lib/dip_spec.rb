@@ -7,26 +7,27 @@ describe Dip do
 
   describe ".config" do
     it "initializes the config" do
-      expect(Dip.config).to be_is_a Dip::Config
+      expect(described_class.config).to be_is_a Dip::Config
     end
   end
 
   describe ".env" do
     it "initializes the environment" do
-      expect(Dip.config).to be_is_a Dip::Config
+      expect(described_class.config).to be_is_a Dip::Config
     end
   end
 
   describe ".test?" do
-    it { expect(Dip.test?).to be true }
+    it { expect(described_class.test?).to be true }
   end
 
   describe ".debug?" do
-    it { expect(Dip.debug?).to be false }
+    it { expect(described_class.debug?).to be false }
 
     context "when debug is running", env: true do
       let(:env) { {"DIP_ENV" => "debug"} }
-      it { expect(Dip.debug?).to be true }
+
+      it { expect(described_class.debug?).to be true }
     end
   end
 end

@@ -24,13 +24,13 @@ describe Dip::Config do
       end
 
       context "when config exists" do
-        it { expect(subject.public_send(key)).to_not be_nil }
+        it { expect(subject.public_send(key)).not_to be_nil }
       end
 
       context "when config is missing" do
         let(:env) { {"DIP_FILE" => fixture_path("missing", "dip.yml")} }
 
-        it { expect(subject.public_send(key)).to_not be_nil }
+        it { expect(subject.public_send(key)).not_to be_nil }
       end
     end
   end
@@ -54,9 +54,9 @@ describe Dip::Config do
   end
 
   context "when config located two levels higher and overridden at one level higher", env: true do
-    let(:env) { {"DIP_FILE" => nil} }
-
     subject { described_class.new(fixture_path("cascade", "sub_a", "sub_b")) }
+
+    let(:env) { {"DIP_FILE" => nil} }
 
     it "rewrites an array" do
       expect(subject.compose[:files]).to eq ["docker-compose.local.yml"]

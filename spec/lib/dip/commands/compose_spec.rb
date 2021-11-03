@@ -9,37 +9,47 @@ describe Dip::Commands::Compose do
 
   context "when execute without extra arguments" do
     before { cli.start "compose run".shellsplit }
+
     it { expected_exec("docker-compose", "run") }
   end
 
   context "when execute with arguments" do
     before { cli.start "compose run --rm bash".shellsplit }
+
     it { expected_exec("docker-compose", ["run", "--rm", "bash"]) }
   end
 
   context "when config contains project_name", config: true do
     let(:config) { {compose: {project_name: "rocket"}} }
+
     before { cli.start "compose run".shellsplit }
+
     it { expected_exec("docker-compose", ["--project-name", "rocket", "run"]) }
   end
 
   context "when config contains project_name with env vars", config: true, env: true do
     let(:config) { {compose: {project_name: "rocket-$RAILS_ENV"}} }
     let(:env) { {"RAILS_ENV" => "test"} }
+
     before { cli.start "compose run".shellsplit }
+
     it { expected_exec("docker-compose", ["--project-name", "rocket-test", "run"]) }
   end
 
   context "when config contains project_directory", config: true do
     let(:config) { {compose: {project_directory: "/foo/bar"}} }
+
     before { cli.start "compose run".shellsplit }
+
     it { expected_exec("docker-compose", ["--project-directory", "/foo/bar", "run"]) }
   end
 
   context "when config contains project_directory with env vars", config: true, env: true do
     let(:config) { {compose: {project_directory: "/foo-$RAILS_ENV"}} }
     let(:env) { {"RAILS_ENV" => "test"} }
+
     before { cli.start "compose run".shellsplit }
+
     it { expected_exec("docker-compose", ["--project-directory", "/foo-test", "run"]) }
   end
 

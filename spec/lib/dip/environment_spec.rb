@@ -3,8 +3,9 @@
 require "spec_helper"
 
 describe Dip::Environment do
-  let(:vars) { {} }
   subject { described_class.new(vars) }
+
+  let(:vars) { {} }
 
   context "when vars is empty" do
     it { is_expected.to be_truthy }
@@ -15,26 +16,29 @@ describe Dip::Environment do
 
     context "and its don't exist in ENV" do
       let(:vars) { {"FOO" => "foo"} }
+
       it { is_expected.to include("FOO" => "foo") }
     end
 
     context "and its exist in ENV", env: true do
       let(:vars) { {"FOO" => "foo"} }
       let(:env) { {"FOO" => "bar"} }
+
       it { is_expected.to include("FOO" => "bar") }
     end
 
     context "and some vars were interpolated", env: true do
       let(:vars) { {"BAZ" => "baz", "FOO" => "foo-${BAR}-$BAZ"} }
       let(:env) { {"BAR" => "bar"} }
+
       it { is_expected.to include("BAZ" => "baz", "FOO" => "foo-bar-baz") }
     end
   end
 
   describe "#interpolate" do
-    let(:key) { "foo $BAR baz" }
-
     subject { described_class.new(vars).interpolate(key) }
+
+    let(:key) { "foo $BAR baz" }
 
     it { is_expected.to eq "foo $BAR baz" }
 
