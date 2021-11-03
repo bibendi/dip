@@ -5,7 +5,7 @@ compose:
     - docker-compose.yml
 
 interaction:
-  bash:
+  shell:
     description: Open the Bash shell in app's container
     service: app
     command: /bin/bash
