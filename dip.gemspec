@@ -4,7 +4,6 @@ lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "dip/version"
 
-# rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |spec|
   spec.name = "dip"
   spec.license = "MIT"
@@ -47,4 +46,3 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov", "~> 0.16"
   spec.add_development_dependency "test-unit", "~> 3"
 end
-# rubocop:enable Metrics/BlockLength

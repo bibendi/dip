@@ -27,6 +27,6 @@ jobs:
           gem install dip
           dip provision
       - name: Run linters
-        run: dip standardrb
+        run: dip rubocop
       - name: Run tests
         run: dip rspec

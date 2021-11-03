@@ -4,9 +4,9 @@
 
 # DIP
 
-Docker Interaction Process
+Docker Interaction Program.
 
-A command-line utility that gives you the native-like interaction with applications through Docker in a development environment. In practice, it creates the feeling that you are working without mind-blowing approaches to run the containers.
+Development-environment CLI program providing the native-like interaction with a Dockerized application. It creates the feeling that you are working without mind-blowing commands to run the containers.
 
 <a href="https://evilmartians.com/?utm_source=dip">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" height="80" /></a>

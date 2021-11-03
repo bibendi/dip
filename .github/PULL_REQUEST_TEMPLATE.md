@@ -3,10 +3,11 @@
 <!--
 Short description about the feature and the motivation/issue behind it
 -->
+-
 
 ## Related tickets
 
-
+-
 
 # What's inside
 
@@ -16,8 +17,6 @@ The purpose of this list is to track the progress if it's WIP (use checkboxes)
 and to emphasize the critical parts (which you'd like to pay reviewers attention to)
 -->
 - [x] A
-- [ ] B
-- ...
 
 # Checklist:
 

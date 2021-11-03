@@ -3,4 +3,4 @@ pre-commit:
     rubocop:
       tags: backend
       glob: "**/*.rb"
-      runner: bundle exec standardrb --fix {staged_files} && git add {staged_files}
+      runner: bundle exec rubocop -A {staged_files} && git add {staged_files}

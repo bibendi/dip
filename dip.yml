@@ -25,10 +25,10 @@ interaction:
     service: app
     command: bundle exec rspec
 
-  standardrb:
-    description: Run Standard commands
+  rubocop:
+    description: Run Rubocop commands
     service: app
-    command: bundle exec standardrb
+    command: bundle exec rubocop
 
 provision:
   - cp -f lefthook-local.dip_example.yml lefthook-local.yml

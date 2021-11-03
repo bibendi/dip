@@ -1,0 +1,13 @@
+require: standard
+
+inherit_gem:
+  standard: config/base.yml
+
+AllCops:
+  TargetRubyVersion: 2.5
+  Exclude:
+    - 'tmp/**/*'
+  DisplayCopNames: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
