@@ -6,7 +6,7 @@ require_relative "../commands/nginx"
 
 module Dip
   class CLI
-    # See more https://github.com/bibendi/nginx-proxy
+    # See more https://github.com/nginx-proxy/nginx-proxy
     class Nginx < Base
       desc "up", "Run nginx container"
       method_option :help, aliases: "-h", type: :boolean,
@@ -19,7 +19,7 @@ module Dip
                           desc: "Container network name"
       method_option :publish, aliases: "-p", type: :array, default: ["80:80"],
                               desc: "Container port(s). For more than one port, separate them by a space"
-      method_option :image, aliases: "-i", type: :string, default: "bibendi/nginx-proxy:latest",
+      method_option :image, aliases: "-i", type: :string, default: "nginxproxy/nginx-proxy:latest",
                             desc: "Docker image name"
       method_option :domain, aliases: "-d", type: :string, default: "docker",
                              desc: "Top level domain"
