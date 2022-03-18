@@ -2,7 +2,7 @@
 
 describe Dip do
   it "has a version number" do
-    expect(Dip::VERSION).not_to be nil
+    expect(Dip::VERSION).not_to be_nil
   end
 
   describe ".config" do
