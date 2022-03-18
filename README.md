@@ -224,6 +224,16 @@ Use options `-p, --publish=[]` if you need to additionally publish a container's
 dip run -p 3000:3000 bundle exec rackup config.ru
 ```
 
+You can also override docker compose command by passing `DIP_COMPOSE_COMMAND` if you wish. For example if you want to use [`mutagen-compose`](https://mutagen.io/documentation/orchestration/compose) run `DIP_COMPOSE_COMMAND=mutagen-compose dip run`.
+
+If you want to persist that change you can specify command in `compose` section of dip.yml :
+
+```yml
+compose:
+  command: mutagen-compose
+
+```
+
 ### dip ls
 
 List all available run commands.

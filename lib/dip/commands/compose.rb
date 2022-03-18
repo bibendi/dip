@@ -23,7 +23,10 @@ module Dip
 
         compose_argv = Array(find_files) + Array(cli_options) + argv
 
-        if compose_v2?
+        if (override_command = compose_command_override)
+          override_command, *override_args = override_command.split(" ")
+          exec_program(override_command, override_args.concat(compose_argv), shell: shell)
+        elsif compose_v2?
           exec_program("docker", compose_argv.unshift("compose"), shell: shell)
         else
           exec_program("docker-compose", compose_argv, shell: shell)
@@ -79,6 +82,10 @@ module Dip
         end
 
         !!exec_subprocess("docker", "compose version", panic: false, out: File::NULL, err: File::NULL)
+      end
+
+      def compose_command_override
+        Dip.env["DIP_COMPOSE_COMMAND"] || config[:command]
       end
     end
   end
