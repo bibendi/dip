@@ -9,7 +9,7 @@ module Dip
     class Console < Base
       desc "start", "Integrate Dip into current shell"
       method_option :help, aliases: "-h", type: :boolean,
-                           desc: "Display usage information"
+        desc: "Display usage information"
       def start
         if options[:help]
           invoke :help, ["start"]
@@ -22,7 +22,7 @@ module Dip
 
       desc "inject", "Inject aliases"
       method_option :help, aliases: "-h", type: :boolean,
-                           desc: "Display usage information"
+        desc: "Display usage information"
       def inject
         if options[:help]
           invoke :help, ["inject"]

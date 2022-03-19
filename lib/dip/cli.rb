@@ -75,7 +75,7 @@ module Dip
 
     desc "run [OPTIONS] CMD [ARGS]", "Run configured command in a docker-compose service. `run` prefix may be omitted"
     method_option :publish, aliases: "-p", type: :string, repeatable: true,
-                            desc: "Publish a container's port(s) to the host"
+      desc: "Publish a container's port(s) to the host"
     method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"
     def run(*argv)
       if argv.empty? || options[:help]
@@ -88,7 +88,7 @@ module Dip
 
     desc "provision", "Execute commands within provision section"
     method_option :help, aliases: "-h", type: :boolean,
-                         desc: "Display usage information"
+      desc: "Display usage information"
     def provision
       if options[:help]
         invoke :help, ["provision"]
