@@ -16,7 +16,7 @@ describe Dip::Commands::Nginx do
       it do
         expected_subprocess(
           "docker",
-          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest"
+          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker nginxproxy/nginx-proxy:latest"
         )
       end
     end
@@ -26,7 +26,7 @@ describe Dip::Commands::Nginx do
 
       it {
         expected_subprocess("docker",
-          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name foo --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest")
+          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name foo --label com.dnsdock.alias=docker nginxproxy/nginx-proxy:latest")
       }
     end
 
@@ -35,7 +35,7 @@ describe Dip::Commands::Nginx do
 
       it {
         expected_subprocess("docker",
-          "run --detach --volume foo:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest")
+          "run --detach --volume foo:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker nginxproxy/nginx-proxy:latest")
       }
     end
 
@@ -46,7 +46,7 @@ describe Dip::Commands::Nginx do
 
       it {
         expected_subprocess("docker",
-          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net foo --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest")
+          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net foo --name nginx --label com.dnsdock.alias=docker nginxproxy/nginx-proxy:latest")
       }
     end
 
@@ -55,7 +55,7 @@ describe Dip::Commands::Nginx do
 
       it {
         expected_subprocess("docker",
-          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest")
+          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker nginxproxy/nginx-proxy:latest")
       }
 
       context "when more than one port given" do
@@ -63,7 +63,7 @@ describe Dip::Commands::Nginx do
 
         it {
           expected_subprocess("docker",
-            "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest")
+            "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker nginxproxy/nginx-proxy:latest")
         }
       end
     end
@@ -82,7 +82,7 @@ describe Dip::Commands::Nginx do
 
       it {
         expected_subprocess("docker",
-          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=foo bibendi/nginx-proxy:latest")
+          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=foo nginxproxy/nginx-proxy:latest")
       }
     end
 
@@ -91,7 +91,7 @@ describe Dip::Commands::Nginx do
 
       it {
         expected_subprocess("docker",
-          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --volume /home/whoami/certs_storage:/etc/nginx/certs --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker bibendi/nginx-proxy:latest")
+          "run --detach --volume /var/run/docker.sock:/tmp/docker.sock:ro --volume /home/whoami/certs_storage:/etc/nginx/certs --restart always --publish 80:80 --net frontend --name nginx --label com.dnsdock.alias=docker nginxproxy/nginx-proxy:latest")
       }
     end
   end
