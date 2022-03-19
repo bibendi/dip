@@ -119,4 +119,49 @@ describe Dip::Commands::Compose do
       it { expected_exec("docker-compose", ["--file", file, "run"]) }
     end
   end
+
+  context "when compose command specified in config", config: true do
+    context "when compose command contains spaces" do
+      let(:config) { {compose: {command: "foo compose"}} }
+
+      before { cli.start "compose run".shellsplit }
+
+      it { expected_exec("foo compose", "run") }
+    end
+
+    context "when compose command does not contain spaces" do
+      let(:config) { {compose: {command: "foo-compose"}} }
+
+      before { cli.start "compose run".shellsplit }
+
+      it { expected_exec("foo-compose", "run") }
+    end
+  end
+
+  context "when DIP_COMPOSE_COMMAND is specified in environment", env: true do
+    context "when DIP_COMPOSE_COMMAND contains spaces" do
+      let(:env) { {"DIP_COMPOSE_COMMAND" => "foo compose"} }
+
+      before { cli.start "compose run".shellsplit }
+
+      it { expected_exec("foo compose", "run") }
+    end
+
+    context "when DIP_COMPOSE_COMMAND does not contain spaces" do
+      let(:env) { {"DIP_COMPOSE_COMMAND" => "foo-compose"} }
+
+      before { cli.start "compose run".shellsplit }
+
+      it { expected_exec("foo-compose", "run") }
+    end
+
+    context "when compose command specified in config", config: true do
+      let(:config) { {compose: {command: "foo compose"}} }
+      let(:env) { {"DIP_COMPOSE_COMMAND" => "bar-compose"} }
+
+      before { cli.start "compose run".shellsplit }
+
+      it { expected_exec("bar-compose", "run") }
+    end
+  end
 end
