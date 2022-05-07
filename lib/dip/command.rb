@@ -20,8 +20,13 @@ module Dip
 
     class SubprocessRunner
       def self.call(cmdline, env: {}, panic: true, **options)
-        return if ::Kernel.system(env, cmdline, **options)
-        raise Dip::Error, "Command '#{cmdline}' executed with error." if panic
+        status = ::Kernel.system(env, cmdline, **options)
+
+        if !status && panic
+          raise Dip::Error, "Command '#{cmdline}' executed with error"
+        else
+          status
+        end
       end
     end
 
