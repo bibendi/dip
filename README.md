@@ -30,6 +30,8 @@ Dip can be injected into the current shell (ZSH or Bash).
 eval "$(dip console)"
 ```
 
+**IMPORTANT**: Beware of possible collisions with local tools. One particular example is supporting both local and Docker frontend build tools, such as Yarn. If you want some developer to run `yarn` locally and other to use Docker for that, you should either avoid adding the `yarn` command to the `dip.yml` or avoid using the shell integration for hybrid development.
+
 After that we can type commands without `dip` prefix. For example:
 
 ```sh
