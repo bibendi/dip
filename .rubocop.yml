@@ -12,6 +12,12 @@ AllCops:
     - 'tmp/**/*'
   NewCops: enable
 
+RSpec:
+  Language:
+    Expectations:
+      - expected_subprocess
+      - expected_exec
+
 Style/FrozenStringLiteralComment:
   Enabled: true
 
