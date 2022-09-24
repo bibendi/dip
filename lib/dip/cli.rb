@@ -69,8 +69,17 @@ module Dip
     end
 
     desc "down [OPTIONS]", "Run `docker-compose down` command"
+    method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"
+    method_option :all, aliases: "-A", type: :boolean, desc: "Shutdown all running docker-compose projects"
     def down(*argv)
-      compose("down", *argv)
+      if options[:help]
+        invoke :help, ["down"]
+      elsif options[:all]
+        require_relative "commands/down_all"
+        Dip::Commands::DownAll.new.execute
+      else
+        compose("down", *argv)
+      end
     end
 
     desc "run [OPTIONS] CMD [ARGS]", "Run configured command in a docker-compose service. `run` prefix may be omitted"
