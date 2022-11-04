@@ -32,7 +32,7 @@ module Dip
       end
     end
 
-    stop_on_unknown_option! :run
+    stop_on_unknown_option! :run, :ktl
 
     desc "version", "dip version"
     def version
@@ -82,7 +82,13 @@ module Dip
       end
     end
 
-    desc "run [OPTIONS] CMD [ARGS]", "Run configured command in a docker-compose service. `run` prefix may be omitted"
+    desc "ktl CMD [OPTIONS]", "Run kubectl commands"
+    def ktl(*argv)
+      require_relative "commands/kubectl"
+      Dip::Commands::Kubectl.new(*argv).execute
+    end
+
+    desc "run [OPTIONS] CMD [ARGS]", "Run configured command (`run` prefix may be omitted)"
     method_option :publish, aliases: "-p", type: :string, repeatable: true,
       desc: "Publish a container's port(s) to the host"
     method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"
@@ -91,7 +97,11 @@ module Dip
         invoke :help, ["run"]
       else
         require_relative "commands/run"
-        Dip::Commands::Run.new(*argv, publish: options[:publish]).execute
+
+        Dip::Commands::Run.new(
+          *argv,
+          **options.to_h.transform_keys!(&:to_sym)
+        ).execute
       end
     end
 

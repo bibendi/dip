@@ -38,8 +38,7 @@ After that we can type commands without `dip` prefix. For example:
 <run-command> *any-args
 compose *any-compose-arg
 up <service>
-build
-down
+ktl *any-kubectl-arg
 provision
 ```
 
@@ -81,10 +80,11 @@ Also, you can check out examples at the top.
 
 ```yml
 # Required minimum dip version
-version: '7.1'
+version: '7.5'
 
 environment:
   COMPOSE_EXT: development
+  STAGE: "staging"
 
 compose:
   files:
@@ -92,6 +92,9 @@ compose:
     - docker/docker-compose.$COMPOSE_EXT.yml
     - docker/docker-compose.$DIP_OS.yml
   project_name: bear
+
+kubectl:
+  namespace: rocket-$STAGE
 
 interaction:
   shell:
@@ -141,6 +144,22 @@ interaction:
     service: app
     default_args: db_dev
     command: psql -h pg -U postgres
+
+  k:
+    description: Run commands in Kubernetes cluster
+    pod: svc/rocket-app:app-container
+    entrypoint: /env-entrypoint
+    subcommands:
+      bash:
+        description: Get a shell to the running container
+        command: /bin/bash
+      rails:
+        description: Run Rails commands
+        command: bundle exec rails
+      kafka-topics:
+        description: Manage Kafka topics
+        pod: svc/rocket-kafka
+        command: kafka-topics.sh --zookeeper zookeeper:2181
 
   setup_key:
     description: Copy key
@@ -201,7 +220,13 @@ returned is `/app/sub-project-dir`.
 
 Run commands defined within the `interaction` section of dip.yml
 
-By default, a command will be executed using [`docker compose`](https://docs.docker.com/compose/install/) command. If you are still using `docker-compose` binary (i.e., prior to Compose V2 changes), a command would be run through it. You can disable using of Compose V2 by passing an environment variable `DIP_COMPOSE_V2=false dip run`.
+A command will be executed by specified runner. Dip has three types of them:
+
+- `docker-compose` runner — used when the `service` option is defined.
+- `kubectl` runner — used when the `pod` option is defined.
+- `local` runner — used when the previous ones are not defined.
+
+If you are still using `docker-compose` binary (i.e., prior to Compose V2 changes), a command would be run through it. You can disable using of Compose V2 by passing an environment variable `DIP_COMPOSE_V2=false dip run`.
 
 ```sh
 dip run rails c
@@ -254,12 +279,22 @@ Run commands each by each from `provision` section of dip.yml
 
 ### dip compose
 
-Run docker-compose commands that are configured according to the application's dip.yml :
+Run docker-compose commands that are configured according to the application's dip.yml:
 
 ```sh
 dip compose COMMAND [OPTIONS]
 
 dip compose up -d redis
+```
+
+### dip ktl
+
+Run kubectl commands that are configured according to the application's dip.yml:
+
+```sh
+dip ktl COMMAND [OPTIONS]
+
+STAGE=some dip ktl get pods
 ```
 
 ### dip ssh

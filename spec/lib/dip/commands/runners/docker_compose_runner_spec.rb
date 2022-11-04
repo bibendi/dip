@@ -4,32 +4,17 @@ require "shellwords"
 require "dip/cli"
 require "dip/commands/run"
 
-describe Dip::Commands::Run, config: true do
+describe Dip::Commands::Runners::DockerComposeRunner, config: true do
   let(:config) { {interaction: commands} }
   let(:commands) do
     {
       bash: {service: "app"},
       bash_shell: {service: "app", command: "bash", shell: false},
-      rails: {service: "app", command: "rails"},
-      psql: {service: "postgres", command: "psql -h postgres", default_args: "db_dev"},
-      setup: {command: "./bin/setup", default_args: "all"}
+      rails: {runner: "docker_compose", service: "app", command: "rails"},
+      psql: {service: "postgres", command: "psql -h postgres", default_args: "db_dev"}
     }
   end
   let(:cli) { Dip::CLI }
-
-  context "when run command on host" do
-    context "when using default args" do
-      before { cli.start "run setup".shellsplit }
-
-      it { expected_exec("./bin/setup", ["all"]) }
-    end
-
-    context "when args are provided" do
-      before { cli.start "run setup db".shellsplit }
-
-      it { expected_exec("./bin/setup", ["db"]) }
-    end
-  end
 
   context "when run bash command" do
     before { cli.start "run bash".shellsplit }
