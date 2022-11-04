@@ -58,7 +58,10 @@ module Dip
     def build_command(entry)
       {
         description: entry[:description],
+        runner: entry[:runner],
         service: entry[:service],
+        pod: entry[:pod],
+        entrypoint: entry[:entrypoint],
         command: entry[:command].to_s.strip,
         shell: entry.fetch(:shell, true),
         default_args: entry[:default_args].to_s.strip,

@@ -16,6 +16,7 @@ module Dip
     CONFIG_DEFAULTS = {
       environment: {},
       compose: {},
+      kubectl: {},
       interation: {},
       provision: []
     }.freeze
@@ -94,7 +95,7 @@ module Dip
       config
     end
 
-    %i[environment compose interaction provision].each do |key|
+    %i[environment compose kubectl interaction provision].each do |key|
       define_method(key) do
         config[key] || (raise config_missing_error(key))
       end
