@@ -25,7 +25,7 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
       - name: Install dependencies
         run: |
-          gem install dip
+          rake install
           dip provision
       - name: Run linters
         run: dip rubocop
