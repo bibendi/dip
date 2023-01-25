@@ -18,10 +18,10 @@ jobs:
     name: Ruby ${{ matrix.ruby }}
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Ruby
+      - name: Setup Ruby w/ same version as image
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: ${{ matrix.ruby }}
       - name: Install dependencies
         run: |
           gem install dip
