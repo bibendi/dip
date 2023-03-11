@@ -17,7 +17,7 @@ module Dip
       environment: {},
       compose: {},
       kubectl: {},
-      interation: {},
+      interaction: {},
       provision: []
     }.freeze
 
