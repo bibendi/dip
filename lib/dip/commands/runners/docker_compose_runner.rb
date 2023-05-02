@@ -9,6 +9,7 @@ module Dip
       class DockerComposeRunner < Base
         def execute
           Commands::Compose.new(
+            *compose_profiles,
             command[:compose][:method],
             *compose_arguments,
             shell: command[:shell]
@@ -16,6 +17,16 @@ module Dip
         end
 
         private
+
+        def compose_profiles
+          return [] if command[:compose][:profiles].empty?
+
+          update_command_for_profiles
+
+          command[:compose][:profiles].each_with_object([]) do |profile, argv|
+            argv.concat(["--profile", profile])
+          end
+        end
 
         def compose_arguments
           compose_argv = command[:compose][:run_options].dup
@@ -56,6 +67,17 @@ module Dip
           else
             []
           end
+        end
+
+        def update_command_for_profiles
+          # NOTE: When using profiles, the method is always `up`.
+          #       This is because `docker-compose` does not support profiles
+          #       for other commands. Also, run options need to be removed
+          #       because they are not supported by `up`.
+          command[:compose][:method] = "up"
+          command[:command] = ""
+          command[:service] = nil
+          command[:compose][:run_options] = []
         end
       end
     end

@@ -136,6 +136,22 @@ describe Dip::Commands::Runners::DockerComposeRunner, config: true do
     it { expected_exec("docker-compose", ["run", "--rm", "app", "rspec"], env: hash_including("RAILS_ENV" => "test")) }
   end
 
+  context "when config with profiles" do
+    let(:commands) do
+      {
+        stack: {
+          runner: "docker_compose",
+          compose_run_options: ["foo", "-bar", "--baz=qux"],
+          compose: {profiles: ["foo", "bar"]}
+        }
+      }
+    end
+
+    before { cli.start "run stack".shellsplit }
+
+    it { expected_exec("docker-compose", ["--profile", "foo", "--profile", "bar", "up"]) }
+  end
+
   context "when config with subcommands" do
     let(:commands) { {rails: {service: "app", command: "rails", subcommands: subcommands}} }
     let(:subcommands) { {s: {command: "rails server"}} }
@@ -187,6 +203,19 @@ describe Dip::Commands::Runners::DockerComposeRunner, config: true do
           ["run", "--rm", "app", "rake", "db:drop", "db:tests:prepare", "db:migrate"],
           env: hash_including("RAILS_ENV" => "test"))
       end
+    end
+
+    context "when config with profiles" do
+      let(:subcommands) do
+        {all: {
+          compose_run_options: ["foo", "-bar", "--baz=qux"],
+          compose: {profiles: ["foo", "bar"]}}
+        }
+      end
+
+      before { cli.start "run rails all".shellsplit }
+
+      it { expected_exec("docker-compose", ["--profile", "foo", "--profile", "bar", "up"]) }
     end
   end
 end

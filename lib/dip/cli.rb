@@ -78,7 +78,7 @@ module Dip
         require_relative "commands/down_all"
         Dip::Commands::DownAll.new.execute
       else
-        compose("down", *argv)
+        compose("down", *argv.push("--remove-orphans"))
       end
     end
 
