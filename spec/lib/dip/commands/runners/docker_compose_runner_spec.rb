@@ -207,9 +207,11 @@ describe Dip::Commands::Runners::DockerComposeRunner, config: true do
 
     context "when config with profiles" do
       let(:subcommands) do
-        {all: {
-          compose_run_options: ["foo", "-bar", "--baz=qux"],
-          compose: {profiles: ["foo", "bar"]}}
+        {
+          all: {
+            compose_run_options: ["foo", "-bar", "--baz=qux"],
+            compose: {profiles: ["foo", "bar"]}
+          }
         }
       end
 
