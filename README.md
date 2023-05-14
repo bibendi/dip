@@ -132,6 +132,12 @@ interaction:
         compose:
           run_options: [service-ports, use-aliases]
 
+  stack:
+    description: Run full stack (server, workers, etc.)
+    runner: docker_compose
+    compose:
+      profiles: [web, workers]
+
   sidekiq:
     description: Run sidekiq in background
     service: worker

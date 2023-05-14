@@ -13,7 +13,7 @@ module Dip
       attr_reader :argv, :config, :shell
 
       def initialize(*argv, shell: true)
-        @argv = argv
+        @argv = argv.compact
         @shell = shell
         @config = ::Dip.config.compose || {}
       end

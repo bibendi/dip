@@ -76,16 +76,16 @@ describe Dip::Commands::Compose do
   context "when config contains multiple docker-compose files", config: true do
     context "and some files are not exist" do
       let(:config) { {compose: {files: %w[file1.yml file2.yml file3.yml]}} }
-      let(:file1) { fixture_path("empty", "file1.yml") }
-      let(:file2) { fixture_path("empty", "file2.yml") }
-      let(:file3) { fixture_path("empty", "file3.yml") }
+      let(:global_file) { fixture_path("empty", "file1.yml") }
+      let(:local_file) { fixture_path("empty", "file2.yml") }
+      let(:override_file) { fixture_path("empty", "file3.yml") }
 
       before do
         allow_any_instance_of(Pathname).to receive(:exist?) do |obj|
           case obj.to_s
-          when file1, file3
+          when global_file, override_file
             true
-          when file2
+          when local_file
             false
           else
             File.exist?(obj.to_s)
@@ -95,7 +95,7 @@ describe Dip::Commands::Compose do
         cli.start "compose run".shellsplit
       end
 
-      it { expected_exec("docker-compose", ["--file", file1, "--file", file3, "run"]) }
+      it { expected_exec("docker-compose", ["--file", global_file, "--file", override_file, "run"]) }
     end
 
     context "and a file name contains env var", env: true do
