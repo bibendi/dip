@@ -76,7 +76,6 @@ module Dip
           #       because they are not supported by `up`.
           command[:compose][:method] = "up"
           command[:command] = ""
-          command[:service] = nil
           command[:compose][:run_options] = []
         end
       end

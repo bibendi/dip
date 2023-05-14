@@ -217,7 +217,7 @@ describe Dip::Commands::Runners::DockerComposeRunner, config: true do
 
       before { cli.start "run rails all".shellsplit }
 
-      it { expected_exec("docker-compose", ["--profile", "foo", "--profile", "bar", "up"]) }
+      it { expected_exec("docker-compose", ["--profile", "foo", "--profile", "bar", "up", "app"]) }
     end
   end
 end
