@@ -7,10 +7,10 @@ require "dip/commands/ssh"
 describe Dip::Commands::SSH do
   let(:cli) { Dip::CLI::SSH }
 
-  describe Dip::Commands::SSH::Up do
-    context "when without arguments", env: true do
-      let(:env) { {"HOME" => "/user"} }
+  describe Dip::Commands::SSH::Up, env: true do
+    let(:env) { {"HOME" => "/user"} }
 
+    context "when without arguments" do
       before { cli.start "up".shellsplit }
 
       it { expected_subprocess("docker", "volume create --name ssh_data") }
@@ -27,7 +27,7 @@ describe Dip::Commands::SSH do
 
       it {
         expected_subprocess("docker",
-          "run --rm --volume ssh_data:/ssh --volume /root:/root --interactive --tty whilp/ssh-agent ssh-add /foo/bar-baz-rsa")
+          "run --rm --volume ssh_data:/ssh --volume /user:/user --interactive --tty whilp/ssh-agent ssh-add /foo/bar-baz-rsa")
       }
     end
 
@@ -36,7 +36,7 @@ describe Dip::Commands::SSH do
 
       it {
         expected_subprocess("docker",
-          "run --rm --volume ssh_data:/ssh --volume /foo/.ssh:/foo/.ssh --interactive --tty whilp/ssh-agent ssh-add /root/.ssh/id_rsa")
+          "run --rm --volume ssh_data:/ssh --volume /foo/.ssh:/foo/.ssh --interactive --tty whilp/ssh-agent ssh-add /user/.ssh/id_rsa")
       }
     end
 
