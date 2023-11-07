@@ -45,11 +45,11 @@ module Dip
       cmd = build_command(entry)
 
       tree[name] = cmd
+      base_cmd = entry.select { |k, _| k != :subcommands }
 
       entry[:subcommands]&.each do |sub_name, sub_entry|
         sub_command_defaults!(sub_entry)
-
-        expand("#{name} #{sub_name}", entry.deep_merge(sub_entry), tree: tree)
+        expand("#{name} #{sub_name}", base_cmd.deep_merge(sub_entry), tree: tree)
       end
 
       tree
