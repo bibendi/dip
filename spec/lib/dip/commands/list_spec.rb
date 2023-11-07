@@ -17,6 +17,19 @@ describe Dip::Commands::List, :config do
             service: "web"
           }
         }
+      },
+      test: {
+        description: "Fire smoke test",
+        subcommands: {
+          foo: {
+            description: "Test Foo locally",
+            subcommands: {
+              stage: {
+                description: "Test Foo on staging"
+              }
+            }
+          }
+        }
       }
     }
   end
@@ -26,9 +39,12 @@ describe Dip::Commands::List, :config do
 
   it "prints all run commands" do
     expected_output = <<~OUT
-      bash     #
-      rails    # Run Rails command
-      rails s  # Run Rails server
+      bash            #
+      rails           # Run Rails command
+      rails s         # Run Rails server
+      test            # Fire smoke test
+      test foo        # Test Foo locally
+      test foo stage  # Test Foo on staging
     OUT
 
     expect { cli.start "ls".shellsplit }.to output(expected_output).to_stdout
