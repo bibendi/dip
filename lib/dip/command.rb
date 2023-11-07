@@ -11,7 +11,7 @@ module Dip
     class ProgramRunner
       def self.call(cmdline, env: {}, **options)
         if cmdline.is_a?(Array)
-          ::Kernel.exec(env, cmdline[0], *cmdline[1..-1], **options)
+          ::Kernel.exec(env, cmdline[0], *cmdline[1..], **options)
         else
           ::Kernel.exec(env, cmdline, **options)
         end
