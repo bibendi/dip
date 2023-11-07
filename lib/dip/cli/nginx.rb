@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "thor"
-require_relative "./base"
+require_relative "base"
 require_relative "../commands/nginx"
 
 module Dip

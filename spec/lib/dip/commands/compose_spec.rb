@@ -19,7 +19,7 @@ describe Dip::Commands::Compose do
     it { expected_exec("docker-compose", ["run", "--rm", "bash"]) }
   end
 
-  context "when config contains project_name", config: true do
+  context "when config contains project_name", :config do
     let(:config) { {compose: {project_name: "rocket"}} }
 
     before { cli.start "compose run".shellsplit }
@@ -27,7 +27,7 @@ describe Dip::Commands::Compose do
     it { expected_exec("docker-compose", ["--project-name", "rocket", "run"]) }
   end
 
-  context "when config contains project_name with env vars", config: true, env: true do
+  context "when config contains project_name with env vars", :config, :env do
     let(:config) { {compose: {project_name: "rocket-$RAILS_ENV"}} }
     let(:env) { {"RAILS_ENV" => "test"} }
 
@@ -36,7 +36,7 @@ describe Dip::Commands::Compose do
     it { expected_exec("docker-compose", ["--project-name", "rocket-test", "run"]) }
   end
 
-  context "when config contains project_directory", config: true do
+  context "when config contains project_directory", :config do
     let(:config) { {compose: {project_directory: "/foo/bar"}} }
 
     before { cli.start "compose run".shellsplit }
@@ -44,7 +44,7 @@ describe Dip::Commands::Compose do
     it { expected_exec("docker-compose", ["--project-directory", "/foo/bar", "run"]) }
   end
 
-  context "when config contains project_directory with env vars", config: true, env: true do
+  context "when config contains project_directory with env vars", :config, :env do
     let(:config) { {compose: {project_directory: "/foo-$RAILS_ENV"}} }
     let(:env) { {"RAILS_ENV" => "test"} }
 
@@ -53,7 +53,7 @@ describe Dip::Commands::Compose do
     it { expected_exec("docker-compose", ["--project-directory", "/foo-test", "run"]) }
   end
 
-  context "when compose's config path contains spaces", config: true do
+  context "when compose's config path contains spaces", :config do
     let(:config) { {compose: {files: ["file name.yml"]}} }
     let(:file) { fixture_path("empty", "file name.yml") }
 
@@ -73,7 +73,7 @@ describe Dip::Commands::Compose do
     it { expected_exec("docker-compose", ["--file", Shellwords.escape(file), "run"]) }
   end
 
-  context "when config contains multiple docker-compose files", config: true do
+  context "when config contains multiple docker-compose files", :config do
     context "and some files are not exist" do
       let(:config) { {compose: {files: %w[file1.yml file2.yml file3.yml]}} }
       let(:global_file) { fixture_path("empty", "file1.yml") }
@@ -98,7 +98,7 @@ describe Dip::Commands::Compose do
       it { expected_exec("docker-compose", ["--file", global_file, "--file", override_file, "run"]) }
     end
 
-    context "and a file name contains env var", env: true do
+    context "and a file name contains env var", :env do
       let(:config) { {compose: {files: %w[file1-${DIP_OS}.yml]}} }
       let(:file) { fixture_path("empty", "file1-darwin.yml") }
       let(:env) { {"DIP_OS" => "darwin"} }
@@ -120,7 +120,7 @@ describe Dip::Commands::Compose do
     end
   end
 
-  context "when compose command specified in config", config: true do
+  context "when compose command specified in config", :config do
     context "when compose command contains spaces" do
       let(:config) { {compose: {command: "foo compose"}} }
 
@@ -138,7 +138,7 @@ describe Dip::Commands::Compose do
     end
   end
 
-  context "when DIP_COMPOSE_COMMAND is specified in environment", env: true do
+  context "when DIP_COMPOSE_COMMAND is specified in environment", :env do
     context "when DIP_COMPOSE_COMMAND contains spaces" do
       let(:env) { {"DIP_COMPOSE_COMMAND" => "foo compose"} }
 
@@ -155,7 +155,7 @@ describe Dip::Commands::Compose do
       it { expected_exec("foo-compose", "run") }
     end
 
-    context "when compose command specified in config", config: true do
+    context "when compose command specified in config", :config do
       let(:config) { {compose: {command: "foo compose"}} }
       let(:env) { {"DIP_COMPOSE_COMMAND" => "bar-compose"} }
 

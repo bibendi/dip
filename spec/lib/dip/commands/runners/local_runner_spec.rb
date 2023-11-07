@@ -4,7 +4,7 @@ require "shellwords"
 require "dip/cli"
 require "dip/commands/run"
 
-describe Dip::Commands::Runners::LocalRunner, config: true do
+describe Dip::Commands::Runners::LocalRunner, :config do
   let(:config) { {interaction: commands} }
   let(:commands) do
     {

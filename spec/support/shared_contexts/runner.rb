@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-shared_context "dip command", runner: true do
+shared_context "dip command", :runner do
   let(:exec_program_runner) { spy("exec_program runner") }
   let(:exec_subprocess_runner) { spy("exec_subprocess runner") }
 

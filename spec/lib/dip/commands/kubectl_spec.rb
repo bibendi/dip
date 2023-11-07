@@ -19,7 +19,7 @@ describe Dip::Commands::Kubectl do
     it { expected_exec("kubectl", ["exec", "app", "--", "ls", "-l"]) }
   end
 
-  context "when config contains namespace", config: true do
+  context "when config contains namespace", :config do
     let(:config) { {kubectl: {namespace: "rocket"}} }
 
     before { cli.start "ktl get pods".shellsplit }
@@ -27,7 +27,7 @@ describe Dip::Commands::Kubectl do
     it { expected_exec("kubectl", ["--namespace", "rocket", "get", "pods"]) }
   end
 
-  context "when config contains namespace with env vars", config: true, env: true do
+  context "when config contains namespace with env vars", :config, :env do
     let(:config) { {kubectl: {namespace: "rocket-${STAGE}"}} }
     let(:env) { {"STAGE" => "test"} }
 
@@ -36,7 +36,7 @@ describe Dip::Commands::Kubectl do
     it { expected_exec("kubectl", ["--namespace", "rocket-test", "get", "pods"]) }
   end
 
-  context "when config contains namespace with empty env vars", config: true, env: true do
+  context "when config contains namespace with empty env vars", :config, :env do
     let(:config) { {kubectl: {namespace: "rocket-${STAGE}"}} }
     let(:env) { {"STAGE" => ""} }
 

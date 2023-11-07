@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-shared_context "replace environment vars", env: true do
+shared_context "replace environment vars", :env do
   around do |ex|
     original = {}
 

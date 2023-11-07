@@ -4,7 +4,7 @@ require "shellwords"
 require "dip/cli"
 require "dip/commands/list"
 
-describe Dip::Commands::List, config: true do
+describe Dip::Commands::List, :config do
   let(:config) { {interaction: commands} }
   let(:commands) do
     {

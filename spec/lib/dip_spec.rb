@@ -24,7 +24,7 @@ describe Dip do
   describe ".debug?" do
     it { expect(described_class.debug?).to be false }
 
-    context "when debug is running", env: true do
+    context "when debug is running", :env do
       let(:env) { {"DIP_ENV" => "debug"} }
 
       it { expect(described_class.debug?).to be true }

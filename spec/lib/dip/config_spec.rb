@@ -8,7 +8,7 @@ describe Dip::Config do
       it { is_expected.to be_exist }
     end
 
-    context "when file doesn't exist", env: true do
+    context "when file doesn't exist", :env do
       let(:env) { {"DIP_FILE" => "no.yml"} }
 
       it { is_expected.not_to be_exist }
@@ -17,7 +17,7 @@ describe Dip::Config do
 
   %i[environment compose interaction provision].each do |key|
     describe "##{key}" do
-      context "when config file doesn't exist", env: true do
+      context "when config file doesn't exist", :env do
         let(:env) { {"DIP_FILE" => "no.yml"} }
 
         it { expect { subject.public_send(key) }.to raise_error(Dip::Error) }
@@ -35,7 +35,7 @@ describe Dip::Config do
     end
   end
 
-  context "when config has override file", env: true do
+  context "when config has override file", :env do
     let(:env) { {"DIP_FILE" => fixture_path("overridden", "dip.yml")} }
 
     it "rewrites an array" do
@@ -53,7 +53,7 @@ describe Dip::Config do
     end
   end
 
-  context "when config located two levels higher and overridden at one level higher", env: true do
+  context "when config located two levels higher and overridden at one level higher", :env do
     subject { described_class.new(fixture_path("cascade", "sub_a", "sub_b")) }
 
     let(:env) { {"DIP_FILE" => nil} }

@@ -20,14 +20,14 @@ describe Dip::Environment do
       it { is_expected.to include("FOO" => "foo") }
     end
 
-    context "and its exist in ENV", env: true do
+    context "and its exist in ENV", :env do
       let(:vars) { {"FOO" => "foo"} }
       let(:env) { {"FOO" => "bar"} }
 
       it { is_expected.to include("FOO" => "bar") }
     end
 
-    context "and some vars were interpolated", env: true do
+    context "and some vars were interpolated", :env do
       let(:vars) { {"BAZ" => "baz", "FOO" => "foo-${BAR}-$BAZ"} }
       let(:env) { {"BAR" => "bar"} }
 

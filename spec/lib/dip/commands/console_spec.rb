@@ -37,7 +37,7 @@ describe Dip::Commands::Console do
       it { expect { subject }.to output(/unset -f provision/).to_stdout }
     end
 
-    context "when has provision command", config: true do
+    context "when has provision command", :config do
       let(:config) { {interaction: commands} }
       let(:commands) { {bash: {service: "app"}, rails: {service: "app", command: "rails"}} }
 

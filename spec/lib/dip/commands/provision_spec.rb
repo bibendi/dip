@@ -3,7 +3,7 @@
 require "dip/cli"
 require "dip/commands/provision"
 
-describe Dip::Commands::Provision, config: true do
+describe Dip::Commands::Provision, :config do
   let(:config) { {provision: commands} }
   let(:cli) { Dip::CLI }
 
