@@ -80,7 +80,7 @@ Also, you can check out examples at the top.
 
 ```yml
 # Required minimum dip version
-version: '7.5'
+version: '7.7'
 
 environment:
   COMPOSE_EXT: development
