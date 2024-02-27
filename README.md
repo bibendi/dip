@@ -236,23 +236,11 @@ environment:
 # docker-compose.yml (2)
 services:
   app:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-      target: development
-      args:
-        UID: ${UID:-1000}
+    image: ruby
+    user: ${UID:-1000}
 ```
 
-```dockerfile
-# Dockerfile (3)
-FROM ruby
-ARG UID
-RUN useradd --uid ${UID} --shell /bin/bash app_user
-USER app_user
-```
-
-The user created in the container will have the same UID as the host machine.
+The container will run using the same user ID as your host machine.
 
 
 ### dip run
