@@ -222,6 +222,10 @@ dip run bash -c pwd
 
 returned is `/app/sub-project-dir`.
 
+#### $DIP_CURRENT_USER
+
+Exposes the current user ID (UID). It is useful when you need to run a container with the same user as the host machine.
+
 ### dip run
 
 Run commands defined within the `interaction` section of dip.yml
