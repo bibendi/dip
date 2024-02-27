@@ -224,7 +224,36 @@ returned is `/app/sub-project-dir`.
 
 #### $DIP_CURRENT_USER
 
-Exposes the current user ID (UID). It is useful when you need to run a container with the same user as the host machine.
+Exposes the current user ID (UID). It is useful when you need to run a container with the same user as the host machine. For example:
+
+```yml
+# dip.yml (1)
+environment:
+  UID: ${DIP_CURRENT_USER}
+```
+
+```yml
+# docker-compose.yml (2)
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      target: development
+      args:
+        UID: ${UID:-1000}
+```
+
+```dockerfile
+# Dockerfile (3)
+FROM ruby
+ARG UID
+RUN useradd --uid ${UID} --shell /bin/bash app_user
+USER app_user
+```
+
+The user created in the container will have the same UID as the host machine.
+
 
 ### dip run
 
