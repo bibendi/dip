@@ -5,7 +5,7 @@ require "pathname"
 module Dip
   class Environment
     VAR_REGEX = /\$\{?(?<var_name>[a-zA-Z_][a-zA-Z0-9_]*)\}?/.freeze
-    SPECIAL_VARS = %i[os work_dir_rel_path].freeze
+    SPECIAL_VARS = %i[os work_dir_rel_path current_user].freeze
 
     attr_reader :vars
 
@@ -62,6 +62,10 @@ module Dip
 
     def find_work_dir_rel_path
       @find_work_dir_rel_path ||= Pathname.getwd.relative_path_from(Dip.config.file_path.parent).to_s
+    end
+
+    def find_current_user
+      @find_current_user ||= Process.uid
     end
   end
 end

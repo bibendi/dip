@@ -222,6 +222,27 @@ dip run bash -c pwd
 
 returned is `/app/sub-project-dir`.
 
+#### $DIP_CURRENT_USER
+
+Exposes the current user ID (UID). It is useful when you need to run a container with the same user as the host machine. For example:
+
+```yml
+# dip.yml (1)
+environment:
+  UID: ${DIP_CURRENT_USER}
+```
+
+```yml
+# docker-compose.yml (2)
+services:
+  app:
+    image: ruby
+    user: ${UID:-1000}
+```
+
+The container will run using the same user ID as your host machine.
+
+
 ### dip run
 
 Run commands defined within the `interaction` section of dip.yml
