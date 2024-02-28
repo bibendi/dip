@@ -28,7 +28,7 @@ module Dip
           argv.unshift("run")
         end
 
-        super Dip::RunVars.call(argv, ENV)
+        super(Dip::RunVars.call(argv, ENV))
       end
     end
 
