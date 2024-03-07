@@ -5,7 +5,7 @@ require "dip/run_vars"
 
 module Dip
   class CLI < Thor
-    TOP_LEVEL_COMMANDS = %w[help version ls compose up stop down run provision ssh dns nginx console].freeze
+    TOP_LEVEL_COMMANDS = %w[help version ls compose up stop down run provision ssh infra console].freeze
 
     class << self
       # Hackery. Take the run method away from Thor so that we can redefine it.
@@ -120,14 +120,6 @@ module Dip
     require_relative "cli/ssh"
     desc "ssh", "ssh-agent container commands"
     subcommand :ssh, Dip::CLI::SSH
-
-    require_relative "cli/dns"
-    desc "dns", "DNS server for automatic docker container discovery"
-    subcommand :dns, Dip::CLI::DNS
-
-    require_relative "cli/nginx"
-    desc "nginx", "Nginx reverse proxy server"
-    subcommand :nginx, Dip::CLI::Nginx
 
     require_relative "cli/infra"
     desc "infra", "Infrastructure services"
