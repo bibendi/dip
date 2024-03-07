@@ -19,63 +19,63 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
   context "when run bash command" do
     before { cli.start "run bash".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--rm", "app"]) }
+    it { expected_exec("docker", ["compose", "run", "--rm", "app"]) }
   end
 
   context "when the command has shell: false option" do
     before { cli.start "run bash_shell pwd".shellsplit }
 
     it do
-      expect(exec_program_runner).to have_received(:call).with(["docker-compose", "run", "--rm", "app", "bash", "pwd"], kind_of(Hash))
+      expect(exec_program_runner).to have_received(:call).with(["docker", "compose", "run", "--rm", "app", "bash", "pwd"], kind_of(Hash))
     end
   end
 
   context "when run shorthanded bash command" do
     before { cli.start ["bash"] }
 
-    it { expected_exec("docker-compose", ["run", "--rm", "app"]) }
+    it { expected_exec("docker", ["compose", "run", "--rm", "app"]) }
   end
 
   context "when publish ports" do
     before { cli.start "run --publish 3:3 -p 5:5 rails s".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--publish=3:3", "--publish=5:5", "--rm", "app", "rails", "s"]) }
+    it { expected_exec("docker", ["compose", "run", "--publish=3:3", "--publish=5:5", "--rm", "app", "rails", "s"]) }
   end
 
   context "when publish is part of a command" do
     before { cli.start "run rails s --publish=3000:3000".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--rm", "app", "rails", "s", "--publish\\=3000:3000"]) }
+    it { expected_exec("docker", ["compose", "run", "--rm", "app", "rails", "s", "--publish\\=3000:3000"]) }
   end
 
   context "when run psql command without db name" do
     before { cli.start "run psql".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--rm", "postgres", "psql", "-h", "postgres", "db_dev"]) }
+    it { expected_exec("docker", ["compose", "run", "--rm", "postgres", "psql", "-h", "postgres", "db_dev"]) }
   end
 
   context "when run psql command with db name" do
     before { cli.start "run psql db_test".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--rm", "postgres", "psql", "-h", "postgres", "db_test"]) }
+    it { expected_exec("docker", ["compose", "run", "--rm", "postgres", "psql", "-h", "postgres", "db_test"]) }
   end
 
   context "when run rails command" do
     before { cli.start "run rails".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--rm", "app", "rails"]) }
+    it { expected_exec("docker", ["compose", "run", "--rm", "app", "rails"]) }
   end
 
   context "when run rails command with subcommand" do
     before { cli.start "run rails console".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--rm", "app", "rails", "console"]) }
+    it { expected_exec("docker", ["compose", "run", "--rm", "app", "rails", "console"]) }
   end
 
   context "when run rails command with arguments" do
     before { cli.start "run rails g migration add_index --force".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--rm", "app", "rails", "g", "migration", "add_index", "--force"]) }
+    it { expected_exec("docker", ["compose", "run", "--rm", "app", "rails", "g", "migration", "add_index", "--force"]) }
   end
 
   # backward compatibility
@@ -84,7 +84,7 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
 
     before { cli.start "run bash".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--foo", "-bar", "--baz=qux", "--rm", "app"]) }
+    it { expected_exec("docker", ["compose", "run", "--foo", "-bar", "--baz=qux", "--rm", "app"]) }
   end
 
   context "when config with compose: run_options" do
@@ -92,7 +92,7 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
 
     before { cli.start "run bash".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--foo", "-bar", "--baz=qux", "--rm", "app"]) }
+    it { expected_exec("docker", ["compose", "run", "--foo", "-bar", "--baz=qux", "--rm", "app"]) }
   end
 
   # backward compatibility
@@ -101,7 +101,7 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
 
     before { cli.start "run rails server".shellsplit }
 
-    it { expected_exec("docker-compose", ["up", "app", "rails", "server"]) }
+    it { expected_exec("docker", ["compose", "up", "app", "rails", "server"]) }
   end
 
   context "when config with compose: method" do
@@ -109,14 +109,14 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
 
     before { cli.start "run rails server".shellsplit }
 
-    it { expected_exec("docker-compose", ["up", "app", "rails", "server"]) }
+    it { expected_exec("docker", ["compose", "up", "app", "rails", "server"]) }
   end
 
   context "when run vars" do
     context "when execute through `compose run`" do
       before { cli.start "FOO=foo run bash".shellsplit }
 
-      it { expected_exec("docker-compose", ["run", "-e", "FOO=foo", "--rm", "app"]) }
+      it { expected_exec("docker", ["compose", "run", "-e", "FOO=foo", "--rm", "app"]) }
     end
 
     context "when execute through `compose up`" do
@@ -124,7 +124,7 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
 
       before { cli.start "FOO=foo run rails server".shellsplit }
 
-      it { expected_exec("docker-compose", ["up", "app", "rails", "server"]) }
+      it { expected_exec("docker", ["compose", "up", "app", "rails", "server"]) }
     end
   end
 
@@ -133,7 +133,7 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
 
     before { cli.start "run rspec".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--rm", "app", "rspec"], env: hash_including("RAILS_ENV" => "test")) }
+    it { expected_exec("docker", ["compose", "run", "--rm", "app", "rspec"], env: hash_including("RAILS_ENV" => "test")) }
   end
 
   context "when config with profiles" do
@@ -149,7 +149,7 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
 
     before { cli.start "run stack".shellsplit }
 
-    it { expected_exec("docker-compose", ["--profile", "foo", "--profile", "bar", "up"]) }
+    it { expected_exec("docker", ["compose", "--profile", "foo", "--profile", "bar", "up"]) }
   end
 
   context "when config with subcommands" do
@@ -159,19 +159,19 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
     context "and run rails server" do
       before { cli.start "run rails s".shellsplit }
 
-      it { expected_exec("docker-compose", ["run", "--rm", "app", "rails", "server"]) }
+      it { expected_exec("docker", ["compose", "run", "--rm", "app", "rails", "server"]) }
     end
 
     context "when run rails command with other subcommand" do
       before { cli.start "run rails console".shellsplit }
 
-      it { expected_exec("docker-compose", ["run", "--rm", "app", "rails", "console"]) }
+      it { expected_exec("docker", ["compose", "run", "--rm", "app", "rails", "console"]) }
     end
 
     context "when run rails command with arguments" do
       before { cli.start "run rails s foo --bar".shellsplit }
 
-      it { expected_exec("docker-compose", ["run", "--rm", "app", "rails", "server", "foo", "--bar"]) }
+      it { expected_exec("docker", ["compose", "run", "--rm", "app", "rails", "server", "foo", "--bar"]) }
     end
 
     context "when config with compose_run_options" do
@@ -179,7 +179,7 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
 
       before { cli.start "run rails s".shellsplit }
 
-      it { expected_exec("docker-compose", ["run", "--foo", "-bar", "--baz=qux", "--rm", "app", "rails", "s"]) }
+      it { expected_exec("docker", ["compose", "run", "--foo", "-bar", "--baz=qux", "--rm", "app", "rails", "s"]) }
     end
 
     context "when config with compose_method" do
@@ -187,7 +187,7 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
 
       before { cli.start "run rails s".shellsplit }
 
-      it { expected_exec("docker-compose", ["up", "web"]) }
+      it { expected_exec("docker", ["compose", "up", "web"]) }
     end
 
     context "when config with environment vars" do
@@ -199,8 +199,8 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
       before { cli.start "run rails refresh-test-db".shellsplit }
 
       it do
-        expected_exec("docker-compose",
-          ["run", "--rm", "app", "rake", "db:drop", "db:tests:prepare", "db:migrate"],
+        expected_exec("docker",
+          ["compose", "run", "--rm", "app", "rake", "db:drop", "db:tests:prepare", "db:migrate"],
           env: hash_including("RAILS_ENV" => "test"))
       end
     end
@@ -217,7 +217,7 @@ describe Dip::Commands::Runners::DockerComposeRunner, :config do
 
       before { cli.start "run rails all".shellsplit }
 
-      it { expected_exec("docker-compose", ["--profile", "foo", "--profile", "bar", "up", "app"]) }
+      it { expected_exec("docker", ["compose", "--profile", "foo", "--profile", "bar", "up", "app"]) }
     end
   end
 end
