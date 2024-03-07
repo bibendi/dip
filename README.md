@@ -440,6 +440,35 @@ cd foo-project
 dip compose exec foo-web curl http://www.bar-app.docker/api/v1/baz_service
 ```
 
+### dip infra
+
+Runs shared Docker Compose services that are used by the current application. Useful for microservices.
+
+There are several official infrastructure services available:
+- [dip-postgres](https://github.com/bibendi/dip-postgres)
+- [dip-kafka](https://github.com/bibendi/dip-kafka)
+- [dip-nginx](https://github.com/bibendi/dip-nginx)
+
+```yaml
+# dip.yml
+infra:
+  foo:
+    git: https://github.com/owner/foo.git
+    ref: latest # default, optional
+  bar:
+    path: ~/path/to/bar
+```
+
+Repositories will be pulled to a `~/.dip/infra` folder. For example, for the `foo` service it would be like this: `~/.dip/infra/foo/latest` and clonned with the following command: `git clone -b <ref> --single-branch <git> --depth 1`.
+
+Available CLI commands:
+
+- `dip infra update` pulls updates from sources
+- `dip infra up` starts all infra services
+- `dip infra up -n kafka` starts a specific infra service
+- `dip infra down` stops all infra services
+- `dip infra down -n kafka` stops a specific infra service
+
 ## Changelog
 
 https://github.com/bibendi/dip/releases

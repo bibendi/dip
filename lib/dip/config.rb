@@ -17,9 +17,12 @@ module Dip
       environment: {},
       compose: {},
       kubectl: {},
+      infra: {},
       interaction: {},
       provision: []
     }.freeze
+
+    TOP_LEVEL_KEYS = %i[environment compose kubectl infra interaction provision].freeze
 
     ConfigKeyMissingError = Class.new(ArgumentError)
 
@@ -95,7 +98,7 @@ module Dip
       config
     end
 
-    %i[environment compose kubectl interaction provision].each do |key|
+    TOP_LEVEL_KEYS.each do |key|
       define_method(key) do
         config[key] || (raise config_missing_error(key))
       end
