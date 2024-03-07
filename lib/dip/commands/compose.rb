@@ -21,6 +21,8 @@ module Dip
       def execute
         Dip.env["DIP_DNS"] ||= find_dns
 
+        set_infra_env
+
         compose_argv = Array(find_files) + Array(cli_options) + argv
 
         if (override_command = compose_command_override)
@@ -86,6 +88,13 @@ module Dip
 
       def compose_command_override
         Dip.env["DIP_COMPOSE_COMMAND"] || config[:command]
+      end
+
+      def set_infra_env
+        Dip.config.infra.each do |name, params|
+          service = Commands::Infra::Service.new(name, **params)
+          Dip.env[service.network_env_var] = service.network_name
+        end
       end
     end
   end
