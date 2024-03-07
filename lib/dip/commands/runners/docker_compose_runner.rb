@@ -71,7 +71,7 @@ module Dip
 
         def update_command_for_profiles
           # NOTE: When using profiles, the method is always `up`.
-          #       This is because `docker-compose` does not support profiles
+          #       This is because `docker compose` does not support profiles
           #       for other commands. Also, run options need to be removed
           #       because they are not supported by `up`.
           command[:compose][:method] = "up"

@@ -28,10 +28,8 @@ module Dip
         if (override_command = compose_command_override)
           override_command, *override_args = override_command.split(" ")
           exec_program(override_command, override_args.concat(compose_argv), shell: shell)
-        elsif compose_v2?
-          exec_program("docker", compose_argv.unshift("compose"), shell: shell)
         else
-          exec_program("docker-compose", compose_argv, shell: shell)
+          exec_program("docker", compose_argv.unshift("compose"), shell: shell)
         end
       end
 
@@ -76,14 +74,6 @@ module Dip
           ip = r.readlines[0].to_s.strip
           ip.empty? ? DOCKER_EMBEDDED_DNS : ip
         end
-      end
-
-      def compose_v2?
-        if %w[false no 0].include?(Dip.env["DIP_COMPOSE_V2"]) || Dip.test?
-          return false
-        end
-
-        !!exec_subprocess("docker", "compose version", panic: false, out: File::NULL, err: File::NULL)
       end
 
       def compose_command_override

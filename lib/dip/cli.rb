@@ -47,30 +47,30 @@ module Dip
       Dip::Commands::List.new.execute
     end
 
-    desc "compose CMD [OPTIONS]", "Run docker-compose commands"
+    desc "compose CMD [OPTIONS]", "Run Docker Compose commands"
     def compose(*argv)
       require_relative "commands/compose"
       Dip::Commands::Compose.new(*argv).execute
     end
 
-    desc "build [OPTIONS] SERVICE", "Run `docker-compose build` command"
+    desc "build [OPTIONS] SERVICE", "Run `docker compose build` command"
     def build(*argv)
       compose("build", *argv)
     end
 
-    desc "up [OPTIONS] SERVICE", "Run `docker-compose up` command"
+    desc "up [OPTIONS] SERVICE", "Run `docker compose up` command"
     def up(*argv)
       compose("up", *argv)
     end
 
-    desc "stop [OPTIONS] SERVICE", "Run `docker-compose stop` command"
+    desc "stop [OPTIONS] SERVICE", "Run `docker compose stop` command"
     def stop(*argv)
       compose("stop", *argv)
     end
 
-    desc "down [OPTIONS]", "Run `docker-compose down` command"
+    desc "down [OPTIONS]", "Run `docker compose down` command"
     method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"
-    method_option :all, aliases: "-A", type: :boolean, desc: "Shutdown all running docker-compose projects"
+    method_option :all, aliases: "-A", type: :boolean, desc: "Shutdown all running Docker Compose projects"
     def down(*argv)
       if options[:help]
         invoke :help, ["down"]

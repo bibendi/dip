@@ -249,11 +249,9 @@ Run commands defined within the `interaction` section of dip.yml
 
 A command will be executed by specified runner. Dip has three types of them:
 
-- `docker-compose` runner — used when the `service` option is defined.
+- `docker compose` runner — used when the `service` option is defined.
 - `kubectl` runner — used when the `pod` option is defined.
 - `local` runner — used when the previous ones are not defined.
-
-If you are still using `docker-compose` binary (i.e., prior to Compose V2 changes), a command would be run through it. You can disable using of Compose V2 by passing an environment variable `DIP_COMPOSE_V2=false dip run`.
 
 ```sh
 dip run rails c
@@ -306,7 +304,7 @@ Run commands each by each from `provision` section of dip.yml
 
 ### dip compose
 
-Run docker-compose commands that are configured according to the application's dip.yml:
+Run Docker Compose commands that are configured according to the application's dip.yml:
 
 ```sh
 dip compose COMMAND [OPTIONS]

@@ -10,13 +10,13 @@ describe Dip::Commands::Compose do
   context "when execute without extra arguments" do
     before { cli.start "compose run".shellsplit }
 
-    it { expected_exec("docker-compose", "run") }
+    it { expected_exec("docker", "compose run") }
   end
 
   context "when execute with arguments" do
     before { cli.start "compose run --rm bash".shellsplit }
 
-    it { expected_exec("docker-compose", ["run", "--rm", "bash"]) }
+    it { expected_exec("docker", ["compose run", "--rm", "bash"]) }
   end
 
   context "when config contains project_name", :config do
@@ -24,7 +24,7 @@ describe Dip::Commands::Compose do
 
     before { cli.start "compose run".shellsplit }
 
-    it { expected_exec("docker-compose", ["--project-name", "rocket", "run"]) }
+    it { expected_exec("docker", ["compose --project-name", "rocket", "run"]) }
   end
 
   context "when config contains project_name with env vars", :config, :env do
@@ -33,7 +33,7 @@ describe Dip::Commands::Compose do
 
     before { cli.start "compose run".shellsplit }
 
-    it { expected_exec("docker-compose", ["--project-name", "rocket-test", "run"]) }
+    it { expected_exec("docker", ["compose --project-name", "rocket-test", "run"]) }
   end
 
   context "when config contains project_directory", :config do
@@ -41,7 +41,7 @@ describe Dip::Commands::Compose do
 
     before { cli.start "compose run".shellsplit }
 
-    it { expected_exec("docker-compose", ["--project-directory", "/foo/bar", "run"]) }
+    it { expected_exec("docker", ["compose --project-directory", "/foo/bar", "run"]) }
   end
 
   context "when config contains project_directory with env vars", :config, :env do
@@ -50,7 +50,7 @@ describe Dip::Commands::Compose do
 
     before { cli.start "compose run".shellsplit }
 
-    it { expected_exec("docker-compose", ["--project-directory", "/foo-test", "run"]) }
+    it { expected_exec("docker", ["compose --project-directory", "/foo-test", "run"]) }
   end
 
   context "when compose's config path contains spaces", :config do
@@ -70,7 +70,7 @@ describe Dip::Commands::Compose do
       cli.start "compose run".shellsplit
     end
 
-    it { expected_exec("docker-compose", ["--file", Shellwords.escape(file), "run"]) }
+    it { expected_exec("docker", ["compose --file", Shellwords.escape(file), "run"]) }
   end
 
   context "when config contains multiple docker-compose files", :config do
@@ -95,7 +95,7 @@ describe Dip::Commands::Compose do
         cli.start "compose run".shellsplit
       end
 
-      it { expected_exec("docker-compose", ["--file", global_file, "--file", override_file, "run"]) }
+      it { expected_exec("docker", ["compose --file", global_file, "--file", override_file, "run"]) }
     end
 
     context "and a file name contains env var", :env do
@@ -116,7 +116,7 @@ describe Dip::Commands::Compose do
         cli.start "compose run".shellsplit
       end
 
-      it { expected_exec("docker-compose", ["--file", file, "run"]) }
+      it { expected_exec("docker", ["compose --file", file, "run"]) }
     end
   end
 
