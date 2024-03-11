@@ -2,7 +2,7 @@
 [![Build Status](https://github.com/bibendi/dip/workflows/Ruby/badge.svg?branch=master)](https://github.com/bibendi/dip/actions?query=branch%3Amaster)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d0dca854f0930502f7b3/maintainability)](https://codeclimate.com/github/bibendi/dip/maintainability)
 
-# DIP
+<img src="https://raw.githubusercontent.com/bibendi/dip/master/.github/logo.svg" alt="dip logo" height="140" />
 
 Docker Interaction Program.
 
