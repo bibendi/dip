@@ -4,9 +4,7 @@
 
 <img src="https://raw.githubusercontent.com/bibendi/dip/master/.github/logo.svg" alt="dip logo" height="140" />
 
-Docker Interaction Program.
-
-Development-environment CLI program providing the native-like interaction with a Dockerized application. It creates the feeling that you are working without mind-blowing commands to run the containers.
+The dip is a CLI dev–tool that provides native-like interaction with a Dockerized application. It gives the feeling that you are working without using mind-blowing commands to run containers.
 
 <a href="https://evilmartians.com/?utm_source=dip">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" height="80" /></a>
