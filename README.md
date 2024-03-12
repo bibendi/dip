@@ -2,7 +2,7 @@
 [![Build Status](https://github.com/bibendi/dip/workflows/Ruby/badge.svg?branch=master)](https://github.com/bibendi/dip/actions?query=branch%3Amaster)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d0dca854f0930502f7b3/maintainability)](https://codeclimate.com/github/bibendi/dip/maintainability)
 
-<img src="https://raw.githubusercontent.com/bibendi/dip/master/.github/logo-dark.png" alt="dip logo" height="140" />
+<img src="https://raw.githubusercontent.com/bibendi/dip/master/.github/logo.png" alt="dip logo" height="140" />
 
 The dip is a CLI dev–tool that provides native-like interaction with a Dockerized application. It gives the feeling that you are working without using mind-blowing commands to run containers.
 
