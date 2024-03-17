@@ -5,7 +5,7 @@ require "dip/run_vars"
 
 module Dip
   class CLI < Thor
-    TOP_LEVEL_COMMANDS = %w[help version ls compose up stop down run provision ssh dns nginx console].freeze
+    TOP_LEVEL_COMMANDS = %w[help version ls compose up stop down run provision ssh infra console].freeze
 
     class << self
       # Hackery. Take the run method away from Thor so that we can redefine it.
@@ -47,30 +47,30 @@ module Dip
       Dip::Commands::List.new.execute
     end
 
-    desc "compose CMD [OPTIONS]", "Run docker-compose commands"
+    desc "compose CMD [OPTIONS]", "Run Docker Compose commands"
     def compose(*argv)
       require_relative "commands/compose"
       Dip::Commands::Compose.new(*argv).execute
     end
 
-    desc "build [OPTIONS] SERVICE", "Run `docker-compose build` command"
+    desc "build [OPTIONS] SERVICE", "Run `docker compose build` command"
     def build(*argv)
       compose("build", *argv)
     end
 
-    desc "up [OPTIONS] SERVICE", "Run `docker-compose up` command"
+    desc "up [OPTIONS] SERVICE", "Run `docker compose up` command"
     def up(*argv)
       compose("up", *argv)
     end
 
-    desc "stop [OPTIONS] SERVICE", "Run `docker-compose stop` command"
+    desc "stop [OPTIONS] SERVICE", "Run `docker compose stop` command"
     def stop(*argv)
       compose("stop", *argv)
     end
 
-    desc "down [OPTIONS]", "Run `docker-compose down` command"
+    desc "down [OPTIONS]", "Run `docker compose down` command"
     method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"
-    method_option :all, aliases: "-A", type: :boolean, desc: "Shutdown all running docker-compose projects"
+    method_option :all, aliases: "-A", type: :boolean, desc: "Shutdown all running Docker Compose projects"
     def down(*argv)
       if options[:help]
         invoke :help, ["down"]
@@ -121,13 +121,9 @@ module Dip
     desc "ssh", "ssh-agent container commands"
     subcommand :ssh, Dip::CLI::SSH
 
-    require_relative "cli/dns"
-    desc "dns", "DNS server for automatic docker container discovery"
-    subcommand :dns, Dip::CLI::DNS
-
-    require_relative "cli/nginx"
-    desc "nginx", "Nginx reverse proxy server"
-    subcommand :nginx, Dip::CLI::Nginx
+    require_relative "cli/infra"
+    desc "infra", "Infrastructure services"
+    subcommand :infra, Dip::CLI::Infra
 
     require_relative "cli/console"
     desc "console", "Integrate Dip commands into shell (only ZSH and Bash are supported)"

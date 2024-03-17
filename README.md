@@ -12,7 +12,7 @@ The dip is a CLI dev–tool that provides native-like interaction with a Dockeri
 ## Presentations and examples
 
 - [Local development with Docker containers](https://slides.com/bibendi/dip)
-- Dockerized Ruby on Rails applications: [one](https://github.com/lewagon/rails-k8s-demo), [two](https://github.com/bibendi/dip-example-rails), [three](https://github.com/evilmartians/evil_chat)
+- [Dockerized Ruby on Rails application](https://SberMarket-Tech/outbox-example-apps)
 - Dockerized Node.js application: [one](https://github.com/bibendi/twinkle.js), [two](https://github.com/bibendi/yt-graphql-react-event-booking-api)
 - [Dockerized Ruby gem](https://github.com/bibendi/schked)
 - [Dockerizing Ruby and Rails development](https://evilmartians.com/chronicles/ruby-on-whales-docker-for-ruby-rails-development)
@@ -20,7 +20,13 @@ The dip is a CLI dev–tool that provides native-like interaction with a Dockeri
 
 [![asciicast](https://asciinema.org/a/210236.svg)](https://asciinema.org/a/210236)
 
-## Integration with shell
+## Installation
+
+```sh
+gem install dip
+```
+
+### Integration with shell
 
 Dip can be injected into the current shell (ZSH or Bash).
 
@@ -50,14 +56,6 @@ VERSION=20180515103400 rails db:migrate:down
 
 You could add this `eval` at the end of your `~/.zshrc`, or `~/.bashrc`, or `~/.bash_profile`.
 After that, it will be automatically applied when you open your preferred terminal.
-
-## Installation
-
-```sh
-gem install dip
-```
-
-The compiled binary is no more provided since version 7, because of new version of [Ruby Packer](https://github.com/pmq20/ruby-packer) not released for a long time with recent Ruby version. Also there was a lot of work to prepare each release of Dip for MacOS version.
 
 ## Usage
 
@@ -240,18 +238,15 @@ services:
 
 The container will run using the same user ID as your host machine.
 
-
 ### dip run
 
 Run commands defined within the `interaction` section of dip.yml
 
 A command will be executed by specified runner. Dip has three types of them:
 
-- `docker-compose` runner — used when the `service` option is defined.
+- `docker compose` runner — used when the `service` option is defined.
 - `kubectl` runner — used when the `pod` option is defined.
 - `local` runner — used when the previous ones are not defined.
-
-If you are still using `docker-compose` binary (i.e., prior to Compose V2 changes), a command would be run through it. You can disable using of Compose V2 by passing an environment variable `DIP_COMPOSE_V2=false dip run`.
 
 ```sh
 dip run rails c
@@ -304,13 +299,42 @@ Run commands each by each from `provision` section of dip.yml
 
 ### dip compose
 
-Run docker-compose commands that are configured according to the application's dip.yml:
+Run Docker Compose commands that are configured according to the application's dip.yml:
 
 ```sh
 dip compose COMMAND [OPTIONS]
 
 dip compose up -d redis
 ```
+
+### dip infra
+
+Runs shared Docker Compose services that are used by the current application. Useful for microservices.
+
+There are several official infrastructure services available:
+- [dip-postgres](https://github.com/bibendi/dip-postgres)
+- [dip-kafka](https://github.com/bibendi/dip-kafka)
+- [dip-nginx](https://github.com/bibendi/dip-nginx)
+
+```yaml
+# dip.yml
+infra:
+  foo:
+    git: https://github.com/owner/foo.git
+    ref: latest # default, optional
+  bar:
+    path: ~/path/to/bar
+```
+
+Repositories will be pulled to a `~/.dip/infra` folder. For example, for the `foo` service it would be like this: `~/.dip/infra/foo/latest` and clonned with the following command: `git clone -b <ref> --single-branch <git> --depth 1`.
+
+Available CLI commands:
+
+- `dip infra update` pulls updates from sources
+- `dip infra up` starts all infra services
+- `dip infra up -n kafka` starts a specific infra service
+- `dip infra down` stops all infra services
+- `dip infra down -n kafka` stops a specific infra service
 
 ### dip ktl
 
@@ -356,88 +380,10 @@ dip ssh up -u 1000
 
 This especially helpful if you have something like this in your docker-compose.yml:
 
-```
+```yml
 services:
   web:
     user: "1000:1000"
-
-```
-
-### dip nginx
-
-Runs Nginx server container based on [nginxproxy/nginx-proxy](https://github.com/nginx-proxy/nginx-proxy) image. An application's docker-compose.yml should contain environment variable `VIRTUAL_HOST` and `VIRTUAL_PATH` and connects to external network `frontend`.
-
-foo-project/docker-compose.yml
-
-```yml
-services:
-  foo-web:
-    image: company/foo_image
-    environment:
-      - VIRTUAL_HOST=*.bar-app.docker
-      - VIRTUAL_PATH=/
-    networks:
-      - default
-      - frontend
-    dns: $DIP_DNS
-
-networks:
-  frontend:
-    external:
-      name: frontend
-```
-
-baz-project/docker-compose.yml
-
-```yml
-services:
-  baz-web:
-    image: company/baz_image
-    environment:
-      - VIRTUAL_HOST=*.bar-app.docker
-      - VIRTUAL_PATH=/api/v1/baz_service,/api/v2/baz_service
-    networks:
-      - default
-      - frontend
-    dns: $DIP_DNS
-
-networks:
-  frontend:
-    external:
-      name: frontend
-```
-
-```sh
-dip nginx up
-cd foo-project && dip compose up
-cd baz-project && dip compose up
-curl www.bar-app.docker/api/v1/quz
-curl www.bar-app.docker/api/v1/baz_service/qzz
-```
-
-#### Pass SSL certificates
-
-```sh
-dip nginx up -c $HOME/ssl_certificates
-```
-
-#### Publish more than one port to localhost
-
-Just pass a list, separated by a space:
-
-```sh
-dip nginx up -p 80:80 443:443
-```
-
-### dip dns
-
-Runs a DNS server container based on https://github.com/aacebedo/dnsdock. It is used for container to container requests through Nginx. An application's docker-compose.yml should define `dns` configuration with environment variable `$DIP_DNS` and connect to external network `frontend`. `$DIP_DNS` will be automatically assigned by dip.
-
-```sh
-dip dns up
-
-cd foo-project
-dip compose exec foo-web curl http://www.bar-app.docker/api/v1/baz_service
 ```
 
 ## Changelog

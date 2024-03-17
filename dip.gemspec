@@ -11,9 +11,9 @@ Gem::Specification.new do |spec|
   spec.authors = ["bibendi"]
   spec.email = ["merkushin.m.s@gmail.com"]
 
-  spec.summary = "Ruby gem CLI tool for better interacting docker-compose files."
+  spec.summary = "Ruby gem CLI tool for better interacting Docker Compose files."
   spec.description = "DIP - Docker Interaction Process." \
-                       "CLI tool for better development experience when interacting with docker and docker-compose."
+                       "CLI tool for better development experience when interacting with docker and Docker Compose."
   spec.homepage = "https://github.com/bibendi/dip"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -45,4 +45,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rubocop-rspec", "~> 2.2"
   spec.add_development_dependency "simplecov", "~> 0.16"
   spec.add_development_dependency "test-unit", "~> 3"
+  spec.add_development_dependency "fakefs"
 end
