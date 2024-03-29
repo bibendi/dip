@@ -13,6 +13,8 @@ require "pry-byebug"
 require "dip"
 require "dip/run_vars"
 
+require "fakefs/safe"
+
 Dir["#{__dir__}/support/**/*.rb"].sort.each { |f| require f }
 
 RSpec.configure do |config|

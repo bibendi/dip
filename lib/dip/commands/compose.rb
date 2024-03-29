@@ -21,15 +21,15 @@ module Dip
       def execute
         Dip.env["DIP_DNS"] ||= find_dns
 
+        set_infra_env
+
         compose_argv = Array(find_files) + Array(cli_options) + argv
 
         if (override_command = compose_command_override)
           override_command, *override_args = override_command.split(" ")
           exec_program(override_command, override_args.concat(compose_argv), shell: shell)
-        elsif compose_v2?
-          exec_program("docker", compose_argv.unshift("compose"), shell: shell)
         else
-          exec_program("docker-compose", compose_argv, shell: shell)
+          exec_program("docker", compose_argv.unshift("compose"), shell: shell)
         end
       end
 
@@ -76,16 +76,15 @@ module Dip
         end
       end
 
-      def compose_v2?
-        if %w[false no 0].include?(Dip.env["DIP_COMPOSE_V2"]) || Dip.test?
-          return false
-        end
-
-        !!exec_subprocess("docker", "compose version", panic: false, out: File::NULL, err: File::NULL)
-      end
-
       def compose_command_override
         Dip.env["DIP_COMPOSE_COMMAND"] || config[:command]
+      end
+
+      def set_infra_env
+        Dip.config.infra.each do |name, params|
+          service = Commands::Infra::Service.new(name, **params)
+          Dip.env[service.network_env_var] = service.network_name
+        end
       end
     end
   end
