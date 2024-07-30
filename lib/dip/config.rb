@@ -43,6 +43,10 @@ module Dip
         file_path&.exist?
       end
 
+      def modules_dir
+        file_path.dirname / ".dip"
+      end
+
       private
 
       attr_reader :override
@@ -90,6 +94,10 @@ module Dip
       finder.file_path
     end
 
+    def module_file(filename)
+      finder.modules_dir / "#{filename}.yml"
+    end
+
     def exist?
       finder.exist?
     end
@@ -125,10 +133,28 @@ module Dip
                                     "Please upgrade your dip!"
       end
 
-      override_finder = ConfigFinder.new(work_dir, override: true)
-      config.deep_merge!(self.class.load_yaml(override_finder.file_path)) if override_finder.exist?
+      base_config = {}
 
-      @config = CONFIG_DEFAULTS.merge(config)
+      if (modules = config[:modules])
+        raise Dip::Error, "Modules should be specified as array" unless modules.is_a?(Array)
+
+        modules.each do |m|
+          file = module_file(m)
+          raise Dip::Error, "Could not find module `#{m}`" unless file.exist?
+
+          module_config = self.class.load_yaml(file)
+          raise Dip::Error, "Nested modules are not supported" if module_config[:modules]
+
+          base_config.deep_merge!(module_config)
+        end
+      end
+
+      base_config.deep_merge!(config)
+
+      override_finder = ConfigFinder.new(work_dir, override: true)
+      base_config.deep_merge!(self.class.load_yaml(override_finder.file_path)) if override_finder.exist?
+
+      @config = CONFIG_DEFAULTS.merge(base_config)
     end
 
     def config_missing_error(config_key)

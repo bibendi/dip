@@ -238,6 +238,92 @@ services:
 
 The container will run using the same user ID as your host machine.
 
+### Modules
+
+Modules are defined as array in `modules` section of dip.yml, modules are stored in `.dip` subdirectory of dip.yml directory.
+
+The main purpose of modules is to improve maintainability for a group of projects.
+Imagine having multiple gems which are managed with dip, each of them has the same commands, so to change one command in dip you need to update all gems individualy.
+
+With `modules` you can define a group of modules for dip.
+
+For example having setup as this:
+
+```yml
+# ./dip.yml
+modules:
+ - sasts
+ - rails
+
+...
+```
+
+```yml
+# ./.dip/sasts.yml
+interaction:
+  brakeman:
+    description: Check brakeman sast
+    command: docker run ...
+```
+
+```yml
+# ./.dip/rails.yml
+interaction:
+  annotate:
+    description: Run annotate command
+    service: backend
+    command: bundle exec annotate
+```
+
+Will be expanded to:
+
+```yml
+# resultant configuration
+interaction:
+  brakeman:
+    description: Check brakeman sast
+    command: docker run ...
+  annotate:
+    description: Run annotate command
+    service: backend
+    command: bundle exec annotate
+```
+
+Imagine `.dip` to be a submodule so it can be managed only in one place.
+
+If you want to override module command, you can redefine it in dip.yml
+
+```yml
+# ./dip.yml
+modules:
+ - sasts
+
+interaction:
+  brakeman:
+    description: Check brakeman sast
+    command: docker run another-image ...
+```
+
+```yml
+# ./.dip/sasts.yml
+interaction:
+  brakeman:
+    description: Check brakeman sast
+    command: docker run some-image ...
+```
+
+Will be expanded to:
+
+```yml
+# resultant configuration
+interaction:
+  brakeman:
+    description: Check brakeman sast
+    command: docker run another-image ...
+```
+
+Nested modules are not supported.
+
 ### dip run
 
 Run commands defined within the `interaction` section of dip.yml

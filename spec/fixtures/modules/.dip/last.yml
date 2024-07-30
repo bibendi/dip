@@ -1,0 +1,3 @@
+interaction:
+  test_app:
+    service: test_frontend

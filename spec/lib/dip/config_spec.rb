@@ -53,6 +53,30 @@ describe Dip::Config do
     end
   end
 
+  context "when config has modules", :env do
+    let(:env) { {"DIP_FILE" => fixture_path("modules", "dip.yml")} }
+
+    it "expands modules to main config" do
+      expect(subject.interaction[:app][:service]).to eq "backend"
+    end
+
+    it "merges modules to main config" do
+      expect(subject.interaction[:app1][:service]).to eq "frontend"
+    end
+
+    it "overrides first defined module with the last one" do
+      expect(subject.interaction[:test_app][:service]).to eq "test_frontend"
+    end
+  end
+
+  context "when config has unknown module", :env do
+    let(:env) { {"DIP_FILE" => fixture_path("unknown_module", "dip.yml")} }
+
+    it "raises and error" do
+      expect { subject.interaction }.to raise_error(Dip::Error, /Could not find module/)
+    end
+  end
+
   context "when config located two levels higher and overridden at one level higher", :env do
     subject { described_class.new(fixture_path("cascade", "sub_a", "sub_b")) }
 

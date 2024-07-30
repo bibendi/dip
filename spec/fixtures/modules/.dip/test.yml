@@ -1,0 +1,3 @@
+interaction:
+  app:
+    service: backend
