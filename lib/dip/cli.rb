@@ -5,7 +5,7 @@ require "dip/run_vars"
 
 module Dip
   class CLI < Thor
-    TOP_LEVEL_COMMANDS = %w[help version ls compose up stop down run provision ssh infra console validate]
+    TOP_LEVEL_COMMANDS = %w[help version ls compose up stop down run provision ssh infra console].freeze
 
     class << self
       # Hackery. Take the run method away from Thor so that we can redefine it.
@@ -115,15 +115,6 @@ module Dip
         require_relative "commands/provision"
         Dip::Commands::Provision.new.execute
       end
-    end
-
-    desc "validate", "Validate the dip.yml file against the schema"
-    def validate
-      Dip.config.validate
-      puts "dip.yml is valid"
-    rescue Dip::Error => e
-      warn "Validation failed: #{e.message}"
-      exit 1
     end
 
     require_relative "cli/ssh"

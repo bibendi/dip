@@ -1,14 +1,10 @@
-$schema: https://raw.githubusercontent.com/bibendi/dip/refs/heads/master/schema.json
+# yaml-language-server: $schema=../schema.json
 
 version: '8.1.0'
 
 environment:
   RAILS_ENV: development
   NODE_ENV: development
-  DATABASE_URL: postgres://user:password@db:5432/myapp_development
-  REDIS_URL: redis://redis:6379/0
-  PORT: ${PORT:-3000}
-  APP_PORT: ${PORT:-3000}
 
 compose:
   files:

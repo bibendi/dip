@@ -10,5 +10,13 @@ services:
       - .:/app
       - bundle:/bundle
 
+  schema:
+    image: node:${NODE_IMAGE:-20}
+    environment:
+      - HISTFILE=/app/tmp/.bash_history
+    working_dir: /app
+    volumes:
+      - .:/app
+
 volumes:
   bundle:

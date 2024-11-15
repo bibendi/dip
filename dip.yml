@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=./schema.json
+
 version: '7'
 
 compose:
@@ -9,6 +11,11 @@ interaction:
     description: Open the Bash shell in app's container
     service: app
     command: /bin/bash
+
+  validate:
+    description: Validate dip.yml files against schema.json
+    service: schema
+    command: npm install -g ajv && ajv -s schema -d */**/dip.yml
 
   pry:
     description: Open Pry console
