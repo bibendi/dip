@@ -472,6 +472,32 @@ services:
     user: "1000:1000"
 ```
 
+### dip validate
+
+Validates your dip.yml configuration against the JSON schema. The schema validation helps ensure your configuration is correct and follows the expected format.
+
+```sh
+dip validate
+```
+
+You can specify the schema in your dip.yml using the `$schema` property:
+
+```yml
+$schema: https://raw.githubusercontent.com/bibendi/dip/refs/heads/master/schema.json
+
+version: '8.1.0'
+# ... rest of your config
+```
+
+The validator will check:
+
+- Required properties are present
+- Property types are correct
+- Values match expected patterns
+- No unknown properties are used
+
+If validation fails, you'll get detailed error messages indicating what needs to be fixed.
+
 ## Changelog
 
 https://github.com/bibendi/dip/releases

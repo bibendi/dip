@@ -1,0 +1,133 @@
+$schema: https://raw.githubusercontent.com/bibendi/dip/refs/heads/master/schema.json
+
+version: '8.1.0'
+
+environment:
+  RAILS_ENV: development
+  NODE_ENV: development
+  DATABASE_URL: postgres://user:password@db:5432/myapp_development
+  REDIS_URL: redis://redis:6379/0
+  PORT: ${PORT:-3000}
+  APP_PORT: ${PORT:-3000}
+
+compose:
+  files:
+    - docker-compose.yml
+    - docker-compose.override.yml
+  project_name: myapp_project
+  command: docker compose
+
+interaction:
+  rails:
+    description: Run Rails commands
+    service: web
+    command: bundle exec rails
+    default_args: server -p 3000 -b 0.0.0.0
+    environment:
+      RAILS_LOG_TO_STDOUT: "true"
+    compose:
+      method: run
+      compose_method: up
+      run_options:
+        - service-ports
+        - rm
+      profiles:
+        - web
+        - development
+    shell: true
+    entrypoint: /docker-entrypoint.sh
+    runner: docker_compose
+    subcommands:
+      console:
+        description: Start Rails console
+        command: console
+      routes:
+        description: Show Rails routes
+        command: routes
+      db:
+        description: Database related commands
+        subcommands:
+          migrate:
+            description: Run database migrations
+            command: db:migrate
+          seed:
+            description: Seed the database
+            command: db:seed
+
+  npm:
+    description: Run npm commands
+    service: frontend
+    command: npm
+    compose:
+      method: run
+      profiles:
+        - frontend
+
+  psql:
+    description: Connect to PostgreSQL database
+    service: db
+    command: psql -h db -U user myapp_development
+    compose:
+      method: run
+    environment:
+      PGPASSWORD: password
+
+  rspec:
+    description: Run RSpec tests
+    service: web
+    command: bundle exec rspec
+    environment:
+      RAILS_ENV: test
+    compose:
+      method: run
+      run_options:
+        - rm
+      profiles:
+        - test
+
+  shell:
+    description: Start a shell in the web container
+    service: web
+    command: /bin/bash
+    compose:
+      method: run
+      run_options:
+        - rm
+
+  k8s:
+    description: Run kubectl commands
+    command: kubectl
+    runner: kubectl
+    entrypoint: kubectl
+    shell: false
+
+  brakeman:
+    description: Check brakeman sast
+    command: docker run another-image ...
+
+  rake:
+    description: Run Rake tasks
+    service: web
+    command: bundle exec rake
+
+provision:
+  - dip compose down --volumes
+  - dip compose build
+  - dip rails db:create
+  - dip rails db:migrate
+  - dip rails db:seed
+  - dip npm install
+  - dip validate
+
+kubectl:
+  namespace: myapp-development
+
+modules:
+  - production
+
+infra:
+  redis:
+    git: https://github.com/mycompany/redis-config.git
+    ref: main
+  elasticsearch:
+    path: ./infra/elasticsearch

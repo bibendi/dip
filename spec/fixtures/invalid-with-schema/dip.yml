@@ -1,0 +1,9 @@
+$schema: ./schema.json
+
+environment: {}
+
+compose: {}
+
+interaction: {}
+
+provision: []
