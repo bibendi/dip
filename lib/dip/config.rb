@@ -175,7 +175,9 @@ module Dip
 
       @config = CONFIG_DEFAULTS.merge(base_config)
 
-      validate
+      unless ENV.key?("DIP_SKIP_VALIDATION")
+        validate
+      end
 
       @config
     end

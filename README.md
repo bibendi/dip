@@ -498,6 +498,8 @@ The validator will check:
 
 If validation fails, you'll get detailed error messages indicating what needs to be fixed.
 
+You can skip validation by setting `DIP_SKIP_VALIDATION` environment variable.
+
 ## Changelog
 
 https://github.com/bibendi/dip/releases
