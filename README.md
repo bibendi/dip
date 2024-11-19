@@ -480,15 +480,6 @@ Validates your dip.yml configuration against the JSON schema. The schema validat
 dip validate
 ```
 
-You can specify the schema in your dip.yml using the `$schema` property:
-
-```yml
-$schema: https://raw.githubusercontent.com/bibendi/dip/refs/heads/master/schema.json
-
-version: '8.1.0'
-# ... rest of your config
-```
-
 The validator will check:
 
 - Required properties are present

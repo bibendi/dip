@@ -1,5 +1,3 @@
-$schema: https://raw.githubusercontent.com/bibendi/dip/refs/heads/master/schema.json
-
 version: '8.1.0'
 
 environment:

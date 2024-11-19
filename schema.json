@@ -105,11 +105,6 @@
     }
   },
   "properties": {
-    "$schema": {
-      "type": "string",
-      "pattern": "^(https?://[^\\s/$.?#].[^\\s]*|\\./|/).+$",
-      "description": "The URI of the JSON Schema to validate against"
-    },
     "version": {
       "type": "string",
       "description": "Specifies the minimum required version of Dip",

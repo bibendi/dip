@@ -1,5 +1,3 @@
-$schema: ./schema.json
-
 environment: {}
 
 compose: {}
