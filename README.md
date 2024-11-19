@@ -491,7 +491,7 @@ If validation fails, you'll get detailed error messages indicating what needs to
 
 You can skip validation by setting `DIP_SKIP_VALIDATION` environment variable.
 
-Add `// yaml-language-server: $schema=https://raw.githubusercontent.com/bibendi/dip/refs/heads/master/schema.json` to the top of your dip.yml to get schema validation in VSCode. Read more about [YAML Language Server](https://github.com/redhat-developer/vscode-yaml?tab=readme-ov-file#associating-schemas).
+Add `# yaml-language-server: $schema=https://raw.githubusercontent.com/bibendi/dip/refs/heads/master/schema.json` to the top of your dip.yml to get schema validation in VSCode. Read more about [YAML Language Server](https://github.com/redhat-developer/vscode-yaml?tab=readme-ov-file#associating-schemas).
 
 ## Changelog
 

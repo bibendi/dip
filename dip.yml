@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=./schema.json
+
 version: '7'
 
 compose:
@@ -29,6 +31,11 @@ interaction:
     description: Run Rubocop commands
     service: app
     command: bundle exec rubocop
+
+  validate:
+    description: Validate dip.yml files against schema.json
+    service: schema
+    command: npm install -g ajv && ajv -s schema -d */**/dip.yml
 
 provision:
   - cp -f lefthook-local.dip_example.yml lefthook-local.yml

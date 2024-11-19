@@ -11,11 +11,11 @@
       "additionalProperties": {
         "type": "string"
       },
-      "examples": {
-        "RAILS_ENV": "development",
-        "DATABASE_URL": "postgres://user:password@db:5432/myapp_development",
-        "PORT": "${PORT:-3000}"
-      }
+      "examples": [
+        { "RAILS_ENV": "development" },
+        { "DATABASE_URL": "postgres://user:password@db:5432/myapp_development" },
+        { "PORT": "${PORT:-3000}" }
+      ]
     },
     "interaction_command": {
       "type": "object",
