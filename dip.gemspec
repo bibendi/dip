@@ -36,9 +36,9 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "thor", ">= 0.20", "< 2"
   spec.add_dependency "json-schema", "~> 5"
-  # public_suffix >= 7.0 requires Ruby >= 3.0, so we need to specify an upper bound
+  # public_suffix >= 6.0 requires Ruby >= 3.0, so we need to specify an upper bound
   # to maintain compatibility with Ruby 2.7
-  spec.add_dependency "public_suffix", ">= 2.0.2", "< 7.0"
+  spec.add_dependency "public_suffix", ">= 2.0.2", "< 6.0"
 
   spec.add_development_dependency "bundler", ">= 1.15"
   spec.add_development_dependency "pry-byebug", "~> 3"
