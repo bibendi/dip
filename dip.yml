@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=./schema.json
+
 version: '7'
 
 compose:

@@ -3,6 +3,7 @@
 require "yaml"
 require "erb"
 require "pathname"
+require "json-schema"
 
 require "dip/version"
 require "dip/ext/hash"
@@ -112,6 +113,24 @@ module Dip
       end
     end
 
+    def validate
+      raise Dip::Error, "Config file path is not set" if file_path.nil?
+      raise Dip::Error, "Config file not found: #{file_path}" unless File.exist?(file_path)
+
+      schema_path = File.join(File.dirname(__FILE__), "../../schema.json")
+      raise Dip::Error, "Schema file not found: #{schema_path}" unless File.exist?(schema_path)
+
+      data = YAML.load_file(file_path)
+      schema = JSON.parse(File.read(schema_path))
+      JSON::Validator.validate!(schema, data)
+    rescue Psych::SyntaxError => e
+      raise Dip::Error, "Invalid YAML syntax in config file: #{e.message}"
+    rescue JSON::Schema::ValidationError => e
+      data_display = data ? data.to_yaml.gsub("\n", "\n  ") : "nil"
+      error_message = "Schema validation failed: #{e.message}\nInput data:\n  #{data_display}"
+      raise Dip::Error, error_message
+    end
+
     private
 
     attr_reader :work_dir
@@ -129,8 +148,8 @@ module Dip
 
       unless Gem::Version.new(Dip::VERSION) >= Gem::Version.new(config.fetch(:version))
         raise VersionMismatchError, "Your dip version is `#{Dip::VERSION}`, " \
-                                    "but config requires minimum version `#{config[:version]}`. " \
-                                    "Please upgrade your dip!"
+                                   "but config requires minimum version `#{config[:version]}`. " \
+                                   "Please upgrade your dip!"
       end
 
       base_config = {}
@@ -155,6 +174,12 @@ module Dip
       base_config.deep_merge!(self.class.load_yaml(override_finder.file_path)) if override_finder.exist?
 
       @config = CONFIG_DEFAULTS.merge(base_config)
+
+      unless ENV.key?("DIP_SKIP_VALIDATION")
+        validate
+      end
+
+      @config
     end
 
     def config_missing_error(config_key)
