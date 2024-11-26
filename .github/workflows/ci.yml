@@ -1,4 +1,4 @@
-name: Ruby
+name: CI
 
 on:
   push:
@@ -31,3 +31,16 @@ jobs:
         run: dip rubocop
       - name: Run tests
         run: dip rspec
+  schema-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+      - name: Install dependencies
+        run: npm install -g ajv-cli
+      - name: Validate all dip.yml files
+        run: find . -type f -name 'dip.yml' | grep -v '/invalid' | xargs -I {} ajv -s schema.json -d {}
