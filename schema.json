@@ -94,7 +94,7 @@
           "type": "object",
           "description": "Contains subcommands with the same structure as main commands",
           "patternProperties": {
-            "^[\\w\\-\\.\\:\\/\\s]+$": {
+            "^[\\w\\-.:/\\s]+$": {
               "$ref": "#/definitions/interaction_command"
             }
           },
@@ -142,7 +142,7 @@
       "type": "object",
       "description": "Defines the commands and their configurations",
       "patternProperties": {
-        "^[\\w\\-\\.\\:\\/\\s]+$": {
+        "^[\\w\\-.:/\\s]+$": {
           "$ref": "#/definitions/interaction_command"
         }
       },
@@ -191,13 +191,13 @@
       "description": "Contains infrastructure services configuration",
       "additionalProperties": false,
       "patternProperties": {
-        "^[\\w\\-\\.\\:\\/\\s]+$": {
+        "^[\\w\\-.:/\\s]+$": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
             "git": {
               "type": "string",
-              "pattern": "^(git@|git://|https?://)[\\w\\d\\.@:\\-/]+$",
+              "pattern": "^(git@|git://|https?://)[\\w\\d.@:/\\-]+$",
               "description": "Git repository URL for the infrastructure component",
               "examples": ["https://github.com/mycompany/redis-config.git"]
             },
@@ -220,5 +220,5 @@
       }
     }
   },
-  "required": ["version", "interaction"]
+  "required": ["version"]
 }
