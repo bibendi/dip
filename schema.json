@@ -68,14 +68,6 @@
               "description": "Options to pass to the 'docker-compose run' command",
               "examples": [["service-ports", "rm"]]
             },
-            "compose_run_options": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "description": "DEPRECATED: Options to pass to the 'docker-compose run' command",
-              "examples": [["service-ports", "rm"]]
-            },
             "profiles": {
               "type": "array",
               "items": {
@@ -101,6 +93,14 @@
         "pod": {
           "type": "string",
           "description": "Specifies the pod for the kubectl runner"
+        },
+        "compose_run_options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "DEPRECATED: Options to pass to the 'docker-compose run' command",
+          "examples": [["service-ports", "rm"]]
         },
         "subcommands": {
           "type": "object",
