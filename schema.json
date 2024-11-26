@@ -9,7 +9,7 @@
       "type": "object",
       "description": "Defines environment variables",
       "additionalProperties": {
-        "type": "string"
+        "type": ["string", "boolean", "number"]
       },
       "examples": [
         { "RAILS_ENV": "development" },
@@ -68,6 +68,14 @@
               "description": "Options to pass to the 'docker-compose run' command",
               "examples": [["service-ports", "rm"]]
             },
+            "compose_run_options": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "DEPRECATED: Options to pass to the 'docker-compose run' command",
+              "examples": [["service-ports", "rm"]]
+            },
             "profiles": {
               "type": "array",
               "items": {
@@ -89,6 +97,10 @@
         "runner": {
           "type": "string",
           "description": "Specifies the runner (e.g., docker_compose, kubectl)"
+        },
+        "pod": {
+          "type": "string",
+          "description": "Specifies the pod for the kubectl runner"
         },
         "subcommands": {
           "type": "object",
@@ -213,7 +225,7 @@
             }
           },
           "oneOf": [
-            { "required": ["git", "ref"] },
+            { "required": ["git"] },
             { "required": ["path"] }
           ]
         }
