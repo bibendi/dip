@@ -94,7 +94,7 @@
           "type": "object",
           "description": "Contains subcommands with the same structure as main commands",
           "patternProperties": {
-            "^[a-zA-Z0-9_]+$": {
+            "^[\\w\\-\\.\\:\\/\\s]+$": {
               "$ref": "#/definitions/interaction_command"
             }
           },
@@ -142,7 +142,7 @@
       "type": "object",
       "description": "Defines the commands and their configurations",
       "patternProperties": {
-        "^[a-zA-Z0-9_]+$": {
+        "^[\\w\\-\\.\\:\\/\\s]+$": {
           "$ref": "#/definitions/interaction_command"
         }
       },
@@ -191,7 +191,7 @@
       "description": "Contains infrastructure services configuration",
       "additionalProperties": false,
       "patternProperties": {
-        "^[a-zA-Z0-9_]+$": {
+        "^[\\w\\-\\.\\:\\/\\s]+$": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
