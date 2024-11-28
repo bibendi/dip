@@ -1,5 +1,5 @@
 [![Gem Version](https://badge.fury.io/rb/dip.svg)](https://badge.fury.io/rb/dip)
-[![Build Status](https://github.com/bibendi/dip/workflows/Ruby/badge.svg?branch=master)](https://github.com/bibendi/dip/actions?query=branch%3Amaster)
+[![Build Status](https://github.com/bibendi/dip/actions/workflows/ci.yml/badge.svg)](https://github.com/bibendi/dip/actions/workflows/ci.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d0dca854f0930502f7b3/maintainability)](https://codeclimate.com/github/bibendi/dip/maintainability)
 
 <img src="https://raw.githubusercontent.com/bibendi/dip/master/.github/logo.png" alt="dip logo" height="140" />
