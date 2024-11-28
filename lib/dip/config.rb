@@ -129,6 +129,8 @@ module Dip
       data_display = data ? data.to_yaml.gsub("\n", "\n  ") : "nil"
       error_message = "Schema validation failed: #{e.message}\nInput data:\n  #{data_display}"
       raise Dip::Error, error_message
+    rescue JSON::Schema::JsonParseError => e
+      raise Dip::Error, "Error parsing schema file: #{e.message}"
     end
 
     private
