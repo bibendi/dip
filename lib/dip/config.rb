@@ -120,8 +120,8 @@ module Dip
       schema_path = File.join(File.dirname(__FILE__), "../../schema.json")
       raise Dip::Error, "Schema file not found: #{schema_path}" unless File.exist?(schema_path)
 
-      data = YAML.load_file(file_path)
-      schema = JSON.parse(File.read(schema_path))
+      data = self.class.load_yaml(file_path)
+      schema = JSON::Validator.parse(File.read(schema_path))
       JSON::Validator.validate!(schema, data)
     rescue Psych::SyntaxError => e
       raise Dip::Error, "Invalid YAML syntax in config file: #{e.message}"
