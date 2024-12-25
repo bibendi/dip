@@ -12,7 +12,7 @@ The dip is a CLI dev–tool that provides native-like interaction with a Dockeri
 ## Presentations and examples
 
 - [Local development with Docker containers](https://slides.com/bibendi/dip)
-- [Dockerized Ruby on Rails application](https://SberMarket-Tech/outbox-example-apps)
+- [Dockerized Ruby on Rails application](https://github.com/Kuper-Tech/outbox-example-apps)
 - Dockerized Node.js application: [one](https://github.com/bibendi/twinkle.js), [two](https://github.com/bibendi/yt-graphql-react-event-booking-api)
 - [Dockerized Ruby gem](https://github.com/bibendi/schked)
 - [Dockerizing Ruby and Rails development](https://evilmartians.com/chronicles/ruby-on-whales-docker-for-ruby-rails-development)
