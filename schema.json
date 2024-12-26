@@ -37,6 +37,16 @@
           "description": "Represents the command to be executed",
           "examples": ["bundle exec rails", "npm", "psql -h db -U user myapp_development"]
         },
+        "workdir": {
+          "type": "string",
+          "description": "Specifies the working directory for the command",
+          "examples": ["/workdir", "/app"]
+        },
+        "user": {
+          "type": "string",
+          "description": "Specifies the user to run the command as",
+          "examples": ["root:root", "root", "www-data", "1000:1000"]
+        },
         "default_args": {
           "type": "string",
           "description": "Default arguments for the command",

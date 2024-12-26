@@ -37,6 +37,9 @@ module Dip
             compose_argv << "--rm"
           end
 
+          compose_argv << "--user #{command.fetch(:user)}" if command[:user]
+          compose_argv << "--workdir #{command.fetch(:workdir)}" if command[:workdir]
+
           compose_argv << command.fetch(:service)
 
           unless (cmd = command[:command]).empty?

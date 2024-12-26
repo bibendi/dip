@@ -60,6 +60,8 @@ module Dip
         description: entry[:description],
         runner: entry[:runner],
         service: entry[:service],
+        workdir: entry[:workdir],
+        user: entry[:user],
         pod: entry[:pod],
         entrypoint: entry[:entrypoint],
         command: entry[:command].to_s.strip,

@@ -31,6 +31,15 @@ interaction:
     description: Run Rubocop commands
     service: app
     command: bundle exec rubocop
+  
+  bash:
+    description: Open the Bash - root user
+    workdir: /home/jjj
+    # user: root:root
+    user: "33:33"
+    # user: 33:33
+    service: app
+    command: /bin/bash
 
 provision:
   - cp -f lefthook-local.dip_example.yml lefthook-local.yml
