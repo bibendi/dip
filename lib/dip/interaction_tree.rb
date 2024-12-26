@@ -69,7 +69,8 @@ module Dip
         default_args: entry[:default_args].to_s.strip,
         environment: entry[:environment] || {},
         compose: {
-          method: entry.dig(:compose, :method) || entry[:compose_method] || "run",
+          # method: entry.dig(:compose, :method) || entry[:compose_method] || "run",
+          method: entry.dig(:compose, :method) || entry[:compose_method] || "exec",
           profiles: Array(entry.dig(:compose, :profiles)),
           run_options: compose_run_options(entry.dig(:compose, :run_options) || entry[:compose_run_options])
         }

@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=./schema.json
 
-version: '7'
+version: '8'
 
 compose:
   files:
@@ -34,10 +34,16 @@ interaction:
 
   bash:
     description: Open the Bash - root user
-    workdir: /home/jjj
+    workdir: /app
 #    user: root:root
     user: "33:33"
     # user: 33:33
+    service: app
+    command: /bin/bash
+
+  bash2:
+    description: Open the Bash - root user
+    user: "1000:1000"
     service: app
     command: /bin/bash
 

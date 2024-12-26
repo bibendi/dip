@@ -6,6 +6,7 @@ services:
       - BUNDLE_PATH=/bundle
       - HISTFILE=/app/tmp/.bash_history
     working_dir: /app
+    command: [ "sleep", "infinity" ]
     volumes:
       - .:/app
       - bundle:/bundle

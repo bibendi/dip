@@ -63,7 +63,7 @@
             "method": {
               "type": "string",
               "description": "Specifies the Docker Compose method (e.g., up, run)",
-              "examples": ["run", "up"]
+              "examples": ["run", "up", "exec"]
             },
             "compose_method": {
               "type": "string",

@@ -8,6 +8,12 @@ module Dip
     module Runners
       class DockerComposeRunner < Base
         def execute
+          # if debug mode
+          # puts "Dip.Commands.Runners.DockerComposeRunner#execute >>>>>>>>>>"
+          # puts "command: #{command}"
+          # puts "compose_profiles: #{compose_profiles}"
+          # puts "compose_arguments: #{compose_arguments}"
+          # puts "Dip.Commands.Runners.DockerComposeRunner#execute <<<<<<<<<<"
           Commands::Compose.new(
             *compose_profiles,
             command[:compose][:method],
@@ -35,6 +41,10 @@ module Dip
             compose_argv.concat(run_vars)
             compose_argv.concat(published_ports)
             compose_argv << "--rm"
+          elsif command[:compose][:method] == "exec"
+            # default exec
+          else
+            # none
           end
 
           compose_argv << "--user #{command.fetch(:user)}" if command[:user]
