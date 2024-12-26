@@ -16,3 +16,5 @@
 
 .lefthook-local/
 lefthook-local.yml
+
+/dip-*.gem
