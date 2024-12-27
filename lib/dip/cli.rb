@@ -108,12 +108,16 @@ module Dip
       end
     end
 
+    # puts Dip.config.provision
+    # TODO use desc in schema.json ??
     desc "provision", "Execute commands within provision section"
     method_option :help, aliases: "-h", type: :boolean,
       desc: "Display usage information"
-    def provision
+    def provision(*argv)
       if options[:help]
         invoke :help, ["provision"]
+      elsif argv.empty?
+        require_relative "commands/provision"
       else
         require_relative "commands/provision"
         Dip::Commands::Provision.new.execute

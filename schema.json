@@ -171,19 +171,25 @@
       "additionalProperties": false
     },
     "provision": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "description": "Lists the commands to be executed for provisioning",
-      "examples": [
-        [
-          "dip compose down --volumes",
-          "dip compose build",
-          "dip rails db:migrate",
-          "dip npm install"
-        ]
-      ]
+      "type": "object",
+      "description": "Execute commands within provision section",
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Lists the commands to be executed for provisioning",
+          "examples": [
+            [
+              "dip compose down --volumes",
+              "dip compose build",
+              "dip rails db:migrate",
+              "dip npm install"
+            ]
+          ]
+        }
+      }
     },
     "environment": {
       "$ref": "#/definitions/environment_vars"

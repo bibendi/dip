@@ -45,10 +45,15 @@ interaction:
     description: Open the Bash - root user
     user: "1000:1000"
     service: app
-    command: /bin/bash
+    command: /bin/bash -c
 
 provision:
-  - cp -f lefthook-local.dip_example.yml lefthook-local.yml
-  - dip compose down --volumes
-  - rm -rf Gemfile.lock
-  - dip bundle install
+  default:
+    - cp -f lefthook-local.dip_example.yml lefthook-local.yml
+    - dip compose down --volumes
+    - rm -rf Gemfile.lock
+    - dip bundle install
+  reset:
+    - dip compose down --volumes
+    - rm -rf Gemfile.lock
+    - dip bundle install
