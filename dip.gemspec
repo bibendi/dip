@@ -40,8 +40,6 @@ Gem::Specification.new do |spec|
   # to maintain compatibility with Ruby 2.7
   spec.add_dependency "public_suffix", ">= 2.0.2", "< 6.0"
 
-  spec.add_dependency "tty-command", "~> 0.10"
-
   spec.add_development_dependency "bundler", "~> 2.5"
   spec.add_development_dependency "pry-byebug", "~> 3"
   spec.add_development_dependency "rake", "~> 13.0"
