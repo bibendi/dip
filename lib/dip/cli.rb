@@ -20,9 +20,12 @@ module Dip
       end
 
       def start(argv)
+        puts "Dip.CLI.start >>>>>>>>>>"
         argv = Dip::RunVars.call(argv, ENV)
 
         cmd = argv.first
+
+        puts "cmd: #{cmd}"
 
         if cmd && !TOP_LEVEL_COMMANDS.include?(cmd) && Dip.config.exist? && Dip.config.interaction.key?(cmd.to_sym)
           argv.unshift("run")
