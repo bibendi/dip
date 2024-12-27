@@ -1,5 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env ruby
 
-gem build dip.gemspec
+require 'dip/version'
 
-gem install ./dip-8.2.6.gem --user-install
+puts Dip::VERSION
+
+system("gem install dip-#{Dip::VERSION}.gem")
