@@ -1,5 +1,9 @@
 # Changelog
 
+## [8.2.6] - 2026-05-09
+
+- Added automated release workflow for RubyGems publishing and GitHub Releases
+
 ## [8.2.5] - 2024-11-29
 
 - Fix some load errors related to different gem versions being available [#184]
