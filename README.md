@@ -66,12 +66,12 @@ dip SUBCOMMAND --help
 
 ### dip.yml
 
-The configuration is loaded from `dip.yml` file. It may be located in a working directory, or it will be found in the nearest parent directory up to the file system root. If nearby places `dip.override.yml` file, it will be merged into the main config.
+The configuration is loaded from `dip.yml` file. It may be located in a working directory, or it will be found in the nearest parent directory up to the file system root. If a `dip.override.yml` file exists nearby, it will be merged into the main config.
 
 Also, in some cases, you may want to change the default config path by providing an environment variable `DIP_FILE`.
 
 Below is an example of a real config.
-Config file reference will be written soon.
+The schema is defined in `schema.json` and can be validated with `dip validate`.
 Also, you can check out examples at the top.
 
 ```yml
@@ -184,7 +184,7 @@ provision:
 
 #### $DIP_OS
 
-Current OS architecture (e.g. `linux`, `darwin`, `freebsd`, and so on). Sometime it may be useful to have one common `docker-compose.yml` and OS-dependent Compose configs.
+Current OS name (e.g. `linux`, `darwin`, `freebsd`, and so on). Sometimes it may be useful to have one common `docker-compose.yml` and OS-dependent Compose configs.
 
 #### $DIP_WORK_DIR_REL_PATH
 
@@ -240,7 +240,7 @@ The container will run using the same user ID as your host machine.
 
 ### Modules
 
-Modules are defined as array in `modules` section of dip.yml, modules are stored in `.dip` subdirectory of dip.yml directory.
+Modules are defined as an array in the `modules` section of dip.yml. Module files are stored in the `.dip` subdirectory next to dip.yml.
 
 The main purpose of modules is to improve maintainability for a group of projects.
 Imagine having multiple gems which are managed with dip, each of them has the same commands, so to change one command in dip you need to update all gems individualy.
@@ -328,7 +328,7 @@ Nested modules are not supported.
 
 Run commands defined within the `interaction` section of dip.yml
 
-A command will be executed by specified runner. Dip has three types of them:
+A command will be executed by the specified runner. You can set the runner explicitly via the `runner` key (e.g. `runner: docker_compose`). Otherwise dip picks the runner automatically:
 
 - `docker compose` runner — used when the `service` option is defined.
 - `kubectl` runner — used when the `pod` option is defined.
@@ -436,7 +436,7 @@ STAGE=some dip ktl get pods
 
 Runs ssh-agent container based on https://github.com/whilp/ssh-agent with your ~/.ssh/id_rsa.
 It creates a named volume `ssh_data` with ssh socket.
-An application's docker-compose.yml should contains environment variable `SSH_AUTH_SOCK=/ssh/auth/sock` and connects to external volume `ssh_data`.
+An application's docker-compose.yml should contain the environment variable `SSH_AUTH_SOCK=/ssh/auth/sock` and connect the external volume `ssh_data`.
 
 ```sh
 dip ssh up
@@ -495,4 +495,4 @@ Add `# yaml-language-server: $schema=https://raw.githubusercontent.com/bibendi/d
 
 ## Changelog
 
-https://github.com/bibendi/dip/releases
+See [CHANGELOG.md](CHANGELOG.md).
