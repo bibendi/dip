@@ -17,13 +17,18 @@ The release process for the `dip` gem involves:
 2. Add new section in `CHANGELOG.md`
 3. Commit and push changes to `master`
 4. Create and push a git tag `vX.Y.Z`
-5. CI handles the rest (push to RubyGems + GitHub Release)
+5. CI handles the rest (push to RubyGems via Trusted Publishing + GitHub Release)
 
 ## Prerequisites
 
-- `RUBYGEMS_API_KEY` secret must be set in GitHub repo settings
+- Trusted Publisher must be configured on RubyGems.org:
+  - Go to `https://rubygems.org/gems/dip/settings`
+  - Add a Trusted Publisher for:
+    - Repository: `bibendi/dip`
+    - Workflow: `release.yml`
+    - Environment: *(leave empty)*
 - You must have push access to the repository
-- The CI must be green on `master` before releasing (not required, but recommended)
+- The CI must be green on `master` before releasing (recommended)
 
 ## Step-by-step
 
@@ -58,7 +63,7 @@ Prefix breaking changes with `**BREAKING**`.
 
 ```bash
 git add lib/dip/version.rb CHANGELOG.md
-git commit -m "Bump version to X.Y.Z"
+git commit -m "chore: bump version to X.Y.Z"
 ```
 
 ### 5. Push to master
@@ -78,7 +83,13 @@ git push origin vX.Y.Z
 
 Pushing the `vX.Y.Z` tag triggers `.github/workflows/release.yml` which:
 
-1. Builds the gem (`rake build`)
-2. Extracts changelog section via `scripts/release_notes.sh`
-3. Pushes to RubyGems (`gem push`)
+1. Builds the gem and pushes to RubyGems via `rubygems/release-gem` action (Trusted Publishing — no API keys needed)
+2. `bundle exec rake release` runs under the hood — skips tag creation since it already exists (`already_tagged?` guard)
+3. Extracts changelog section via `scripts/release_notes.sh`
 4. Creates a GitHub Release with the changelog as notes and `.gem` as asset
+
+## Troubleshooting
+
+- **`rake release` fails with "not clean"**: Ensure all changes are committed before pushing the tag
+- **Trusted Publishing fails**: Verify the publisher is correctly configured on rubygems.org and the workflow name matches exactly `release.yml`
+- **Tag already exists**: If you need to re-release, delete the tag locally and remotely first (`git tag -d vX.Y.Z && git push origin :refs/tags/vX.Y.Z`)
