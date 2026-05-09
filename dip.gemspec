@@ -46,7 +46,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "standard", "~> 1.0"
   spec.add_development_dependency "rubocop-rake", "~> 0.5"
-  spec.add_development_dependency "rubocop-rspec", "~> 2.2"
+  spec.add_development_dependency "rubocop-rspec", "~> 3.0"
   spec.add_development_dependency "simplecov", "~> 0.16"
   spec.add_development_dependency "test-unit", "~> 3"
   spec.add_development_dependency "fakefs"

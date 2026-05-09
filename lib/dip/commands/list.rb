@@ -12,7 +12,7 @@ module Dip
         longest_name = tree.keys.map(&:size).max
 
         tree.each do |name, command|
-          puts "#{name.ljust(longest_name)}  ##{command[:description] ? " #{command[:description]}" : ""}"
+          puts "#{name.ljust(longest_name)}  ##{" #{command[:description]}" if command[:description]}"
         end
       end
     end
