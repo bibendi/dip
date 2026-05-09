@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+      - run: |
+          gem install bundler
+          bundle install
+      - run: rake build
+      - run: scripts/release_notes.sh "${GITHUB_REF_NAME#v}" > release_notes.md
+      - run: gem push pkg/dip-*.gem
+        env:
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+      - run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file release_notes.md \
+            "pkg/dip-${GITHUB_REF_NAME#v}.gem"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
