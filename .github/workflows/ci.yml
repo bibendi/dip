@@ -27,10 +27,24 @@ jobs:
         run: |
           rake install
           dip provision
-      - name: Run linters
-        run: dip rubocop
       - name: Run tests
         run: dip rspec
+  lint:
+    runs-on: ubuntu-latest
+    name: RuboCop
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - name: Install dependencies
+        run: |
+          rake install
+          dip provision
+      - name: Run linters
+        run: dip rubocop
   schema-validate:
     runs-on: ubuntu-latest
     steps:
