@@ -1,6 +1,8 @@
-require:
+plugins:
   - rubocop-rake
   - rubocop-rspec
+
+require:
   - standard
 
 inherit_gem:
