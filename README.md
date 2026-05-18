@@ -20,6 +20,14 @@ The dip is a CLI dev–tool that provides native-like interaction with a Dockeri
 
 [![asciicast](https://asciinema.org/a/210236.svg)](https://asciinema.org/a/210236)
 
+## Quick start with AI
+
+[dip-skill](https://github.com/kalashnikovisme/dip-skill) helps you quickly configure a `dip` environment for your project. It detects the tech stack and bootstraps `dip.yml`, compose files, and Dockerfiles.
+
+```sh
+npx skills add kalashnikovisme/dip-skill
+```
+
 ## Installation
 
 ```sh
@@ -492,7 +500,6 @@ If validation fails, you'll get detailed error messages indicating what needs to
 You can skip validation by setting `DIP_SKIP_VALIDATION` environment variable.
 
 Add `# yaml-language-server: $schema=https://raw.githubusercontent.com/bibendi/dip/refs/heads/master/schema.json` to the top of your dip.yml to get schema validation in VSCode. Read more about [YAML Language Server](https://github.com/redhat-developer/vscode-yaml?tab=readme-ov-file#associating-schemas).
-
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).
