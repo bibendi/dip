@@ -186,7 +186,13 @@ provision:
   - dip clean_cache
   - dip compose up -d pg redis
   - dip bash -c ./bin/setup
+
+preflight:
+  - ./bin/check-credentials
+  - test -f .env
 ```
+
+`preflight` is an array of shell commands that dip runs before every `dip compose ...` invocation (including `dip up`). If any command exits non-zero, dip aborts before calling Docker Compose. Useful for verifying credentials are present, required files exist, env vars are set, etc.
 
 ### Predefined environment variables
 

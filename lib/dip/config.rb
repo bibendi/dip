@@ -20,10 +20,11 @@ module Dip
       kubectl: {},
       infra: {},
       interaction: {},
-      provision: []
+      provision: [],
+      preflight: []
     }.freeze
 
-    TOP_LEVEL_KEYS = %i[environment compose kubectl infra interaction provision].freeze
+    TOP_LEVEL_KEYS = %i[environment compose kubectl infra interaction provision preflight].freeze
 
     ConfigKeyMissingError = Class.new(ArgumentError)
 
