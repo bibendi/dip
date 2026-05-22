@@ -49,7 +49,10 @@ module Dip
 
     desc "compose CMD [OPTIONS]", "Run Docker Compose commands"
     def compose(*argv)
+      require_relative "commands/preflight"
       require_relative "commands/compose"
+
+      Dip::Commands::Preflight.new.execute
       Dip::Commands::Compose.new(*argv).execute
     end
 
@@ -84,7 +87,10 @@ module Dip
 
     desc "ktl CMD [OPTIONS]", "Run kubectl commands"
     def ktl(*argv)
+      require_relative "commands/preflight"
       require_relative "commands/kubectl"
+
+      Dip::Commands::Preflight.new.execute
       Dip::Commands::Kubectl.new(*argv).execute
     end
 
@@ -96,8 +102,10 @@ module Dip
       if argv.empty? || options[:help]
         invoke :help, ["run"]
       else
+        require_relative "commands/preflight"
         require_relative "commands/run"
 
+        Dip::Commands::Preflight.new.execute
         Dip::Commands::Run.new(
           *argv,
           **options.to_h.transform_keys!(&:to_sym)

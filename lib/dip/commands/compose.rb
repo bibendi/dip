@@ -3,7 +3,6 @@
 require "pathname"
 
 require_relative "../command"
-require_relative "preflight"
 require_relative "dns"
 
 module Dip
@@ -20,8 +19,6 @@ module Dip
       end
 
       def execute
-        Commands::Preflight.new.execute if Dip.config.preflight.any?
-
         Dip.env["DIP_DNS"] ||= find_dns
 
         set_infra_env
