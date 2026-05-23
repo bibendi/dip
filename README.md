@@ -186,7 +186,15 @@ provision:
   - dip clean_cache
   - dip compose up -d pg redis
   - dip bash -c ./bin/setup
+
+preflight:
+  - ./bin/check-credentials
+  - test -f .env
 ```
+
+`preflight` is an array of shell commands that dip runs before any command that touches a running container or cluster: `dip compose ...` (and its aliases `dip up`, `dip build`, `dip stop`, `dip down`), `dip ktl ...`, and `dip run ...` (including the interaction shorthand `dip <name>`). If any command exits non-zero, dip aborts before the underlying operation runs. Useful for verifying credentials are present, required files exist, env vars are set, etc.
+
+Not triggered by `dip down --all` (cross-project teardown), `dip ssh`, `dip infra`, or `dip provision`.
 
 ### Predefined environment variables
 

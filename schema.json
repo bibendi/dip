@@ -175,6 +175,16 @@
         ]
       ]
     },
+    "preflight": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Shell commands to run before any `dip compose` subcommand. A non-zero exit aborts the command.",
+      "examples": [
+        ["./bin/check-credentials", "test -f .env"]
+      ]
+    },
     "environment": {
       "$ref": "#/definitions/environment_vars"
     },
