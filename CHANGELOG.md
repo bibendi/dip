@@ -1,5 +1,9 @@
 # Changelog
 
+## [8.3.0] - 2026-05-23
+
+- Added `preflight` hook to run commands before `dip compose`, `dip run` and `dip ktl` [#188]
+
 ## [8.2.6] - 2026-05-09
 
 - Added automated release workflow for RubyGems publishing and GitHub Releases
