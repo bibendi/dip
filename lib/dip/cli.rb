@@ -143,7 +143,7 @@ module Dip
     subcommand :infra, Dip::CLI::Infra
 
     require_relative "cli/console"
-    desc "console", "Integrate Dip commands into shell (only ZSH and Bash are supported)"
+    desc "console", "Integrate Dip commands into shell (Bash, ZSH and Fish are supported)"
     subcommand :console, Dip::CLI::Console
   end
 end

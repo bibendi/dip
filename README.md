@@ -36,11 +36,33 @@ gem install dip
 
 ### Integration with shell
 
-Dip can be injected into the current shell (ZSH or Bash).
+Dip can be injected into the current shell so that interaction commands (and `compose`, `up`, `stop`, `down`, `build`, `provision`) become available without the `dip` prefix. **Bash**, **ZSH**, and **Fish** are supported.
+
+Add the matching line to your shell startup file so the integration is loaded in every session:
 
 ```sh
+# Bash — ~/.bashrc or ~/.bash_profile
 eval "$(dip console)"
 ```
+
+```sh
+# ZSH — ~/.zshrc
+eval "$(dip console)"
+```
+
+```fish
+# Fish — ~/.config/fish/config.fish
+dip console | source
+```
+
+The target shell is autodetected from the `$SHELL` environment variable, so the snippets above work as-is. If autodetection is wrong (for example, you run Fish but `$SHELL` still points to Bash), force the dialect explicitly:
+
+```sh
+eval "$(dip console --shell zsh)"     # Bash / ZSH
+dip console --shell fish | source     # Fish
+```
+
+`--shell` accepts `bash`, `zsh`, or `fish` (`bash` and `zsh` produce the same POSIX output).
 
 **IMPORTANT**: Beware of possible collisions with local tools. One particular example is supporting both local and Docker frontend build tools, such as Yarn. If you want some developer to run `yarn` locally and other to use Docker for that, you should either avoid adding the `yarn` command to the `dip.yml` or avoid using the shell integration for hybrid development.
 
@@ -54,16 +76,27 @@ ktl *any-kubectl-arg
 provision
 ```
 
-When we change the current directory, all shell aliases will be automatically removed. But when we enter back into a directory with a `dip.yml` file, then shell aliases will be renewed.
+When we change the current directory, all shell aliases are automatically removed. When we enter a directory that has a `dip.yml` file (in it or in a parent), the aliases are renewed. This is wired through the shell's directory-change hook — `chpwd_functions` on ZSH, a `cd`/`pushd`/`popd` wrapper on Bash, and a `--on-variable PWD` handler on Fish. The hook resolves the applicable `dip.yml` itself (no `dip` process involved) and only actually reloads when that path changes, so `cd`ing around inside the same project doesn't re-run `dip` on every prompt.
 
-Also, in shell mode Dip is trying to determine manually passed environment variables. For example:
+Also, in shell mode Dip tries to determine manually passed environment variables. For example:
 
 ```sh
 VERSION=20180515103400 rails db:migrate:down
 ```
 
-You could add this `eval` at the end of your `~/.zshrc`, or `~/.bashrc`, or `~/.bash_profile`.
-After that, it will be automatically applied when you open your preferred terminal.
+Once the startup snippet is in place, the integration is applied automatically every time you open your terminal.
+
+#### How it works
+
+`dip console` prints a bootstrap script that defines three helpers:
+
+- `dip_inject` — evaluates `dip console inject`, which emits one shell function per interaction command plus the built-in `compose`/`up`/`stop`/`down`/`build`/`provision` wrappers. An interaction command whose name collides with a shell builtin/keyword (`jobs`, `test`, `read`, `set`, …) is skipped, with a warning on stderr — run it as `dip <name>` instead, or rename it.
+- `dip_clear` — removes the functions previously injected (regenerated on every inject so it always matches the current `dip.yml`).
+- `dip_reload` — runs `dip_clear` then `dip_inject`; also bound to the directory-change hook, which calls it only when the resolved `dip.yml` path actually changed.
+
+The bootstrap also exports `DIP_SHELL=1`, `DIP_EARLY_ENVS` (the list of variables present at load time, used to detect manually passed env vars), and `DIP_PROMPT_TEXT` (`ⅆ`). On ZSH with the `agnoster` theme, `DIP_PROMPT_TEXT` is added as a prompt segment; other shells and themes are left untouched.
+
+You can force a reload at any time by running `dip_reload` (useful after editing `dip.yml`).
 
 ## Usage
 
@@ -508,6 +541,20 @@ If validation fails, you'll get detailed error messages indicating what needs to
 You can skip validation by setting `DIP_SKIP_VALIDATION` environment variable.
 
 Add `# yaml-language-server: $schema=https://raw.githubusercontent.com/bibendi/dip/refs/heads/master/schema.json` to the top of your dip.yml to get schema validation in VSCode. Read more about [YAML Language Server](https://github.com/redhat-developer/vscode-yaml?tab=readme-ov-file#associating-schemas).
+
+### dip console
+
+Prints the shell integration script for the current shell. See [Integration with shell](#integration-with-shell) for the full setup.
+
+```sh
+dip console [--shell bash|zsh|fish]          # bootstrap script (default subcommand)
+dip console inject [--shell bash|zsh|fish]   # just the command aliases
+```
+
+- `--shell` (`-s`) selects the dialect: `bash`, `zsh`, or `fish`. When omitted, it is autodetected from `$SHELL`, falling back to POSIX (Bash/ZSH) output.
+- `dip console` is meant to be evaluated by your shell: `eval "$(dip console)"` for Bash/ZSH, `dip console | source` for Fish.
+- `dip console inject` is called internally by the bootstrap script (via `dip_reload`); you normally don't run it by hand. It only needs the interaction command names, so it skips full `dip.yml` schema validation — run `dip validate` (or any other `dip` command) to check the file against the schema.
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).

@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ '**' ]
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -21,7 +18,7 @@ jobs:
     name: Ruby ${{ matrix.ruby }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Ruby w/ same version as image
         uses: ruby/setup-ruby@v1
         with:
@@ -37,7 +34,7 @@ jobs:
     name: RuboCop
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -52,11 +49,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 23
+          node-version: 24
       - name: Install dependencies
         run: npm install -g ajv-cli
       - name: Validate all dip.yml files
