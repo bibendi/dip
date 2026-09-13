@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [8.4.0] - 2026-09-13
 
 - Added Fish shell support for `dip console` shell integration: `dip console | source`
 - Added `--shell` (`-s`) option to `dip console` / `dip console inject` to force the shell dialect (`bash`, `zsh`, `fish`); autodetected from `$SHELL` by default
